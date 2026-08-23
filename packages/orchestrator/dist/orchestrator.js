@@ -49,7 +49,8 @@ export class PipelineOrchestrator {
         try {
             // 1. Stage: Visual / UI Analysis
             logProgress("analyzing", "Analyzing UI screenshot and generating structured UI IR...");
-            const analysisResult = await this.provider.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", runId);
+            const docName = options.fixtureName || options.name || runId;
+            const analysisResult = await this.provider.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", docName);
             state.ir = analysisResult.data;
             this.recordCostLog(state, analysisResult.costLog);
             // 2. Stage: Design Token Extraction

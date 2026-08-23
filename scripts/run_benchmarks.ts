@@ -9,6 +9,7 @@ async function runAll() {
     { name: "form-ui", path: "fixtures/form-ui/target.png", viewport: { width: 1280, height: 800 } },
     { name: "card-ui", path: "fixtures/card-ui/target.png", viewport: { width: 1280, height: 800 } },
     { name: "mobile-ui", path: "fixtures/mobile-ui/target.png", viewport: { width: 390, height: 844 } },
+    { name: "dense-matrix-table", path: "fixtures/dense-matrix-table/target.png", viewport: { width: 1280, height: 800 } },
   ];
 
   for (const f of fixtures) {

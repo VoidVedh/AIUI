@@ -22,16 +22,18 @@ export class ScreenshotInputAdapter implements InputAdapter {
       mutedColor: "#94A3B8",
     };
 
-    // Determine layout archetype from dimensions/name or metadata
     const isMobile = width <= 480 || name.toLowerCase().includes("mobile");
     const isDashboard = name.toLowerCase().includes("dashboard") || name.toLowerCase().includes("analytics");
     const isForm = name.toLowerCase().includes("form") || name.toLowerCase().includes("auth") || name.toLowerCase().includes("login");
-    const isCardUi = name.toLowerCase().includes("card") || name.toLowerCase().includes("pricing");
+    const isCardUi = (name.toLowerCase().includes("card") || name.toLowerCase().includes("pricing")) && !name.toLowerCase().includes("dense") && !name.toLowerCase().includes("matrix");
+    const isDenseMatrix = name.toLowerCase().includes("dense") || name.toLowerCase().includes("matrix");
 
     let sections: any[] = [];
 
     if (isMobile) {
       sections = [{ type: "mobile" }];
+    } else if (isDenseMatrix) {
+      sections = [{ type: "dense-matrix" }];
     } else if (isDashboard) {
       sections = [
         { type: "navbar", title: "AIUI Analytics", actionText: "Export Data" },

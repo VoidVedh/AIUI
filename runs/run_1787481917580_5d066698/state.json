@@ -1,0 +1,2469 @@
+{
+  "runId": "run_1787481917580_5d066698",
+  "target": "react",
+  "currentStage": "completed",
+  "status": "max_iterations_reached",
+  "similarityScore": 0.8975,
+  "bestIteration": 4,
+  "totalIterations": 5,
+  "history": [
+    {
+      "iteration": 1,
+      "stage": "evaluating",
+      "similarityScore": 0.8828,
+      "ssimScore": 0.7653,
+      "pixelMatchScore": 0.9669,
+      "layoutIouScore": 1,
+      "issues": [
+        {
+          "id": "issue_contrast",
+          "type": "color",
+          "severity": "medium",
+          "description": "Contrast mismatch detected (contrast index: 0.8731). Background or text tones differ from target.",
+          "suggestedFix": "Calibrate text color or container surface background to match target design tokens."
+        }
+      ],
+      "screenshotArtifactPath": "runs/run_1787481917580_5d066698/artifacts/rendered_iter_1.png",
+      "diffArtifactPath": "runs/run_1787481917580_5d066698/artifacts/diff_iter_1.png",
+      "codeFiles": [
+        {
+          "path": "src/index.css",
+          "language": "css"
+        },
+        {
+          "path": "src/components/DensePricingFeatureMatrix.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/App.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/main.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "vite.config.js",
+          "language": "javascript"
+        },
+        {
+          "path": "package.json",
+          "language": "json"
+        }
+      ],
+      "timestamp": "2026-08-23T10:45:19.315Z"
+    },
+    {
+      "iteration": 2,
+      "stage": "evaluating",
+      "similarityScore": 0.8907,
+      "ssimScore": 0.7828,
+      "pixelMatchScore": 0.9669,
+      "layoutIouScore": 1,
+      "issues": [
+        {
+          "id": "issue_contrast",
+          "type": "color",
+          "severity": "medium",
+          "description": "Contrast mismatch detected (contrast index: 0.8776). Background or text tones differ from target.",
+          "suggestedFix": "Calibrate text color or container surface background to match target design tokens."
+        }
+      ],
+      "screenshotArtifactPath": "runs/run_1787481917580_5d066698/artifacts/rendered_iter_2.png",
+      "diffArtifactPath": "runs/run_1787481917580_5d066698/artifacts/diff_iter_2.png",
+      "codeFiles": [
+        {
+          "path": "src/index.css",
+          "language": "css"
+        },
+        {
+          "path": "src/components/DensePricingFeatureMatrix.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/App.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/main.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "vite.config.js",
+          "language": "javascript"
+        },
+        {
+          "path": "package.json",
+          "language": "json"
+        }
+      ],
+      "timestamp": "2026-08-23T10:45:20.773Z"
+    },
+    {
+      "iteration": 3,
+      "stage": "evaluating",
+      "similarityScore": 0.8847,
+      "ssimScore": 0.7614,
+      "pixelMatchScore": 0.9773,
+      "layoutIouScore": 1,
+      "issues": [
+        {
+          "id": "issue_contrast",
+          "type": "color",
+          "severity": "medium",
+          "description": "Contrast mismatch detected (contrast index: 0.8322). Background or text tones differ from target.",
+          "suggestedFix": "Calibrate text color or container surface background to match target design tokens."
+        }
+      ],
+      "screenshotArtifactPath": "runs/run_1787481917580_5d066698/artifacts/rendered_iter_3.png",
+      "diffArtifactPath": "runs/run_1787481917580_5d066698/artifacts/diff_iter_3.png",
+      "codeFiles": [
+        {
+          "path": "src/index.css",
+          "language": "css"
+        },
+        {
+          "path": "src/components/DensePricingFeatureMatrix.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/App.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/main.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "vite.config.js",
+          "language": "javascript"
+        },
+        {
+          "path": "package.json",
+          "language": "json"
+        }
+      ],
+      "timestamp": "2026-08-23T10:45:22.220Z"
+    },
+    {
+      "iteration": 4,
+      "stage": "evaluating",
+      "similarityScore": 0.8975,
+      "ssimScore": 0.7962,
+      "pixelMatchScore": 0.9693,
+      "layoutIouScore": 1,
+      "issues": [
+        {
+          "id": "issue_contrast",
+          "type": "color",
+          "severity": "medium",
+          "description": "Contrast mismatch detected (contrast index: 0.8826). Background or text tones differ from target.",
+          "suggestedFix": "Calibrate text color or container surface background to match target design tokens."
+        }
+      ],
+      "screenshotArtifactPath": "runs/run_1787481917580_5d066698/artifacts/rendered_iter_4.png",
+      "diffArtifactPath": "runs/run_1787481917580_5d066698/artifacts/diff_iter_4.png",
+      "codeFiles": [
+        {
+          "path": "src/index.css",
+          "language": "css"
+        },
+        {
+          "path": "src/components/DensePricingFeatureMatrix.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/App.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/main.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "vite.config.js",
+          "language": "javascript"
+        },
+        {
+          "path": "package.json",
+          "language": "json"
+        }
+      ],
+      "timestamp": "2026-08-23T10:45:23.664Z"
+    },
+    {
+      "iteration": 5,
+      "stage": "evaluating",
+      "similarityScore": 0.8975,
+      "ssimScore": 0.7962,
+      "pixelMatchScore": 0.9693,
+      "layoutIouScore": 1,
+      "issues": [
+        {
+          "id": "issue_contrast",
+          "type": "color",
+          "severity": "medium",
+          "description": "Contrast mismatch detected (contrast index: 0.8826). Background or text tones differ from target.",
+          "suggestedFix": "Calibrate text color or container surface background to match target design tokens."
+        }
+      ],
+      "screenshotArtifactPath": "runs/run_1787481917580_5d066698/artifacts/rendered_iter_5.png",
+      "diffArtifactPath": "runs/run_1787481917580_5d066698/artifacts/diff_iter_5.png",
+      "codeFiles": [
+        {
+          "path": "src/index.css",
+          "language": "css"
+        },
+        {
+          "path": "src/components/DensePricingFeatureMatrix.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/App.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/main.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "vite.config.js",
+          "language": "javascript"
+        },
+        {
+          "path": "package.json",
+          "language": "json"
+        }
+      ],
+      "timestamp": "2026-08-23T10:45:25.116Z"
+    }
+  ],
+  "costLogs": [
+    {
+      "stage": "analyzing",
+      "provider": "offline-cv",
+      "model": "deterministic-cv-engine",
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "estimatedCostUsd": 0,
+      "latencyMs": 4,
+      "timestamp": "2026-08-23T10:45:17.585Z"
+    }
+  ],
+  "totalCostUsd": 0,
+  "totalTokensIn": 0,
+  "totalTokensOut": 0,
+  "startedAt": "2026-08-23T10:45:17.580Z",
+  "ir": {
+    "version": "1.0.0",
+    "id": "ir_1787481917582",
+    "name": "dense-matrix-table",
+    "viewport": {
+      "width": 1280,
+      "height": 800,
+      "devicePixelRatio": 1
+    },
+    "rootNodeId": "page_root",
+    "nodes": {
+      "page_root": {
+        "id": "page_root",
+        "type": "page",
+        "name": "Page",
+        "parentId": null,
+        "childIds": [
+          "sec_0_dense-matrix"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "viewport"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "100%",
+          "minHeight": "100vh"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontFamily": "Inter, system-ui, sans-serif"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix": {
+        "id": "sec_0_dense-matrix",
+        "type": "section",
+        "name": "Dense Pricing & Feature Matrix",
+        "parentId": "page_root",
+        "childIds": [
+          "sec_0_dense-matrix_nav",
+          "sec_0_dense-matrix_header",
+          "sec_0_dense-matrix_matrix_wrap"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0B1120"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_nav": {
+        "id": "sec_0_dense-matrix_nav",
+        "type": "navbar",
+        "name": "Dense Matrix Navigation",
+        "parentId": "sec_0_dense-matrix",
+        "childIds": [
+          "sec_0_dense-matrix_logo_wrap",
+          "sec_0_dense-matrix_nav_subtitle"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": 64
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "alignItems": "center",
+          "gap": 20,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "padding": {
+            "top": 0,
+            "right": 32,
+            "bottom": 0,
+            "left": 32
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.99
+      },
+      "sec_0_dense-matrix_logo_wrap": {
+        "id": "sec_0_dense-matrix_logo_wrap",
+        "type": "flex",
+        "parentId": "sec_0_dense-matrix_nav",
+        "childIds": [
+          "sec_0_dense-matrix_logo_text",
+          "sec_0_dense-matrix_logo_badge"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "flex-start",
+          "alignItems": "center",
+          "gap": 10,
+          "flexWrap": "nowrap"
+        },
+        "styles": {},
+        "confidence": 0.99
+      },
+      "sec_0_dense-matrix_logo_text": {
+        "id": "sec_0_dense-matrix_logo_text",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_logo_wrap",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "18px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "AIUI Enterprise Cloud"
+        },
+        "confidence": 0.99
+      },
+      "sec_0_dense-matrix_logo_badge": {
+        "id": "sec_0_dense-matrix_logo_badge",
+        "type": "badge",
+        "parentId": "sec_0_dense-matrix_logo_wrap",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "inline-block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(59, 130, 246, 0.2)",
+          "color": "#3B82F6",
+          "fontSize": "11px",
+          "fontWeight": 700,
+          "padding": {
+            "top": 2,
+            "right": 6,
+            "bottom": 2,
+            "left": 6
+          },
+          "borderRadius": {
+            "topLeft": 4,
+            "topRight": 4,
+            "bottomRight": 4,
+            "bottomLeft": 4
+          }
+        },
+        "content": {
+          "text": "PRO"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_nav_subtitle": {
+        "id": "sec_0_dense-matrix_nav_subtitle",
+        "type": "text",
+        "parentId": "sec_0_dense-matrix_nav",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "13px",
+          "fontWeight": 500
+        },
+        "content": {
+          "text": "Autonomous UI Pipeline Matrix"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_header": {
+        "id": "sec_0_dense-matrix_header",
+        "type": "container",
+        "parentId": "sec_0_dense-matrix",
+        "childIds": [
+          "sec_0_dense-matrix_title",
+          "sec_0_dense-matrix_sub"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "center",
+          "gap": 8,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "textAlign": "center",
+          "padding": {
+            "top": 36,
+            "right": 20,
+            "bottom": 24,
+            "left": 20
+          }
+        },
+        "confidence": 0.99
+      },
+      "sec_0_dense-matrix_title": {
+        "id": "sec_0_dense-matrix_title",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_header",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "32px",
+          "fontWeight": 800,
+          "letterSpacing": "-0.02em"
+        },
+        "content": {
+          "text": "Compare Plans & Autonomous Capabilities"
+        },
+        "confidence": 0.99
+      },
+      "sec_0_dense-matrix_sub": {
+        "id": "sec_0_dense-matrix_sub",
+        "type": "text",
+        "parentId": "sec_0_dense-matrix_header",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "14px"
+        },
+        "content": {
+          "text": "Choose the right tier for self-healing UI synthesis and automated visual evaluation."
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_matrix_wrap": {
+        "id": "sec_0_dense-matrix_matrix_wrap",
+        "type": "container",
+        "parentId": "sec_0_dense-matrix",
+        "childIds": [
+          "sec_0_dense-matrix_matrix_grid",
+          "sec_0_dense-matrix_footnote"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto",
+          "maxWidth": 1180
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 16,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "padding": {
+            "top": 0,
+            "right": 20,
+            "bottom": 0,
+            "left": 20
+          },
+          "margin": {
+            "top": 0,
+            "right": 0,
+            "bottom": 40,
+            "left": 0
+          }
+        },
+        "confidence": 0.99
+      },
+      "sec_0_dense-matrix_matrix_grid": {
+        "id": "sec_0_dense-matrix_matrix_grid",
+        "type": "grid",
+        "parentId": "sec_0_dense-matrix_matrix_wrap",
+        "childIds": [
+          "sec_0_dense-matrix_cell_1",
+          "sec_0_dense-matrix_cell_2",
+          "sec_0_dense-matrix_cell_3",
+          "sec_0_dense-matrix_cell_4",
+          "sec_0_dense-matrix_cell_5",
+          "sec_0_dense-matrix_cell_6",
+          "sec_0_dense-matrix_cell_7",
+          "sec_0_dense-matrix_cell_8",
+          "sec_0_dense-matrix_cell_9",
+          "sec_0_dense-matrix_cell_10",
+          "sec_0_dense-matrix_cell_11",
+          "sec_0_dense-matrix_cell_12",
+          "sec_0_dense-matrix_cell_13",
+          "sec_0_dense-matrix_cell_14",
+          "sec_0_dense-matrix_cell_15",
+          "sec_0_dense-matrix_cell_16"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "grid",
+          "flexDirection": "row",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap",
+          "gridTemplateColumns": "260px repeat(3, 1fr)"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          },
+          "borderRadius": {
+            "topLeft": 12,
+            "topRight": 12,
+            "bottomRight": 12,
+            "bottomLeft": 12
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_1_title": {
+        "id": "sec_0_dense-matrix_cell_1_title",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_1",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "14px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "Platform Capabilities"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_1": {
+        "id": "sec_0_dense-matrix_cell_1",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_1_title"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#131D33",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_2_title": {
+        "id": "sec_0_dense-matrix_cell_2_title",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_2",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "16px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "Starter"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_2_price": {
+        "id": "sec_0_dense-matrix_cell_2_price",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_2",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#3B82F6",
+          "fontSize": "22px",
+          "fontWeight": 800
+        },
+        "content": {
+          "text": "$29 / mo"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_2": {
+        "id": "sec_0_dense-matrix_cell_2",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_2_title",
+          "sec_0_dense-matrix_cell_2_price"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_3_title": {
+        "id": "sec_0_dense-matrix_cell_3_title",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_3",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "16px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "Professional"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_3_price": {
+        "id": "sec_0_dense-matrix_cell_3_price",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_3",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#3B82F6",
+          "fontSize": "22px",
+          "fontWeight": 800
+        },
+        "content": {
+          "text": "$99 / mo"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_3_pill": {
+        "id": "sec_0_dense-matrix_cell_3_pill",
+        "type": "badge",
+        "parentId": "sec_0_dense-matrix_cell_3",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "inline-block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(59, 130, 246, 0.15)",
+          "color": "#3B82F6",
+          "fontSize": "11px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 3,
+            "right": 8,
+            "bottom": 3,
+            "left": 8
+          },
+          "borderRadius": {
+            "topLeft": 9999,
+            "topRight": 9999,
+            "bottomRight": 9999,
+            "bottomLeft": 9999
+          }
+        },
+        "content": {
+          "text": "Popular"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_3": {
+        "id": "sec_0_dense-matrix_cell_3",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_3_title",
+          "sec_0_dense-matrix_cell_3_price",
+          "sec_0_dense-matrix_cell_3_pill"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(59, 130, 246, 0.06)",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_4_title": {
+        "id": "sec_0_dense-matrix_cell_4_title",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_4",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "16px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "Enterprise"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_4_price": {
+        "id": "sec_0_dense-matrix_cell_4_price",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_4",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#3B82F6",
+          "fontSize": "22px",
+          "fontWeight": 800
+        },
+        "content": {
+          "text": "$299 / mo"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_4": {
+        "id": "sec_0_dense-matrix_cell_4",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_4_title",
+          "sec_0_dense-matrix_cell_4_price"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_5_title": {
+        "id": "sec_0_dense-matrix_cell_5_title",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_5",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "14px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "Multi-Target Generators"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_5": {
+        "id": "sec_0_dense-matrix_cell_5",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_5_title"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#131D33",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_6_pill": {
+        "id": "sec_0_dense-matrix_cell_6_pill",
+        "type": "badge",
+        "parentId": "sec_0_dense-matrix_cell_6",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "inline-block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(16, 185, 129, 0.15)",
+          "color": "#10B981",
+          "fontSize": "11px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 3,
+            "right": 8,
+            "bottom": 3,
+            "left": 8
+          },
+          "borderRadius": {
+            "topLeft": 9999,
+            "topRight": 9999,
+            "bottomRight": 9999,
+            "bottomLeft": 9999
+          }
+        },
+        "content": {
+          "text": "React 19"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_6": {
+        "id": "sec_0_dense-matrix_cell_6",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_6_pill"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_7_pill": {
+        "id": "sec_0_dense-matrix_cell_7_pill",
+        "type": "badge",
+        "parentId": "sec_0_dense-matrix_cell_7",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "inline-block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(59, 130, 246, 0.15)",
+          "color": "#3B82F6",
+          "fontSize": "11px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 3,
+            "right": 8,
+            "bottom": 3,
+            "left": 8
+          },
+          "borderRadius": {
+            "topLeft": 9999,
+            "topRight": 9999,
+            "bottomRight": 9999,
+            "bottomLeft": 9999
+          }
+        },
+        "content": {
+          "text": "React + Vanilla JS"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_7": {
+        "id": "sec_0_dense-matrix_cell_7",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_7_pill"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(59, 130, 246, 0.06)",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_8_pill": {
+        "id": "sec_0_dense-matrix_cell_8_pill",
+        "type": "badge",
+        "parentId": "sec_0_dense-matrix_cell_8",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "inline-block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(16, 185, 129, 0.15)",
+          "color": "#10B981",
+          "fontSize": "11px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 3,
+            "right": 8,
+            "bottom": 3,
+            "left": 8
+          },
+          "borderRadius": {
+            "topLeft": 9999,
+            "topRight": 9999,
+            "bottomRight": 9999,
+            "bottomLeft": 9999
+          }
+        },
+        "content": {
+          "text": "React + JS + Flutter"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_8": {
+        "id": "sec_0_dense-matrix_cell_8",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_8_pill"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_9_title": {
+        "id": "sec_0_dense-matrix_cell_9_title",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_9",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "14px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "MSSIM + PixelMatch CV"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_9": {
+        "id": "sec_0_dense-matrix_cell_9",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_9_title"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#131D33",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_10_txt": {
+        "id": "sec_0_dense-matrix_cell_10_txt",
+        "type": "text",
+        "parentId": "sec_0_dense-matrix_cell_10",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#10B981",
+          "fontSize": "13px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "✓ Standard (5 iter)"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_10": {
+        "id": "sec_0_dense-matrix_cell_10",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_10_txt"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_11_txt": {
+        "id": "sec_0_dense-matrix_cell_11_txt",
+        "type": "text",
+        "parentId": "sec_0_dense-matrix_cell_11",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#10B981",
+          "fontSize": "13px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "✓ Subpixel Gaussian"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_11": {
+        "id": "sec_0_dense-matrix_cell_11",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_11_txt"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(59, 130, 246, 0.06)",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_12_txt": {
+        "id": "sec_0_dense-matrix_cell_12_txt",
+        "type": "text",
+        "parentId": "sec_0_dense-matrix_cell_12",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#10B981",
+          "fontSize": "13px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "✓ Ultra-HD Bounding Box"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_12": {
+        "id": "sec_0_dense-matrix_cell_12",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_12_txt"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_13_title": {
+        "id": "sec_0_dense-matrix_cell_13_title",
+        "type": "heading",
+        "parentId": "sec_0_dense-matrix_cell_13",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "14px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "Selection"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_13": {
+        "id": "sec_0_dense-matrix_cell_13",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_13_title"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#131D33",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_14_btn": {
+        "id": "sec_0_dense-matrix_cell_14_btn",
+        "type": "button",
+        "parentId": "sec_0_dense-matrix_cell_14",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": 38
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "color": "#FFFFFF",
+          "fontSize": "13px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 8,
+            "right": 12,
+            "bottom": 8,
+            "left": 12
+          },
+          "borderRadius": {
+            "topLeft": 6,
+            "topRight": 6,
+            "bottomRight": 6,
+            "bottomLeft": 6
+          }
+        },
+        "content": {
+          "text": "Choose Starter"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_14": {
+        "id": "sec_0_dense-matrix_cell_14",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_14_btn"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_15_btn": {
+        "id": "sec_0_dense-matrix_cell_15_btn",
+        "type": "button",
+        "parentId": "sec_0_dense-matrix_cell_15",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": 38
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#3B82F6",
+          "color": "#FFFFFF",
+          "fontSize": "13px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 8,
+            "right": 12,
+            "bottom": 8,
+            "left": 12
+          },
+          "borderRadius": {
+            "topLeft": 6,
+            "topRight": 6,
+            "bottomRight": 6,
+            "bottomLeft": 6
+          }
+        },
+        "content": {
+          "text": "Upgrade Pro"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_15": {
+        "id": "sec_0_dense-matrix_cell_15",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_15_btn"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(59, 130, 246, 0.06)",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_16_btn": {
+        "id": "sec_0_dense-matrix_cell_16_btn",
+        "type": "button",
+        "parentId": "sec_0_dense-matrix_cell_16",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": 38
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "color": "#FFFFFF",
+          "fontSize": "13px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 8,
+            "right": 12,
+            "bottom": 8,
+            "left": 12
+          },
+          "borderRadius": {
+            "topLeft": 6,
+            "topRight": 6,
+            "bottomRight": 6,
+            "bottomLeft": 6
+          }
+        },
+        "content": {
+          "text": "Contact Sales"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_cell_16": {
+        "id": "sec_0_dense-matrix_cell_16",
+        "type": "card",
+        "parentId": "sec_0_dense-matrix_matrix_grid",
+        "childIds": [
+          "sec_0_dense-matrix_cell_16_btn"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "flex-start",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontSize": "13px",
+          "padding": {
+            "top": 14,
+            "right": 18,
+            "bottom": 14,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#1E293B"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_dense-matrix_footnote": {
+        "id": "sec_0_dense-matrix_footnote",
+        "type": "text",
+        "parentId": "sec_0_dense-matrix_matrix_wrap",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#64748B",
+          "fontSize": "12px",
+          "textAlign": "center"
+        },
+        "content": {
+          "text": "All tiers include process-level sandboxed execution and automated regression rollback."
+        },
+        "confidence": 0.97
+      }
+    },
+    "metadata": {
+      "sourceType": "screenshot",
+      "confidence": 0.96,
+      "extractedAt": "2026-08-23T10:45:17.582Z",
+      "targetFrameworks": [
+        "react",
+        "vanillajs",
+        "flutter"
+      ]
+    }
+  },
+  "tokens": {
+    "colors": {
+      "primary": "rgba(59, 130, 246, 0.2)",
+      "primaryHover": "#2563EB",
+      "primaryActive": "#1D4ED8",
+      "primaryForeground": "#FFFFFF",
+      "secondary": "#64748B",
+      "secondaryForeground": "#FFFFFF",
+      "background": "#0F172A",
+      "surface": "#F8FAFC",
+      "surfaceCard": "#F8FAFC",
+      "surfaceElevated": "#334155",
+      "text": "#F8FAFC",
+      "textMuted": "#94A3B8",
+      "textSubtle": "#64748B",
+      "textInverse": "#0F172A",
+      "border": "#131D33",
+      "borderLight": "#475569",
+      "borderFocus": "#3B82F6",
+      "accent": "#3B82F6",
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444",
+      "info": "#06B6D4",
+      "gradients": {}
+    },
+    "typography": {
+      "fontFamilies": {
+        "sans": "Inter, system-ui, sans-serif",
+        "serif": "Georgia, serif",
+        "mono": "Fira Code, monospace",
+        "display": "Inter, system-ui, sans-serif"
+      },
+      "fontSizes": {
+        "xs": "12px",
+        "sm": "14px",
+        "base": "16px",
+        "md": "18px",
+        "lg": "20px",
+        "xl": "24px",
+        "2xl": "30px",
+        "3xl": "36px",
+        "4xl": "48px"
+      },
+      "fontWeights": {
+        "normal": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "lineHeights": {
+        "tight": 1.25,
+        "normal": 1.5,
+        "relaxed": 1.75
+      },
+      "letterSpacings": {
+        "tight": "-0.025em",
+        "normal": "0em",
+        "wide": "0.025em"
+      }
+    },
+    "spacing": {
+      "scale": {
+        "0": "0px",
+        "1": "4px",
+        "2": "8px",
+        "3": "12px",
+        "4": "16px",
+        "5": "20px",
+        "6": "24px",
+        "8": "32px",
+        "10": "40px",
+        "12": "48px",
+        "16": "64px",
+        "20": "80px",
+        "24": "96px"
+      }
+    },
+    "radius": {
+      "none": "0px",
+      "sm": "4px",
+      "md": "9999px",
+      "lg": "12px",
+      "xl": "16px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "none": "none",
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      "inner": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)"
+    }
+  },
+  "plan": {
+    "rootComponentId": "app_root",
+    "components": {
+      "app_root": {
+        "id": "app_root",
+        "name": "App",
+        "category": "layout",
+        "irNodeIds": [
+          "page_root"
+        ],
+        "isReusable": false,
+        "filePath": "src/App.jsx",
+        "props": [],
+        "childComponentIds": [
+          "comp_sec_0_dense-matrix"
+        ],
+        "stateVariables": [],
+        "stylingStrategy": "css-custom-props"
+      },
+      "comp_sec_0_dense-matrix": {
+        "id": "comp_sec_0_dense-matrix",
+        "name": "DensePricingFeatureMatrix",
+        "category": "section",
+        "irNodeIds": [
+          "sec_0_dense-matrix",
+          "sec_0_dense-matrix_nav",
+          "sec_0_dense-matrix_header",
+          "sec_0_dense-matrix_matrix_wrap",
+          "sec_0_dense-matrix_logo_wrap",
+          "sec_0_dense-matrix_nav_subtitle",
+          "sec_0_dense-matrix_title",
+          "sec_0_dense-matrix_sub",
+          "sec_0_dense-matrix_matrix_grid",
+          "sec_0_dense-matrix_footnote",
+          "sec_0_dense-matrix_logo_text",
+          "sec_0_dense-matrix_logo_badge",
+          "sec_0_dense-matrix_cell_1",
+          "sec_0_dense-matrix_cell_2",
+          "sec_0_dense-matrix_cell_3",
+          "sec_0_dense-matrix_cell_4",
+          "sec_0_dense-matrix_cell_5",
+          "sec_0_dense-matrix_cell_6",
+          "sec_0_dense-matrix_cell_7",
+          "sec_0_dense-matrix_cell_8",
+          "sec_0_dense-matrix_cell_9",
+          "sec_0_dense-matrix_cell_10",
+          "sec_0_dense-matrix_cell_11",
+          "sec_0_dense-matrix_cell_12",
+          "sec_0_dense-matrix_cell_13",
+          "sec_0_dense-matrix_cell_14",
+          "sec_0_dense-matrix_cell_15",
+          "sec_0_dense-matrix_cell_16",
+          "sec_0_dense-matrix_cell_1_title",
+          "sec_0_dense-matrix_cell_2_title",
+          "sec_0_dense-matrix_cell_2_price",
+          "sec_0_dense-matrix_cell_3_title",
+          "sec_0_dense-matrix_cell_3_price",
+          "sec_0_dense-matrix_cell_3_pill",
+          "sec_0_dense-matrix_cell_4_title",
+          "sec_0_dense-matrix_cell_4_price",
+          "sec_0_dense-matrix_cell_5_title",
+          "sec_0_dense-matrix_cell_6_pill",
+          "sec_0_dense-matrix_cell_7_pill",
+          "sec_0_dense-matrix_cell_8_pill",
+          "sec_0_dense-matrix_cell_9_title",
+          "sec_0_dense-matrix_cell_10_txt",
+          "sec_0_dense-matrix_cell_11_txt",
+          "sec_0_dense-matrix_cell_12_txt",
+          "sec_0_dense-matrix_cell_13_title",
+          "sec_0_dense-matrix_cell_14_btn",
+          "sec_0_dense-matrix_cell_15_btn",
+          "sec_0_dense-matrix_cell_16_btn"
+        ],
+        "isReusable": false,
+        "filePath": "src/components/DensePricingFeatureMatrix.jsx",
+        "props": [],
+        "childComponentIds": [],
+        "stateVariables": [],
+        "stylingStrategy": "css-custom-props"
+      }
+    },
+    "entryFile": "src/App.jsx",
+    "sharedStylesFile": "src/index.css"
+  },
+  "currentProject": {
+    "target": "react",
+    "files": [
+      {
+        "path": "src/index.css",
+        "content": ":root {\n  --color-primary: rgba(59, 130, 246, 0.2);\n  --color-primary-hover: #2563EB;\n  --color-primary-active: #1D4ED8;\n  --color-primary-foreground: #FFFFFF;\n  --color-secondary: #64748B;\n  --color-secondary-foreground: #FFFFFF;\n  --color-background: #0b1120;\n  --color-surface: #0f172a;\n  --color-surface-card: #F8FAFC;\n  --color-surface-elevated: #334155;\n  --color-text: #F8FAFC;\n  --color-text-muted: #94A3B8;\n  --color-text-subtle: #64748B;\n  --color-text-inverse: #0F172A;\n  --color-border: #1e293b;\n  --color-border-light: #475569;\n  --color-border-focus: #3B82F6;\n  --color-accent: #3B82F6;\n  --color-success: #10B981;\n  --color-warning: #F59E0B;\n  --color-error: #EF4444;\n  --color-info: #06B6D4;\n  --font-sans: Inter, system-ui, sans-serif;\n  --font-serif: Georgia, serif;\n  --font-mono: Fira Code, monospace;\n  --font-display: Inter, system-ui, sans-serif;\n  --text-xs: 12px;\n  --text-sm: 14px;\n  --text-base: 16px;\n  --text-md: 18px;\n  --text-lg: 20px;\n  --text-xl: 24px;\n  --text-2xl: 30px;\n  --text-3xl: 36px;\n  --text-4xl: 48px;\n  --space-0: 0px;\n  --space-1: 4px;\n  --space-2: 8px;\n  --space-3: 12px;\n  --space-4: 16px;\n  --space-5: 20px;\n  --space-6: 24px;\n  --space-8: 32px;\n  --space-10: 40px;\n  --space-12: 48px;\n  --space-16: 64px;\n  --space-20: 80px;\n  --space-24: 96px;\n  --radius-none: 0px;\n  --radius-sm: 4px;\n  --radius-md: 9999px;\n  --radius-lg: 12px;\n  --radius-xl: 16px;\n  --radius-full: 9999px;\n  --shadow-none: none;\n  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);\n  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);\n  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);\n}\n\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nhtml, body, #root {\n  width: 100%;\n  min-height: 100%;\n  font-family: var(--font-sans);\n  background-color: var(--color-background);\n  color: var(--color-text);\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\nbutton {\n  font-family: inherit;\n  cursor: pointer;\n  border: none;\n  background: none;\n  transition: all 0.2s ease-in-out;\n}\n\nbutton:hover {\n  filter: brightness(1.08);\n}\n\nbutton:active {\n  transform: translateY(1px);\n}\n\ninput, textarea, select {\n  font-family: inherit;\n  font-size: inherit;\n  outline: none;\n}\n\na {\n  color: inherit;\n  text-decoration: none;\n}\n\n/* Base utility classes derived from UI IR */\n.aiui-page {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n  width: 100%;\n  background-color: var(--color-background);\n  color: var(--color-text);\n}\n\n.aiui-container {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n}\n\n.aiui-card {\n  background-color: var(--color-surface);\n  border: 1px solid var(--color-border);\n  border-radius: var(--radius-md);\n  box-shadow: var(--shadow-md);\n}\n\n.aiui-glass {\n  background: rgba(30, 41, 59, 0.7);\n  backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n\nbody, .aiui-page {\n  background-color: #0b1120 !important;\n  color: #f8fafc !important;\n  -webkit-font-smoothing: antialiased !important;\n  -moz-osx-font-smoothing: grayscale !important;\n  text-rendering: optimizeLegibility !important;\n}\n\n[id*=\"btn\"] {\n  width: 100% !important;\n  padding: 8px 14px !important;\n  border-radius: 6px !important;\n  font-size: 13px !important;\n  font-weight: 600 !important;\n  cursor: pointer !important;\n  text-align: center !important;\n  transition: all 0.15s ease !important;\n}\n\n[id*=\"pill\"] {\n  display: inline-flex !important;\n  align-items: center !important;\n  padding: 2px 8px !important;\n  border-radius: 9999px !important;\n  font-size: 10px !important;\n  font-weight: 600 !important;\n}\n\n[id*=\"price\"] {\n  font-size: 22px !important;\n  font-weight: 800 !important;\n  color: #3b82f6 !important;\n}\n\n[id*=\"btn\"] {\n  width: 100% !important;\n  padding: 8px 14px !important;\n  border-radius: 6px !important;\n  font-size: 13px !important;\n  font-weight: 600 !important;\n  cursor: pointer !important;\n  text-align: center !important;\n  transition: all 0.15s ease !important;\n}\n\n[id*=\"pill\"] {\n  display: inline-flex !important;\n  align-items: center !important;\n  padding: 2px 8px !important;\n  border-radius: 9999px !important;\n  font-size: 10px !important;\n  font-weight: 600 !important;\n}\n\n[id*=\"price\"] {\n  font-size: 22px !important;\n  font-weight: 800 !important;\n  color: #3b82f6 !important;\n}\n",
+        "isEntry": false,
+        "language": "css"
+      },
+      {
+        "path": "src/components/DensePricingFeatureMatrix.jsx",
+        "content": "import React from 'react';\n\nexport default function DensePricingFeatureMatrix(props) {\n  return (\n    <section id=\"sec_0_dense-matrix\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"stretch\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0B1120\"}}>\n      <header id=\"sec_0_dense-matrix_nav\" style={{\"width\":\"100%\",\"height\":\"64px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"space-between\",\"alignItems\":\"center\",\"gap\":\"20px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"padding\":\"0px 32px 0px 32px\",\"border\":\"1px solid #1E293B\"}}>\n        <div id=\"sec_0_dense-matrix_logo_wrap\" style={{\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"gap\":\"10px\",\"flexWrap\":\"nowrap\"}}>\n          <h2 id=\"sec_0_dense-matrix_logo_text\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"18px\",\"fontWeight\":700}}>\n            AIUI Enterprise Cloud\n          </h2>\n          <span id=\"sec_0_dense-matrix_logo_badge\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(59, 130, 246, 0.2)\",\"color\":\"#3B82F6\",\"fontSize\":\"11px\",\"fontWeight\":700,\"padding\":\"2px 6px 2px 6px\",\"borderRadius\":\"4px 4px 4px 4px\"}}>\n            PRO\n          </span>\n        </div>\n        <p id=\"sec_0_dense-matrix_nav_subtitle\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"13px\",\"fontWeight\":500}}>\n          Autonomous UI Pipeline Matrix\n        </p>\n      </header>\n      <div id=\"sec_0_dense-matrix_header\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"textAlign\":\"center\",\"padding\":\"36px 20px 24px 20px\"}}>\n        <h2 id=\"sec_0_dense-matrix_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"32px\",\"fontWeight\":800,\"letterSpacing\":\"-0.02em\"}}>\n          Compare Plans & Autonomous Capabilities\n        </h2>\n        <p id=\"sec_0_dense-matrix_sub\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\"}}>\n          Choose the right tier for self-healing UI synthesis and automated visual evaluation.\n        </p>\n      </div>\n      <div id=\"sec_0_dense-matrix_matrix_wrap\" style={{\"width\":\"100%\",\"maxWidth\":\"1180px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"stretch\",\"gap\":\"16px\",\"flexWrap\":\"nowrap\",\"padding\":\"0px 20px 0px 20px\",\"margin\":\"0px 0px 40px 0px\"}}>\n        <div id=\"sec_0_dense-matrix_matrix_grid\" style={{\"width\":\"100%\",\"display\":\"grid\",\"gridTemplateColumns\":\"260px repeat(3, 1fr)\",\"backgroundColor\":\"#0F172A\",\"border\":\"1px solid #1E293B\",\"borderRadius\":\"12px 12px 12px 12px\"}}>\n          <article id=\"sec_0_dense-matrix_cell_1\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#131D33\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_1_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"14px\",\"fontWeight\":700}}>\n              Platform Capabilities\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_2\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_2_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"16px\",\"fontWeight\":700}}>\n              Starter\n            </h2>\n            <h2 id=\"sec_0_dense-matrix_cell_2_price\" style={{\"display\":\"block\",\"color\":\"#3B82F6\",\"fontSize\":\"22px\",\"fontWeight\":800}}>\n              $29 / mo\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_3\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(59, 130, 246, 0.06)\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_3_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"16px\",\"fontWeight\":700}}>\n              Professional\n            </h2>\n            <h2 id=\"sec_0_dense-matrix_cell_3_price\" style={{\"display\":\"block\",\"color\":\"#3B82F6\",\"fontSize\":\"22px\",\"fontWeight\":800}}>\n              $99 / mo\n            </h2>\n            <span id=\"sec_0_dense-matrix_cell_3_pill\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(59, 130, 246, 0.15)\",\"color\":\"#3B82F6\",\"fontSize\":\"11px\",\"fontWeight\":600,\"padding\":\"3px 8px 3px 8px\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n              Popular\n            </span>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_4\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_4_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"16px\",\"fontWeight\":700}}>\n              Enterprise\n            </h2>\n            <h2 id=\"sec_0_dense-matrix_cell_4_price\" style={{\"display\":\"block\",\"color\":\"#3B82F6\",\"fontSize\":\"22px\",\"fontWeight\":800}}>\n              $299 / mo\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_5\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#131D33\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_5_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"14px\",\"fontWeight\":700}}>\n              Multi-Target Generators\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_6\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <span id=\"sec_0_dense-matrix_cell_6_pill\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(16, 185, 129, 0.15)\",\"color\":\"#10B981\",\"fontSize\":\"11px\",\"fontWeight\":600,\"padding\":\"3px 8px 3px 8px\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n              React 19\n            </span>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_7\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(59, 130, 246, 0.06)\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <span id=\"sec_0_dense-matrix_cell_7_pill\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(59, 130, 246, 0.15)\",\"color\":\"#3B82F6\",\"fontSize\":\"11px\",\"fontWeight\":600,\"padding\":\"3px 8px 3px 8px\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n              React + Vanilla JS\n            </span>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_8\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <span id=\"sec_0_dense-matrix_cell_8_pill\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(16, 185, 129, 0.15)\",\"color\":\"#10B981\",\"fontSize\":\"11px\",\"fontWeight\":600,\"padding\":\"3px 8px 3px 8px\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n              React + JS + Flutter\n            </span>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_9\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#131D33\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_9_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"14px\",\"fontWeight\":700}}>\n              MSSIM + PixelMatch CV\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_10\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <p id=\"sec_0_dense-matrix_cell_10_txt\" style={{\"display\":\"block\",\"color\":\"#10B981\",\"fontSize\":\"13px\",\"fontWeight\":600}}>\n              ✓ Standard (5 iter)\n            </p>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_11\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(59, 130, 246, 0.06)\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <p id=\"sec_0_dense-matrix_cell_11_txt\" style={{\"display\":\"block\",\"color\":\"#10B981\",\"fontSize\":\"13px\",\"fontWeight\":600}}>\n              ✓ Subpixel Gaussian\n            </p>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_12\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <p id=\"sec_0_dense-matrix_cell_12_txt\" style={{\"display\":\"block\",\"color\":\"#10B981\",\"fontSize\":\"13px\",\"fontWeight\":600}}>\n              ✓ Ultra-HD Bounding Box\n            </p>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_13\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#131D33\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_13_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"14px\",\"fontWeight\":700}}>\n              Selection\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_14\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <button id=\"sec_0_dense-matrix_cell_14_btn\" style={{\"width\":\"100%\",\"height\":\"38px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"color\":\"#FFFFFF\",\"fontSize\":\"13px\",\"fontWeight\":600,\"padding\":\"8px 12px 8px 12px\",\"borderRadius\":\"6px 6px 6px 6px\"}}>\n              Choose Starter\n            </button>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_15\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(59, 130, 246, 0.06)\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <button id=\"sec_0_dense-matrix_cell_15_btn\" style={{\"width\":\"100%\",\"height\":\"38px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#3B82F6\",\"color\":\"#FFFFFF\",\"fontSize\":\"13px\",\"fontWeight\":600,\"padding\":\"8px 12px 8px 12px\",\"borderRadius\":\"6px 6px 6px 6px\"}}>\n              Upgrade Pro\n            </button>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_16\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <button id=\"sec_0_dense-matrix_cell_16_btn\" style={{\"width\":\"100%\",\"height\":\"38px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"color\":\"#FFFFFF\",\"fontSize\":\"13px\",\"fontWeight\":600,\"padding\":\"8px 12px 8px 12px\",\"borderRadius\":\"6px 6px 6px 6px\"}}>\n              Contact Sales\n            </button>\n          </article>\n        </div>\n        <p id=\"sec_0_dense-matrix_footnote\" style={{\"display\":\"block\",\"color\":\"#64748B\",\"fontSize\":\"12px\",\"textAlign\":\"center\"}}>\n          All tiers include process-level sandboxed execution and automated regression rollback.\n        </p>\n      </div>\n    </section>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/App.jsx",
+        "content": "import React from 'react';\nimport DensePricingFeatureMatrix from './components/DensePricingFeatureMatrix.jsx';\n\nexport default function App() {\n  return (\n    <div className=\"aiui-page\" style={{\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontFamily\":\"Inter, system-ui, sans-serif\"}}>\n      <DensePricingFeatureMatrix />\n    </div>\n  );\n}\n",
+        "isEntry": true,
+        "language": "jsx"
+      },
+      {
+        "path": "src/main.jsx",
+        "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App.jsx';\nimport './index.css';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>dense-matrix-table</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+        "isEntry": false,
+        "language": "html"
+      },
+      {
+        "path": "vite.config.js",
+        "content": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    host: '127.0.0.1',\n  },\n});\n",
+        "isEntry": false,
+        "language": "javascript"
+      },
+      {
+        "path": "package.json",
+        "content": "{\n  \"name\": \"aiui-generated-app\",\n  \"private\": true,\n  \"version\": \"0.1.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"lucide-react\": \"^0.475.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.2.0\"\n  }\n}",
+        "isEntry": false,
+        "language": "json"
+      }
+    ],
+    "entryFile": "src/App.jsx",
+    "staticAssets": {},
+    "dependencies": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0",
+      "lucide-react": "^0.475.0"
+    }
+  },
+  "bestProject": {
+    "target": "react",
+    "files": [
+      {
+        "path": "src/index.css",
+        "content": ":root {\n  --color-primary: rgba(59, 130, 246, 0.2);\n  --color-primary-hover: #2563EB;\n  --color-primary-active: #1D4ED8;\n  --color-primary-foreground: #FFFFFF;\n  --color-secondary: #64748B;\n  --color-secondary-foreground: #FFFFFF;\n  --color-background: #0b1120;\n  --color-surface: #0f172a;\n  --color-surface-card: #F8FAFC;\n  --color-surface-elevated: #334155;\n  --color-text: #F8FAFC;\n  --color-text-muted: #94A3B8;\n  --color-text-subtle: #64748B;\n  --color-text-inverse: #0F172A;\n  --color-border: #1e293b;\n  --color-border-light: #475569;\n  --color-border-focus: #3B82F6;\n  --color-accent: #3B82F6;\n  --color-success: #10B981;\n  --color-warning: #F59E0B;\n  --color-error: #EF4444;\n  --color-info: #06B6D4;\n  --font-sans: Inter, system-ui, sans-serif;\n  --font-serif: Georgia, serif;\n  --font-mono: Fira Code, monospace;\n  --font-display: Inter, system-ui, sans-serif;\n  --text-xs: 12px;\n  --text-sm: 14px;\n  --text-base: 16px;\n  --text-md: 18px;\n  --text-lg: 20px;\n  --text-xl: 24px;\n  --text-2xl: 30px;\n  --text-3xl: 36px;\n  --text-4xl: 48px;\n  --space-0: 0px;\n  --space-1: 4px;\n  --space-2: 8px;\n  --space-3: 12px;\n  --space-4: 16px;\n  --space-5: 20px;\n  --space-6: 24px;\n  --space-8: 32px;\n  --space-10: 40px;\n  --space-12: 48px;\n  --space-16: 64px;\n  --space-20: 80px;\n  --space-24: 96px;\n  --radius-none: 0px;\n  --radius-sm: 4px;\n  --radius-md: 9999px;\n  --radius-lg: 12px;\n  --radius-xl: 16px;\n  --radius-full: 9999px;\n  --shadow-none: none;\n  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);\n  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);\n  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);\n}\n\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nhtml, body, #root {\n  width: 100%;\n  min-height: 100%;\n  font-family: var(--font-sans);\n  background-color: var(--color-background);\n  color: var(--color-text);\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\nbutton {\n  font-family: inherit;\n  cursor: pointer;\n  border: none;\n  background: none;\n  transition: all 0.2s ease-in-out;\n}\n\nbutton:hover {\n  filter: brightness(1.08);\n}\n\nbutton:active {\n  transform: translateY(1px);\n}\n\ninput, textarea, select {\n  font-family: inherit;\n  font-size: inherit;\n  outline: none;\n}\n\na {\n  color: inherit;\n  text-decoration: none;\n}\n\n/* Base utility classes derived from UI IR */\n.aiui-page {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n  width: 100%;\n  background-color: var(--color-background);\n  color: var(--color-text);\n}\n\n.aiui-container {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n}\n\n.aiui-card {\n  background-color: var(--color-surface);\n  border: 1px solid var(--color-border);\n  border-radius: var(--radius-md);\n  box-shadow: var(--shadow-md);\n}\n\n.aiui-glass {\n  background: rgba(30, 41, 59, 0.7);\n  backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n\nbody, .aiui-page {\n  background-color: #0b1120 !important;\n  color: #f8fafc !important;\n  -webkit-font-smoothing: antialiased !important;\n  -moz-osx-font-smoothing: grayscale !important;\n  text-rendering: optimizeLegibility !important;\n}\n\n[id*=\"btn\"] {\n  width: 100% !important;\n  padding: 8px 14px !important;\n  border-radius: 6px !important;\n  font-size: 13px !important;\n  font-weight: 600 !important;\n  cursor: pointer !important;\n  text-align: center !important;\n  transition: all 0.15s ease !important;\n}\n\n[id*=\"pill\"] {\n  display: inline-flex !important;\n  align-items: center !important;\n  padding: 2px 8px !important;\n  border-radius: 9999px !important;\n  font-size: 10px !important;\n  font-weight: 600 !important;\n}\n\n[id*=\"price\"] {\n  font-size: 22px !important;\n  font-weight: 800 !important;\n  color: #3b82f6 !important;\n}\n",
+        "isEntry": false,
+        "language": "css"
+      },
+      {
+        "path": "src/components/DensePricingFeatureMatrix.jsx",
+        "content": "import React from 'react';\n\nexport default function DensePricingFeatureMatrix(props) {\n  return (\n    <section id=\"sec_0_dense-matrix\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"stretch\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0B1120\"}}>\n      <header id=\"sec_0_dense-matrix_nav\" style={{\"width\":\"100%\",\"height\":\"64px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"space-between\",\"alignItems\":\"center\",\"gap\":\"20px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"padding\":\"0px 32px 0px 32px\",\"border\":\"1px solid #1E293B\"}}>\n        <div id=\"sec_0_dense-matrix_logo_wrap\" style={{\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"gap\":\"10px\",\"flexWrap\":\"nowrap\"}}>\n          <h2 id=\"sec_0_dense-matrix_logo_text\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"18px\",\"fontWeight\":700}}>\n            AIUI Enterprise Cloud\n          </h2>\n          <span id=\"sec_0_dense-matrix_logo_badge\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(59, 130, 246, 0.2)\",\"color\":\"#3B82F6\",\"fontSize\":\"11px\",\"fontWeight\":700,\"padding\":\"2px 6px 2px 6px\",\"borderRadius\":\"4px 4px 4px 4px\"}}>\n            PRO\n          </span>\n        </div>\n        <p id=\"sec_0_dense-matrix_nav_subtitle\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"13px\",\"fontWeight\":500}}>\n          Autonomous UI Pipeline Matrix\n        </p>\n      </header>\n      <div id=\"sec_0_dense-matrix_header\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"textAlign\":\"center\",\"padding\":\"36px 20px 24px 20px\"}}>\n        <h2 id=\"sec_0_dense-matrix_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"32px\",\"fontWeight\":800,\"letterSpacing\":\"-0.02em\"}}>\n          Compare Plans & Autonomous Capabilities\n        </h2>\n        <p id=\"sec_0_dense-matrix_sub\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\"}}>\n          Choose the right tier for self-healing UI synthesis and automated visual evaluation.\n        </p>\n      </div>\n      <div id=\"sec_0_dense-matrix_matrix_wrap\" style={{\"width\":\"100%\",\"maxWidth\":\"1180px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"stretch\",\"gap\":\"16px\",\"flexWrap\":\"nowrap\",\"padding\":\"0px 20px 0px 20px\",\"margin\":\"0px 0px 40px 0px\"}}>\n        <div id=\"sec_0_dense-matrix_matrix_grid\" style={{\"width\":\"100%\",\"display\":\"grid\",\"gridTemplateColumns\":\"260px repeat(3, 1fr)\",\"backgroundColor\":\"#0F172A\",\"border\":\"1px solid #1E293B\",\"borderRadius\":\"12px 12px 12px 12px\"}}>\n          <article id=\"sec_0_dense-matrix_cell_1\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#131D33\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_1_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"14px\",\"fontWeight\":700}}>\n              Platform Capabilities\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_2\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_2_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"16px\",\"fontWeight\":700}}>\n              Starter\n            </h2>\n            <h2 id=\"sec_0_dense-matrix_cell_2_price\" style={{\"display\":\"block\",\"color\":\"#3B82F6\",\"fontSize\":\"22px\",\"fontWeight\":800}}>\n              $29 / mo\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_3\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(59, 130, 246, 0.06)\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_3_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"16px\",\"fontWeight\":700}}>\n              Professional\n            </h2>\n            <h2 id=\"sec_0_dense-matrix_cell_3_price\" style={{\"display\":\"block\",\"color\":\"#3B82F6\",\"fontSize\":\"22px\",\"fontWeight\":800}}>\n              $99 / mo\n            </h2>\n            <span id=\"sec_0_dense-matrix_cell_3_pill\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(59, 130, 246, 0.15)\",\"color\":\"#3B82F6\",\"fontSize\":\"11px\",\"fontWeight\":600,\"padding\":\"3px 8px 3px 8px\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n              Popular\n            </span>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_4\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_4_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"16px\",\"fontWeight\":700}}>\n              Enterprise\n            </h2>\n            <h2 id=\"sec_0_dense-matrix_cell_4_price\" style={{\"display\":\"block\",\"color\":\"#3B82F6\",\"fontSize\":\"22px\",\"fontWeight\":800}}>\n              $299 / mo\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_5\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#131D33\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_5_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"14px\",\"fontWeight\":700}}>\n              Multi-Target Generators\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_6\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <span id=\"sec_0_dense-matrix_cell_6_pill\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(16, 185, 129, 0.15)\",\"color\":\"#10B981\",\"fontSize\":\"11px\",\"fontWeight\":600,\"padding\":\"3px 8px 3px 8px\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n              React 19\n            </span>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_7\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(59, 130, 246, 0.06)\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <span id=\"sec_0_dense-matrix_cell_7_pill\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(59, 130, 246, 0.15)\",\"color\":\"#3B82F6\",\"fontSize\":\"11px\",\"fontWeight\":600,\"padding\":\"3px 8px 3px 8px\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n              React + Vanilla JS\n            </span>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_8\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <span id=\"sec_0_dense-matrix_cell_8_pill\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(16, 185, 129, 0.15)\",\"color\":\"#10B981\",\"fontSize\":\"11px\",\"fontWeight\":600,\"padding\":\"3px 8px 3px 8px\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n              React + JS + Flutter\n            </span>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_9\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#131D33\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_9_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"14px\",\"fontWeight\":700}}>\n              MSSIM + PixelMatch CV\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_10\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <p id=\"sec_0_dense-matrix_cell_10_txt\" style={{\"display\":\"block\",\"color\":\"#10B981\",\"fontSize\":\"13px\",\"fontWeight\":600}}>\n              ✓ Standard (5 iter)\n            </p>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_11\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(59, 130, 246, 0.06)\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <p id=\"sec_0_dense-matrix_cell_11_txt\" style={{\"display\":\"block\",\"color\":\"#10B981\",\"fontSize\":\"13px\",\"fontWeight\":600}}>\n              ✓ Subpixel Gaussian\n            </p>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_12\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <p id=\"sec_0_dense-matrix_cell_12_txt\" style={{\"display\":\"block\",\"color\":\"#10B981\",\"fontSize\":\"13px\",\"fontWeight\":600}}>\n              ✓ Ultra-HD Bounding Box\n            </p>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_13\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#131D33\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <h2 id=\"sec_0_dense-matrix_cell_13_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"14px\",\"fontWeight\":700}}>\n              Selection\n            </h2>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_14\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <button id=\"sec_0_dense-matrix_cell_14_btn\" style={{\"width\":\"100%\",\"height\":\"38px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"color\":\"#FFFFFF\",\"fontSize\":\"13px\",\"fontWeight\":600,\"padding\":\"8px 12px 8px 12px\",\"borderRadius\":\"6px 6px 6px 6px\"}}>\n              Choose Starter\n            </button>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_15\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(59, 130, 246, 0.06)\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <button id=\"sec_0_dense-matrix_cell_15_btn\" style={{\"width\":\"100%\",\"height\":\"38px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#3B82F6\",\"color\":\"#FFFFFF\",\"fontSize\":\"13px\",\"fontWeight\":600,\"padding\":\"8px 12px 8px 12px\",\"borderRadius\":\"6px 6px 6px 6px\"}}>\n              Upgrade Pro\n            </button>\n          </article>\n          <article id=\"sec_0_dense-matrix_cell_16\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"flex-start\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontSize\":\"13px\",\"padding\":\"14px 18px 14px 18px\",\"border\":\"1px solid #1E293B\"}}>\n            <button id=\"sec_0_dense-matrix_cell_16_btn\" style={{\"width\":\"100%\",\"height\":\"38px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"color\":\"#FFFFFF\",\"fontSize\":\"13px\",\"fontWeight\":600,\"padding\":\"8px 12px 8px 12px\",\"borderRadius\":\"6px 6px 6px 6px\"}}>\n              Contact Sales\n            </button>\n          </article>\n        </div>\n        <p id=\"sec_0_dense-matrix_footnote\" style={{\"display\":\"block\",\"color\":\"#64748B\",\"fontSize\":\"12px\",\"textAlign\":\"center\"}}>\n          All tiers include process-level sandboxed execution and automated regression rollback.\n        </p>\n      </div>\n    </section>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/App.jsx",
+        "content": "import React from 'react';\nimport DensePricingFeatureMatrix from './components/DensePricingFeatureMatrix.jsx';\n\nexport default function App() {\n  return (\n    <div className=\"aiui-page\" style={{\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontFamily\":\"Inter, system-ui, sans-serif\"}}>\n      <DensePricingFeatureMatrix />\n    </div>\n  );\n}\n",
+        "isEntry": true,
+        "language": "jsx"
+      },
+      {
+        "path": "src/main.jsx",
+        "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App.jsx';\nimport './index.css';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>dense-matrix-table</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+        "isEntry": false,
+        "language": "html"
+      },
+      {
+        "path": "vite.config.js",
+        "content": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    host: '127.0.0.1',\n  },\n});\n",
+        "isEntry": false,
+        "language": "javascript"
+      },
+      {
+        "path": "package.json",
+        "content": "{\n  \"name\": \"aiui-generated-app\",\n  \"private\": true,\n  \"version\": \"0.1.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"lucide-react\": \"^0.475.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.2.0\"\n  }\n}",
+        "isEntry": false,
+        "language": "json"
+      }
+    ],
+    "entryFile": "src/App.jsx",
+    "staticAssets": {},
+    "dependencies": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0",
+      "lucide-react": "^0.475.0"
+    }
+  },
+  "completedAt": "2026-08-23T10:45:25.117Z"
+}

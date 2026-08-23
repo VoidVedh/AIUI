@@ -45,6 +45,9 @@ export class CvExtractor {
             else if (sec.type === "mobile") {
                 this.buildMobile(nodes, secId, rootId, colors, sec);
             }
+            else if (sec.type === "dense-matrix") {
+                this.buildDenseMatrix(nodes, secId, rootId, colors, sec);
+            }
         }
         return UIIRDocumentSchema.parse({
             version: "1.0.0",
@@ -915,6 +918,339 @@ export class CvExtractor {
                 confidence: 0.98,
             };
         });
+    }
+    static buildDenseMatrix(nodes, id, parentId, colors, sec) {
+        nodes[id] = {
+            id,
+            type: "section",
+            name: "Dense Pricing & Feature Matrix",
+            parentId,
+            childIds: [`${id}_nav`, `${id}_header`, `${id}_matrix_wrap`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: "auto" },
+            layout: {
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "stretch",
+                justifyContent: "flex-start",
+                gap: 0,
+                flexWrap: "nowrap",
+            },
+            styles: {
+                backgroundColor: "#0B1120",
+            },
+            confidence: 0.98,
+        };
+        // 1. Navigation Bar
+        nodes[`${id}_nav`] = {
+            id: `${id}_nav`,
+            type: "navbar",
+            name: "Dense Matrix Navigation",
+            parentId: id,
+            childIds: [`${id}_logo_wrap`, `${id}_nav_subtitle`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: 64 },
+            layout: {
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: 20,
+                flexWrap: "nowrap",
+            },
+            styles: {
+                backgroundColor: "#0F172A",
+                padding: { top: 0, right: 32, bottom: 0, left: 32 },
+                border: { width: 1, style: "solid", color: "#1E293B" },
+            },
+            confidence: 0.99,
+        };
+        // Logo + Badge Wrap
+        nodes[`${id}_logo_wrap`] = {
+            id: `${id}_logo_wrap`,
+            type: "flex",
+            parentId: `${id}_nav`,
+            childIds: [`${id}_logo_text`, `${id}_logo_badge`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 10, flexWrap: "nowrap" },
+            styles: {},
+            confidence: 0.99,
+        };
+        nodes[`${id}_logo_text`] = {
+            id: `${id}_logo_text`,
+            type: "heading",
+            parentId: `${id}_logo_wrap`,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: { color: "#F8FAFC", fontSize: "18px", fontWeight: 700 },
+            content: { text: "AIUI Enterprise Cloud" },
+            confidence: 0.99,
+        };
+        nodes[`${id}_logo_badge`] = {
+            id: `${id}_logo_badge`,
+            type: "badge",
+            parentId: `${id}_logo_wrap`,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "inline-block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: {
+                backgroundColor: "rgba(59, 130, 246, 0.2)",
+                color: "#3B82F6",
+                fontSize: "11px",
+                fontWeight: 700,
+                padding: { top: 2, right: 6, bottom: 2, left: 6 },
+                borderRadius: { topLeft: 4, topRight: 4, bottomRight: 4, bottomLeft: 4 },
+            },
+            content: { text: "PRO" },
+            confidence: 0.98,
+        };
+        // Right side text
+        nodes[`${id}_nav_subtitle`] = {
+            id: `${id}_nav_subtitle`,
+            type: "text",
+            parentId: `${id}_nav`,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: { color: "#94A3B8", fontSize: "13px", fontWeight: 500 },
+            content: { text: "Autonomous UI Pipeline Matrix" },
+            confidence: 0.98,
+        };
+        // 2. Header Content
+        nodes[`${id}_header`] = {
+            id: `${id}_header`,
+            type: "container",
+            parentId: id,
+            childIds: [`${id}_title`, `${id}_sub`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: "auto" },
+            layout: { display: "flex", flexDirection: "column", alignItems: "center", gap: 8, justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: { textAlign: "center", padding: { top: 36, right: 20, bottom: 24, left: 20 } },
+            confidence: 0.99,
+        };
+        nodes[`${id}_title`] = {
+            id: `${id}_title`,
+            type: "heading",
+            parentId: `${id}_header`,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: { color: "#F8FAFC", fontSize: "32px", fontWeight: 800, letterSpacing: "-0.02em" },
+            content: { text: "Compare Plans & Autonomous Capabilities" },
+            confidence: 0.99,
+        };
+        nodes[`${id}_sub`] = {
+            id: `${id}_sub`,
+            type: "text",
+            parentId: `${id}_header`,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: { color: "#94A3B8", fontSize: "14px" },
+            content: { text: "Choose the right tier for self-healing UI synthesis and automated visual evaluation." },
+            confidence: 0.98,
+        };
+        // 3. Matrix Wrap
+        nodes[`${id}_matrix_wrap`] = {
+            id: `${id}_matrix_wrap`,
+            type: "container",
+            parentId: id,
+            childIds: [`${id}_matrix_grid`, `${id}_footnote`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", maxWidth: 1180, height: "auto" },
+            layout: { display: "flex", flexDirection: "column", alignItems: "stretch", gap: 16, justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: {
+                margin: { top: 0, right: 0, bottom: 40, left: 0 },
+                padding: { top: 0, right: 20, bottom: 0, left: 20 },
+            },
+            confidence: 0.99,
+        };
+        // 16 Cells Grid
+        const cellIds = [];
+        for (let c = 1; c <= 16; c++) {
+            cellIds.push(`${id}_cell_${c}`);
+        }
+        nodes[`${id}_matrix_grid`] = {
+            id: `${id}_matrix_grid`,
+            type: "grid",
+            parentId: `${id}_matrix_wrap`,
+            childIds: cellIds,
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: "auto" },
+            layout: {
+                display: "grid",
+                gridTemplateColumns: "260px repeat(3, 1fr)",
+                gap: 0,
+                flexDirection: "row",
+                alignItems: "stretch",
+                justifyContent: "flex-start",
+                flexWrap: "nowrap",
+            },
+            styles: {
+                backgroundColor: "#0F172A",
+                border: { width: 1, style: "solid", color: "#1E293B" },
+                borderRadius: { topLeft: 12, topRight: 12, bottomRight: 12, bottomLeft: 12 },
+            },
+            confidence: 0.98,
+        };
+        // Cell Definitions (16 cells with rich children)
+        const cellsData = [
+            // Row 1: Headers
+            { idNum: 1, isHeader: true, title: "Platform Capabilities" },
+            { idNum: 2, title: "Starter", price: "$29 / mo" },
+            { idNum: 3, title: "Professional", price: "$99 / mo", pill: "Popular", featured: true },
+            { idNum: 4, title: "Enterprise", price: "$299 / mo" },
+            // Row 2: Target Frameworks
+            { idNum: 5, isHeader: true, title: "Multi-Target Generators" },
+            { idNum: 6, pill: "React 19" },
+            { idNum: 7, pill: "React + Vanilla JS", featured: true },
+            { idNum: 8, pill: "React + JS + Flutter" },
+            // Row 3: Evaluation
+            { idNum: 9, isHeader: true, title: "MSSIM + PixelMatch CV" },
+            { idNum: 10, text: "✓ Standard (5 iter)" },
+            { idNum: 11, text: "✓ Subpixel Gaussian", featured: true },
+            { idNum: 12, text: "✓ Ultra-HD Bounding Box" },
+            // Row 4: CTAs
+            { idNum: 13, isHeader: true, title: "Selection" },
+            { idNum: 14, btnText: "Choose Starter", btnType: "secondary" },
+            { idNum: 15, btnText: "Upgrade Pro", btnType: "primary", featured: true },
+            { idNum: 16, btnText: "Contact Sales", btnType: "secondary" },
+        ];
+        cellsData.forEach((cd) => {
+            const cId = `${id}_cell_${cd.idNum}`;
+            const childList = [];
+            if (cd.title) {
+                const tId = `${cId}_title`;
+                childList.push(tId);
+                nodes[tId] = {
+                    id: tId,
+                    type: "heading",
+                    parentId: cId,
+                    childIds: [],
+                    position: { x: 0, y: 0, relativeTo: "flow" },
+                    dimensions: { width: "auto", height: "auto" },
+                    layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+                    styles: { color: "#F8FAFC", fontSize: cd.isHeader ? "14px" : "16px", fontWeight: 700 },
+                    content: { text: cd.title },
+                    confidence: 0.98,
+                };
+            }
+            if (cd.price) {
+                const pId = `${cId}_price`;
+                childList.push(pId);
+                nodes[pId] = {
+                    id: pId,
+                    type: "heading",
+                    parentId: cId,
+                    childIds: [],
+                    position: { x: 0, y: 0, relativeTo: "flow" },
+                    dimensions: { width: "auto", height: "auto" },
+                    layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+                    styles: { color: "#3B82F6", fontSize: "22px", fontWeight: 800 },
+                    content: { text: cd.price },
+                    confidence: 0.98,
+                };
+            }
+            if (cd.pill) {
+                const plId = `${cId}_pill`;
+                childList.push(plId);
+                nodes[plId] = {
+                    id: plId,
+                    type: "badge",
+                    parentId: cId,
+                    childIds: [],
+                    position: { x: 0, y: 0, relativeTo: "flow" },
+                    dimensions: { width: "auto", height: "auto" },
+                    layout: { display: "inline-block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+                    styles: {
+                        backgroundColor: cd.featured ? "rgba(59, 130, 246, 0.15)" : "rgba(16, 185, 129, 0.15)",
+                        color: cd.featured ? "#3B82F6" : "#10B981",
+                        fontSize: "11px",
+                        fontWeight: 600,
+                        padding: { top: 3, right: 8, bottom: 3, left: 8 },
+                        borderRadius: { topLeft: 9999, topRight: 9999, bottomRight: 9999, bottomLeft: 9999 },
+                    },
+                    content: { text: cd.pill },
+                    confidence: 0.98,
+                };
+            }
+            if (cd.text) {
+                const txId = `${cId}_txt`;
+                childList.push(txId);
+                nodes[txId] = {
+                    id: txId,
+                    type: "text",
+                    parentId: cId,
+                    childIds: [],
+                    position: { x: 0, y: 0, relativeTo: "flow" },
+                    dimensions: { width: "auto", height: "auto" },
+                    layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+                    styles: { color: "#10B981", fontSize: "13px", fontWeight: 600 },
+                    content: { text: cd.text },
+                    confidence: 0.98,
+                };
+            }
+            if (cd.btnText) {
+                const bId = `${cId}_btn`;
+                childList.push(bId);
+                nodes[bId] = {
+                    id: bId,
+                    type: "button",
+                    parentId: cId,
+                    childIds: [],
+                    position: { x: 0, y: 0, relativeTo: "flow" },
+                    dimensions: { width: "100%", height: 38 },
+                    layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 0, flexWrap: "nowrap" },
+                    styles: {
+                        backgroundColor: cd.btnType === "primary" ? "#3B82F6" : "#1E293B",
+                        color: "#FFFFFF",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        padding: { top: 8, right: 12, bottom: 8, left: 12 },
+                        borderRadius: { topLeft: 6, topRight: 6, bottomRight: 6, bottomLeft: 6 },
+                    },
+                    content: { text: cd.btnText },
+                    confidence: 0.98,
+                };
+            }
+            nodes[cId] = {
+                id: cId,
+                type: "card",
+                parentId: `${id}_matrix_grid`,
+                childIds: childList,
+                position: { x: 0, y: 0, relativeTo: "flow" },
+                dimensions: { width: "100%", height: "auto" },
+                layout: { display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "center", gap: 4, flexWrap: "nowrap" },
+                styles: {
+                    backgroundColor: cd.isHeader ? "#131D33" : cd.featured ? "rgba(59, 130, 246, 0.06)" : "#0F172A",
+                    padding: { top: 14, right: 18, bottom: 14, left: 18 },
+                    border: { width: 1, style: "solid", color: "#1E293B" },
+                    color: "#F8FAFC",
+                    fontSize: "13px",
+                },
+                confidence: 0.98,
+            };
+        });
+        // 4. Footnote
+        nodes[`${id}_footnote`] = {
+            id: `${id}_footnote`,
+            type: "text",
+            parentId: `${id}_matrix_wrap`,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: { color: "#64748B", fontSize: "12px", textAlign: "center" },
+            content: { text: "All tiers include process-level sandboxed execution and automated regression rollback." },
+            confidence: 0.97,
+        };
     }
 }
 //# sourceMappingURL=cvExtractor.js.map

@@ -55,7 +55,7 @@
           "language": "json"
         }
       ],
-      "timestamp": "2026-08-23T10:26:35.419Z"
+      "timestamp": "2026-08-23T10:50:37.718Z"
     }
   ],
   "costLogs": [
@@ -67,16 +67,16 @@
       "completionTokens": 0,
       "estimatedCostUsd": 0,
       "latencyMs": 3,
-      "timestamp": "2026-08-23T10:26:33.653Z"
+      "timestamp": "2026-08-23T10:50:35.690Z"
     }
   ],
   "totalCostUsd": 0,
   "totalTokensIn": 0,
   "totalTokensOut": 0,
-  "startedAt": "2026-08-23T10:26:33.649Z",
+  "startedAt": "2026-08-23T10:50:35.685Z",
   "ir": {
     "version": "1.0.0",
-    "id": "ir_1787480793650",
+    "id": "ir_1787482235687",
     "name": "bench_landing-page",
     "viewport": {
       "width": 1280,
@@ -1185,7 +1185,7 @@
     "metadata": {
       "sourceType": "screenshot",
       "confidence": 0.96,
-      "extractedAt": "2026-08-23T10:26:33.650Z",
+      "extractedAt": "2026-08-23T10:50:35.687Z",
       "targetFrameworks": [
         "react",
         "vanillajs",
@@ -1519,5 +1519,5 @@
       "lucide-react": "^0.475.0"
     }
   },
-  "completedAt": "2026-08-23T10:26:35.420Z"
+  "completedAt": "2026-08-23T10:50:37.718Z"
 }

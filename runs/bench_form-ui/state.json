@@ -51,7 +51,7 @@
           "language": "json"
         }
       ],
-      "timestamp": "2026-08-23T10:26:38.051Z"
+      "timestamp": "2026-08-23T10:50:40.663Z"
     }
   ],
   "costLogs": [
@@ -63,16 +63,16 @@
       "completionTokens": 0,
       "estimatedCostUsd": 0,
       "latencyMs": 1,
-      "timestamp": "2026-08-23T10:26:36.752Z"
+      "timestamp": "2026-08-23T10:50:39.196Z"
     }
   ],
   "totalCostUsd": 0,
   "totalTokensIn": 0,
   "totalTokensOut": 0,
-  "startedAt": "2026-08-23T10:26:36.750Z",
+  "startedAt": "2026-08-23T10:50:39.194Z",
   "ir": {
     "version": "1.0.0",
-    "id": "ir_1787480796751",
+    "id": "ir_1787482239195",
     "name": "bench_form-ui",
     "viewport": {
       "width": 1280,
@@ -746,7 +746,7 @@
     "metadata": {
       "sourceType": "screenshot",
       "confidence": 0.96,
-      "extractedAt": "2026-08-23T10:26:36.751Z",
+      "extractedAt": "2026-08-23T10:50:39.195Z",
       "targetFrameworks": [
         "react",
         "vanillajs",
@@ -1041,5 +1041,5 @@
       "lucide-react": "^0.475.0"
     }
   },
-  "completedAt": "2026-08-23T10:26:38.052Z"
+  "completedAt": "2026-08-23T10:50:40.663Z"
 }

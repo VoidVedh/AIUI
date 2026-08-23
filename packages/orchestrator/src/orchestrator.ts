@@ -79,12 +79,13 @@ export class PipelineOrchestrator {
     try {
       // 1. Stage: Visual / UI Analysis
       logProgress("analyzing", "Analyzing UI screenshot and generating structured UI IR...");
+      const docName = options.fixtureName || options.name || runId;
       const analysisResult = await this.provider.analyzeScreenshot(
         imageBuffer,
         mimeType,
         viewport,
         "analyzing",
-        runId
+        docName
       );
       state.ir = analysisResult.data;
       this.recordCostLog(state, analysisResult.costLog);
