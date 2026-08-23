@@ -47,7 +47,7 @@
           "language": "json"
         }
       ],
-      "timestamp": "2026-08-23T11:11:58.520Z"
+      "timestamp": "2026-08-23T11:36:05.160Z"
     }
   ],
   "costLogs": [
@@ -58,17 +58,17 @@
       "promptTokens": 0,
       "completionTokens": 0,
       "estimatedCostUsd": 0,
-      "latencyMs": 0,
-      "timestamp": "2026-08-23T11:11:57.100Z"
+      "latencyMs": 1,
+      "timestamp": "2026-08-23T11:36:03.689Z"
     }
   ],
   "totalCostUsd": 0,
   "totalTokensIn": 0,
   "totalTokensOut": 0,
-  "startedAt": "2026-08-23T11:11:57.099Z",
+  "startedAt": "2026-08-23T11:36:03.688Z",
   "ir": {
     "version": "1.0.0",
-    "id": "ir_1787483517100",
+    "id": "ir_1787484963689",
     "name": "bench_mobile-ui",
     "viewport": {
       "width": 390,
@@ -607,7 +607,7 @@
     "metadata": {
       "sourceType": "screenshot",
       "confidence": 0.96,
-      "extractedAt": "2026-08-23T11:11:57.100Z",
+      "extractedAt": "2026-08-23T11:36:03.689Z",
       "targetFrameworks": [
         "react",
         "vanillajs",
@@ -868,5 +868,5 @@
       "lucide-react": "^0.475.0"
     }
   },
-  "completedAt": "2026-08-23T11:11:58.521Z"
+  "completedAt": "2026-08-23T11:36:05.160Z"
 }

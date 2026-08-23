@@ -1,0 +1,1523 @@
+{
+  "runId": "run_1787484236864_au3wj",
+  "target": "react",
+  "currentStage": "completed",
+  "status": "success",
+  "similarityScore": 0.9315,
+  "bestIteration": 1,
+  "totalIterations": 1,
+  "history": [
+    {
+      "iteration": 1,
+      "stage": "evaluating",
+      "similarityScore": 0.9315,
+      "ssimScore": 0.8629,
+      "pixelMatchScore": 0.9807,
+      "layoutIouScore": 1,
+      "issues": [],
+      "screenshotArtifactPath": "runs/run_1787484236864_au3wj/artifacts/rendered_iter_1.png",
+      "diffArtifactPath": "runs/run_1787484236864_au3wj/artifacts/diff_iter_1.png",
+      "codeFiles": [
+        {
+          "path": "src/index.css",
+          "language": "css"
+        },
+        {
+          "path": "src/components/HeaderNavigation.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/components/HeroSection.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/components/FeaturesGrid.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/App.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/main.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "vite.config.js",
+          "language": "javascript"
+        },
+        {
+          "path": "package.json",
+          "language": "json"
+        }
+      ],
+      "timestamp": "2026-08-23T11:23:58.941Z"
+    }
+  ],
+  "costLogs": [
+    {
+      "stage": "analyzing",
+      "provider": "offline-cv",
+      "model": "deterministic-cv-engine",
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "estimatedCostUsd": 0,
+      "latencyMs": 3,
+      "timestamp": "2026-08-23T11:23:56.868Z"
+    }
+  ],
+  "totalCostUsd": 0,
+  "totalTokensIn": 0,
+  "totalTokensOut": 0,
+  "startedAt": "2026-08-23T11:23:56.864Z",
+  "ir": {
+    "version": "1.0.0",
+    "id": "ir_1787484236866",
+    "name": "landing-page",
+    "viewport": {
+      "width": 1280,
+      "height": 800,
+      "devicePixelRatio": 1
+    },
+    "rootNodeId": "page_root",
+    "nodes": {
+      "page_root": {
+        "id": "page_root",
+        "type": "page",
+        "name": "Page",
+        "parentId": null,
+        "childIds": [
+          "sec_0_navbar",
+          "sec_1_hero",
+          "sec_2_card-grid"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "viewport"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "100%",
+          "minHeight": "100vh"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontFamily": "Inter, system-ui, sans-serif"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_navbar": {
+        "id": "sec_0_navbar",
+        "type": "navbar",
+        "name": "Header Navigation",
+        "parentId": "page_root",
+        "childIds": [
+          "sec_0_navbar_logo",
+          "sec_0_navbar_nav_links",
+          "sec_0_navbar_actions"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": 72
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "alignItems": "center",
+          "gap": 24,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "padding": {
+            "top": 16,
+            "right": 32,
+            "bottom": 16,
+            "left": 32
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          }
+        },
+        "confidence": 0.99
+      },
+      "sec_0_navbar_logo": {
+        "id": "sec_0_navbar_logo",
+        "type": "heading",
+        "parentId": "sec_0_navbar",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "20px",
+          "fontWeight": 700,
+          "letterSpacing": "-0.02em"
+        },
+        "content": {
+          "text": "AIUI Autonomous Engine"
+        },
+        "confidence": 0.99
+      },
+      "sec_0_navbar_nav_links": {
+        "id": "sec_0_navbar_nav_links",
+        "type": "flex",
+        "parentId": "sec_0_navbar",
+        "childIds": [
+          "sec_0_navbar_link_1",
+          "sec_0_navbar_link_2",
+          "sec_0_navbar_link_3"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "flex-start",
+          "alignItems": "center",
+          "gap": 28,
+          "flexWrap": "nowrap"
+        },
+        "styles": {},
+        "confidence": 0.95
+      },
+      "sec_0_navbar_link_1": {
+        "id": "sec_0_navbar_link_1",
+        "type": "text",
+        "parentId": "sec_0_navbar_nav_links",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "14px",
+          "fontWeight": 500
+        },
+        "content": {
+          "text": "Features"
+        },
+        "confidence": 0.95
+      },
+      "sec_0_navbar_link_2": {
+        "id": "sec_0_navbar_link_2",
+        "type": "text",
+        "parentId": "sec_0_navbar_nav_links",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "14px",
+          "fontWeight": 500
+        },
+        "content": {
+          "text": "Solutions"
+        },
+        "confidence": 0.95
+      },
+      "sec_0_navbar_link_3": {
+        "id": "sec_0_navbar_link_3",
+        "type": "text",
+        "parentId": "sec_0_navbar_nav_links",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "14px",
+          "fontWeight": 500
+        },
+        "content": {
+          "text": "Pricing"
+        },
+        "confidence": 0.95
+      },
+      "sec_0_navbar_actions": {
+        "id": "sec_0_navbar_actions",
+        "type": "button",
+        "parentId": "sec_0_navbar",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": 40
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 8,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#3B82F6",
+          "color": "#FFFFFF",
+          "fontSize": "14px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 8,
+            "right": 18,
+            "bottom": 8,
+            "left": 18
+          },
+          "borderRadius": {
+            "topLeft": 8,
+            "topRight": 8,
+            "bottomRight": 8,
+            "bottomLeft": 8
+          },
+          "boxShadow": "0 4px 12px rgba(59, 130, 246, 0.25)"
+        },
+        "content": {
+          "text": "Get Started"
+        },
+        "confidence": 0.98
+      },
+      "sec_1_hero": {
+        "id": "sec_1_hero",
+        "type": "hero",
+        "name": "Hero Section",
+        "parentId": "page_root",
+        "childIds": [
+          "sec_1_hero_content"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 20,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "textAlign": "center",
+          "padding": {
+            "top": 80,
+            "right": 24,
+            "bottom": 60,
+            "left": 24
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_1_hero_content": {
+        "id": "sec_1_hero_content",
+        "type": "container",
+        "parentId": "sec_1_hero",
+        "childIds": [
+          "sec_1_hero_badge",
+          "sec_1_hero_heading",
+          "sec_1_hero_subheading",
+          "sec_1_hero_cta_group"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto",
+          "maxWidth": 840
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "center",
+          "gap": 16,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "textAlign": "center"
+        },
+        "confidence": 0.97
+      },
+      "sec_1_hero_badge": {
+        "id": "sec_1_hero_badge",
+        "type": "badge",
+        "parentId": "sec_1_hero_content",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "inline-block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(59, 130, 246, 0.15)",
+          "color": "#3B82F6",
+          "fontSize": "12px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 6,
+            "right": 14,
+            "bottom": 6,
+            "left": 14
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "rgba(59, 130, 246, 0.3)"
+          },
+          "borderRadius": {
+            "topLeft": 9999,
+            "topRight": 9999,
+            "bottomRight": 9999,
+            "bottomLeft": 9999
+          }
+        },
+        "content": {
+          "text": "✦ Next-Gen Autonomous UI Engineering"
+        },
+        "confidence": 0.95
+      },
+      "sec_1_hero_heading": {
+        "id": "sec_1_hero_heading",
+        "type": "heading",
+        "parentId": "sec_1_hero_content",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "44px",
+          "fontWeight": 800,
+          "lineHeight": 1.15,
+          "letterSpacing": "-0.03em"
+        },
+        "content": {
+          "text": "Transform Screenshots Into Pixel-Perfect Production Code"
+        },
+        "confidence": 0.99
+      },
+      "sec_1_hero_subheading": {
+        "id": "sec_1_hero_subheading",
+        "type": "text",
+        "parentId": "sec_1_hero_content",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto",
+          "maxWidth": 640
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "18px",
+          "lineHeight": 1.6
+        },
+        "content": {
+          "text": "AIUI autonomously analyzes UI design, extracts design tokens, builds component trees, and self-corrects using computer vision."
+        },
+        "confidence": 0.96
+      },
+      "sec_1_hero_cta_group": {
+        "id": "sec_1_hero_cta_group",
+        "type": "flex",
+        "parentId": "sec_1_hero_content",
+        "childIds": [
+          "sec_1_hero_btn_primary",
+          "sec_1_hero_btn_secondary"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 16,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "margin": {
+            "top": 12,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "confidence": 0.97
+      },
+      "sec_1_hero_btn_primary": {
+        "id": "sec_1_hero_btn_primary",
+        "type": "button",
+        "parentId": "sec_1_hero_cta_group",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": 48
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 8,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#3B82F6",
+          "color": "#FFFFFF",
+          "fontSize": "15px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 12,
+            "right": 28,
+            "bottom": 12,
+            "left": 28
+          },
+          "borderRadius": {
+            "topLeft": 10,
+            "topRight": 10,
+            "bottomRight": 10,
+            "bottomLeft": 10
+          }
+        },
+        "content": {
+          "text": "Start Building Now"
+        },
+        "confidence": 0.99
+      },
+      "sec_1_hero_btn_secondary": {
+        "id": "sec_1_hero_btn_secondary",
+        "type": "button",
+        "parentId": "sec_1_hero_cta_group",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": 48
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 8,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "rgba(30, 41, 59, 0.8)",
+          "color": "#F8FAFC",
+          "fontSize": "15px",
+          "fontWeight": 600,
+          "padding": {
+            "top": 12,
+            "right": 24,
+            "bottom": 12,
+            "left": 24
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          },
+          "borderRadius": {
+            "topLeft": 10,
+            "topRight": 10,
+            "bottomRight": 10,
+            "bottomLeft": 10
+          }
+        },
+        "content": {
+          "text": "View Documentation"
+        },
+        "confidence": 0.97
+      },
+      "sec_2_card-grid": {
+        "id": "sec_2_card-grid",
+        "type": "section",
+        "name": "Features Grid",
+        "parentId": "page_root",
+        "childIds": [
+          "sec_2_card-grid_container"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "center",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "padding": {
+            "top": 40,
+            "right": 24,
+            "bottom": 60,
+            "left": 24
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_2_card-grid_container": {
+        "id": "sec_2_card-grid_container",
+        "type": "grid",
+        "parentId": "sec_2_card-grid",
+        "childIds": [
+          "sec_2_card-grid_card_0",
+          "sec_2_card-grid_card_1",
+          "sec_2_card-grid_card_2"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto",
+          "maxWidth": 1140
+        },
+        "layout": {
+          "display": "grid",
+          "flexDirection": "row",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 24,
+          "flexWrap": "nowrap",
+          "gridTemplateColumns": "repeat(auto-fit, minmax(320px, 1fr))"
+        },
+        "styles": {},
+        "confidence": 0.98
+      },
+      "sec_2_card-grid_card_0": {
+        "id": "sec_2_card-grid_card_0",
+        "type": "card",
+        "name": "Feature Card 1",
+        "parentId": "sec_2_card-grid_container",
+        "childIds": [
+          "sec_2_card-grid_card_0_icon",
+          "sec_2_card-grid_card_0_title",
+          "sec_2_card-grid_card_0_desc"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "flex-start",
+          "gap": 12,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "padding": {
+            "top": 28,
+            "right": 28,
+            "bottom": 28,
+            "left": 28
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          },
+          "borderRadius": {
+            "topLeft": 12,
+            "topRight": 12,
+            "bottomRight": 12,
+            "bottomLeft": 12
+          },
+          "boxShadow": "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+        },
+        "confidence": 0.98
+      },
+      "sec_2_card-grid_card_0_icon": {
+        "id": "sec_2_card-grid_card_0_icon",
+        "type": "icon",
+        "parentId": "sec_2_card-grid_card_0",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": 24,
+          "height": 24
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#3B82F6"
+        },
+        "content": {
+          "iconName": "Layers"
+        },
+        "confidence": 0.95
+      },
+      "sec_2_card-grid_card_0_title": {
+        "id": "sec_2_card-grid_card_0_title",
+        "type": "heading",
+        "parentId": "sec_2_card-grid_card_0",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "18px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "Structured UI IR"
+        },
+        "confidence": 0.99
+      },
+      "sec_2_card-grid_card_0_desc": {
+        "id": "sec_2_card-grid_card_0_desc",
+        "type": "text",
+        "parentId": "sec_2_card-grid_card_0",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "14px",
+          "lineHeight": 1.5
+        },
+        "content": {
+          "text": "Framework-agnostic intermediate language isolating vision perception from code output."
+        },
+        "confidence": 0.98
+      },
+      "sec_2_card-grid_card_1": {
+        "id": "sec_2_card-grid_card_1",
+        "type": "card",
+        "name": "Feature Card 2",
+        "parentId": "sec_2_card-grid_container",
+        "childIds": [
+          "sec_2_card-grid_card_1_icon",
+          "sec_2_card-grid_card_1_title",
+          "sec_2_card-grid_card_1_desc"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "flex-start",
+          "gap": 12,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "padding": {
+            "top": 28,
+            "right": 28,
+            "bottom": 28,
+            "left": 28
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          },
+          "borderRadius": {
+            "topLeft": 12,
+            "topRight": 12,
+            "bottomRight": 12,
+            "bottomLeft": 12
+          },
+          "boxShadow": "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+        },
+        "confidence": 0.98
+      },
+      "sec_2_card-grid_card_1_icon": {
+        "id": "sec_2_card-grid_card_1_icon",
+        "type": "icon",
+        "parentId": "sec_2_card-grid_card_1",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": 24,
+          "height": 24
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#3B82F6"
+        },
+        "content": {
+          "iconName": "Zap"
+        },
+        "confidence": 0.95
+      },
+      "sec_2_card-grid_card_1_title": {
+        "id": "sec_2_card-grid_card_1_title",
+        "type": "heading",
+        "parentId": "sec_2_card-grid_card_1",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "18px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "Multi-Target Generators"
+        },
+        "confidence": 0.99
+      },
+      "sec_2_card-grid_card_1_desc": {
+        "id": "sec_2_card-grid_card_1_desc",
+        "type": "text",
+        "parentId": "sec_2_card-grid_card_1",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "14px",
+          "lineHeight": 1.5
+        },
+        "content": {
+          "text": "Synthesizes idiomatic React 19, Vanilla JS, and Flutter from a single analyzed tree."
+        },
+        "confidence": 0.98
+      },
+      "sec_2_card-grid_card_2": {
+        "id": "sec_2_card-grid_card_2",
+        "type": "card",
+        "name": "Feature Card 3",
+        "parentId": "sec_2_card-grid_container",
+        "childIds": [
+          "sec_2_card-grid_card_2_icon",
+          "sec_2_card-grid_card_2_title",
+          "sec_2_card-grid_card_2_desc"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "flex-start",
+          "gap": 12,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "padding": {
+            "top": 28,
+            "right": 28,
+            "bottom": 28,
+            "left": 28
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          },
+          "borderRadius": {
+            "topLeft": 12,
+            "topRight": 12,
+            "bottomRight": 12,
+            "bottomLeft": 12
+          },
+          "boxShadow": "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
+        },
+        "confidence": 0.98
+      },
+      "sec_2_card-grid_card_2_icon": {
+        "id": "sec_2_card-grid_card_2_icon",
+        "type": "icon",
+        "parentId": "sec_2_card-grid_card_2",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": 24,
+          "height": 24
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#3B82F6"
+        },
+        "content": {
+          "iconName": "Activity"
+        },
+        "confidence": 0.95
+      },
+      "sec_2_card-grid_card_2_title": {
+        "id": "sec_2_card-grid_card_2_title",
+        "type": "heading",
+        "parentId": "sec_2_card-grid_card_2",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "18px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "Self-Correction Loop"
+        },
+        "confidence": 0.99
+      },
+      "sec_2_card-grid_card_2_desc": {
+        "id": "sec_2_card-grid_card_2_desc",
+        "type": "text",
+        "parentId": "sec_2_card-grid_card_2",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "14px",
+          "lineHeight": 1.5
+        },
+        "content": {
+          "text": "Calculates real SSIM and pixelmatch metrics with targeted surgical CSS/JSX patch engine."
+        },
+        "confidence": 0.98
+      }
+    },
+    "metadata": {
+      "sourceType": "screenshot",
+      "confidence": 0.96,
+      "extractedAt": "2026-08-23T11:23:56.866Z",
+      "targetFrameworks": [
+        "react",
+        "vanillajs",
+        "flutter"
+      ]
+    }
+  },
+  "tokens": {
+    "colors": {
+      "primary": "#3B82F6",
+      "primaryHover": "#2563EB",
+      "primaryActive": "#1D4ED8",
+      "primaryForeground": "#FFFFFF",
+      "secondary": "#64748B",
+      "secondaryForeground": "#FFFFFF",
+      "background": "#0F172A",
+      "surface": "#F8FAFC",
+      "surfaceCard": "#F8FAFC",
+      "surfaceElevated": "#334155",
+      "text": "#F8FAFC",
+      "textMuted": "#94A3B8",
+      "textSubtle": "#64748B",
+      "textInverse": "#0F172A",
+      "border": "#334155",
+      "borderLight": "#475569",
+      "borderFocus": "#3B82F6",
+      "accent": "rgba(59, 130, 246, 0.15)",
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444",
+      "info": "#06B6D4",
+      "gradients": {}
+    },
+    "typography": {
+      "fontFamilies": {
+        "sans": "Inter, system-ui, sans-serif",
+        "serif": "Georgia, serif",
+        "mono": "Fira Code, monospace",
+        "display": "Inter, system-ui, sans-serif"
+      },
+      "fontSizes": {
+        "xs": "12px",
+        "sm": "14px",
+        "base": "16px",
+        "md": "18px",
+        "lg": "20px",
+        "xl": "24px",
+        "2xl": "30px",
+        "3xl": "36px",
+        "4xl": "48px"
+      },
+      "fontWeights": {
+        "normal": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "lineHeights": {
+        "tight": 1.25,
+        "normal": 1.5,
+        "relaxed": 1.75
+      },
+      "letterSpacings": {
+        "tight": "-0.025em",
+        "normal": "0em",
+        "wide": "0.025em"
+      }
+    },
+    "spacing": {
+      "scale": {
+        "0": "0px",
+        "1": "4px",
+        "2": "8px",
+        "3": "12px",
+        "4": "16px",
+        "5": "20px",
+        "6": "24px",
+        "8": "32px",
+        "10": "40px",
+        "12": "48px",
+        "16": "64px",
+        "20": "80px",
+        "24": "96px"
+      }
+    },
+    "radius": {
+      "none": "0px",
+      "sm": "4px",
+      "md": "9999px",
+      "lg": "12px",
+      "xl": "16px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "none": "none",
+      "sm": "0 4px 12px rgba(59, 130, 246, 0.25)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      "inner": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)"
+    }
+  },
+  "plan": {
+    "rootComponentId": "app_root",
+    "components": {
+      "app_root": {
+        "id": "app_root",
+        "name": "App",
+        "category": "layout",
+        "irNodeIds": [
+          "page_root"
+        ],
+        "isReusable": false,
+        "filePath": "src/App.jsx",
+        "props": [],
+        "childComponentIds": [
+          "comp_sec_0_navbar",
+          "comp_sec_1_hero",
+          "comp_sec_2_card-grid"
+        ],
+        "stateVariables": [],
+        "stylingStrategy": "css-custom-props"
+      },
+      "comp_sec_0_navbar": {
+        "id": "comp_sec_0_navbar",
+        "name": "HeaderNavigation",
+        "category": "navigation",
+        "irNodeIds": [
+          "sec_0_navbar",
+          "sec_0_navbar_logo",
+          "sec_0_navbar_nav_links",
+          "sec_0_navbar_actions",
+          "sec_0_navbar_link_1",
+          "sec_0_navbar_link_2",
+          "sec_0_navbar_link_3"
+        ],
+        "isReusable": false,
+        "filePath": "src/components/HeaderNavigation.jsx",
+        "props": [],
+        "childComponentIds": [],
+        "stateVariables": [
+          {
+            "name": "isMobileMenuOpen",
+            "type": "boolean",
+            "initialValue": "false"
+          }
+        ],
+        "stylingStrategy": "css-custom-props"
+      },
+      "comp_sec_1_hero": {
+        "id": "comp_sec_1_hero",
+        "name": "HeroSection",
+        "category": "section",
+        "irNodeIds": [
+          "sec_1_hero",
+          "sec_1_hero_content",
+          "sec_1_hero_badge",
+          "sec_1_hero_heading",
+          "sec_1_hero_subheading",
+          "sec_1_hero_cta_group",
+          "sec_1_hero_btn_primary",
+          "sec_1_hero_btn_secondary"
+        ],
+        "isReusable": false,
+        "filePath": "src/components/HeroSection.jsx",
+        "props": [],
+        "childComponentIds": [],
+        "stateVariables": [],
+        "stylingStrategy": "css-custom-props"
+      },
+      "comp_sec_2_card-grid": {
+        "id": "comp_sec_2_card-grid",
+        "name": "FeaturesGrid",
+        "category": "section",
+        "irNodeIds": [
+          "sec_2_card-grid",
+          "sec_2_card-grid_container",
+          "sec_2_card-grid_card_0",
+          "sec_2_card-grid_card_1",
+          "sec_2_card-grid_card_2",
+          "sec_2_card-grid_card_0_icon",
+          "sec_2_card-grid_card_0_title",
+          "sec_2_card-grid_card_0_desc",
+          "sec_2_card-grid_card_1_icon",
+          "sec_2_card-grid_card_1_title",
+          "sec_2_card-grid_card_1_desc",
+          "sec_2_card-grid_card_2_icon",
+          "sec_2_card-grid_card_2_title",
+          "sec_2_card-grid_card_2_desc"
+        ],
+        "isReusable": false,
+        "filePath": "src/components/FeaturesGrid.jsx",
+        "props": [],
+        "childComponentIds": [],
+        "stateVariables": [],
+        "stylingStrategy": "css-custom-props"
+      }
+    },
+    "entryFile": "src/App.jsx",
+    "sharedStylesFile": "src/index.css"
+  },
+  "currentProject": {
+    "target": "react",
+    "files": [
+      {
+        "path": "src/index.css",
+        "content": ":root {\n  --color-primary: #3B82F6;\n  --color-primary-hover: #2563EB;\n  --color-primary-active: #1D4ED8;\n  --color-primary-foreground: #FFFFFF;\n  --color-secondary: #64748B;\n  --color-secondary-foreground: #FFFFFF;\n  --color-background: #0F172A;\n  --color-surface: #F8FAFC;\n  --color-surface-card: #F8FAFC;\n  --color-surface-elevated: #334155;\n  --color-text: #F8FAFC;\n  --color-text-muted: #94A3B8;\n  --color-text-subtle: #64748B;\n  --color-text-inverse: #0F172A;\n  --color-border: #334155;\n  --color-border-light: #475569;\n  --color-border-focus: #3B82F6;\n  --color-accent: rgba(59, 130, 246, 0.15);\n  --color-success: #10B981;\n  --color-warning: #F59E0B;\n  --color-error: #EF4444;\n  --color-info: #06B6D4;\n  --font-sans: Inter, system-ui, sans-serif;\n  --font-serif: Georgia, serif;\n  --font-mono: Fira Code, monospace;\n  --font-display: Inter, system-ui, sans-serif;\n  --text-xs: 12px;\n  --text-sm: 14px;\n  --text-base: 16px;\n  --text-md: 18px;\n  --text-lg: 20px;\n  --text-xl: 24px;\n  --text-2xl: 30px;\n  --text-3xl: 36px;\n  --text-4xl: 48px;\n  --space-0: 0px;\n  --space-1: 4px;\n  --space-2: 8px;\n  --space-3: 12px;\n  --space-4: 16px;\n  --space-5: 20px;\n  --space-6: 24px;\n  --space-8: 32px;\n  --space-10: 40px;\n  --space-12: 48px;\n  --space-16: 64px;\n  --space-20: 80px;\n  --space-24: 96px;\n  --radius-none: 0px;\n  --radius-sm: 4px;\n  --radius-md: 9999px;\n  --radius-lg: 12px;\n  --radius-xl: 16px;\n  --radius-full: 9999px;\n  --shadow-none: none;\n  --shadow-sm: 0 4px 12px rgba(59, 130, 246, 0.25);\n  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);\n  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);\n}\n\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nhtml, body, #root {\n  width: 100%;\n  min-height: 100%;\n  font-family: var(--font-sans);\n  background-color: var(--color-background);\n  color: var(--color-text);\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\nbutton {\n  font-family: inherit;\n  cursor: pointer;\n  border: none;\n  background: none;\n  transition: all 0.2s ease-in-out;\n}\n\nbutton:hover {\n  filter: brightness(1.08);\n}\n\nbutton:active {\n  transform: translateY(1px);\n}\n\ninput, textarea, select {\n  font-family: inherit;\n  font-size: inherit;\n  outline: none;\n}\n\na {\n  color: inherit;\n  text-decoration: none;\n}\n\n/* Base utility classes derived from UI IR */\n.aiui-page {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n  width: 100%;\n  background-color: var(--color-background);\n  color: var(--color-text);\n}\n\n.aiui-container {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n}\n\n.aiui-card {\n  background-color: var(--color-surface);\n  border: 1px solid var(--color-border);\n  border-radius: var(--radius-md);\n  box-shadow: var(--shadow-md);\n}\n\n.aiui-glass {\n  background: rgba(30, 41, 59, 0.7);\n  backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n",
+        "isEntry": false,
+        "language": "css"
+      },
+      {
+        "path": "src/components/HeaderNavigation.jsx",
+        "content": "import React from 'react';\n\nexport default function HeaderNavigation(props) {\n  return (\n    <header id=\"sec_0_navbar\" style={{\"width\":\"100%\",\"height\":\"72px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"space-between\",\"alignItems\":\"center\",\"gap\":\"24px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"16px 32px 16px 32px\",\"border\":\"1px solid #334155\"}}>\n      <h2 id=\"sec_0_navbar_logo\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"20px\",\"fontWeight\":700,\"letterSpacing\":\"-0.02em\"}}>\n        AIUI Autonomous Engine\n      </h2>\n      <div id=\"sec_0_navbar_nav_links\" style={{\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"gap\":\"28px\",\"flexWrap\":\"nowrap\"}}>\n        <p id=\"sec_0_navbar_link_1\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"fontWeight\":500}}>\n          Features\n        </p>\n        <p id=\"sec_0_navbar_link_2\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"fontWeight\":500}}>\n          Solutions\n        </p>\n        <p id=\"sec_0_navbar_link_3\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"fontWeight\":500}}>\n          Pricing\n        </p>\n      </div>\n      <button id=\"sec_0_navbar_actions\" style={{\"height\":\"40px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#3B82F6\",\"color\":\"#FFFFFF\",\"fontSize\":\"14px\",\"fontWeight\":600,\"padding\":\"8px 18px 8px 18px\",\"borderRadius\":\"8px 8px 8px 8px\",\"boxShadow\":\"0 4px 12px rgba(59, 130, 246, 0.25)\"}}>\n        Get Started\n      </button>\n    </header>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/components/HeroSection.jsx",
+        "content": "import React from 'react';\n\nexport default function HeroSection(props) {\n  return (\n    <section id=\"sec_1_hero\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"20px\",\"flexWrap\":\"nowrap\",\"textAlign\":\"center\",\"padding\":\"80px 24px 60px 24px\"}}>\n      <div id=\"sec_1_hero_content\" style={{\"width\":\"100%\",\"maxWidth\":\"840px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"gap\":\"16px\",\"flexWrap\":\"nowrap\",\"textAlign\":\"center\"}}>\n        <span id=\"sec_1_hero_badge\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(59, 130, 246, 0.15)\",\"color\":\"#3B82F6\",\"fontSize\":\"12px\",\"fontWeight\":600,\"padding\":\"6px 14px 6px 14px\",\"border\":\"1px solid rgba(59, 130, 246, 0.3)\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n          ✦ Next-Gen Autonomous UI Engineering\n        </span>\n        <h2 id=\"sec_1_hero_heading\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"44px\",\"fontWeight\":800,\"lineHeight\":1.15,\"letterSpacing\":\"-0.03em\"}}>\n          Transform Screenshots Into Pixel-Perfect Production Code\n        </h2>\n        <p id=\"sec_1_hero_subheading\" style={{\"width\":\"100%\",\"maxWidth\":\"640px\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"18px\",\"lineHeight\":1.6}}>\n          AIUI autonomously analyzes UI design, extracts design tokens, builds component trees, and self-corrects using computer vision.\n        </p>\n        <div id=\"sec_1_hero_cta_group\" style={{\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"16px\",\"flexWrap\":\"nowrap\",\"margin\":\"12px 0px 0px 0px\"}}>\n          <button id=\"sec_1_hero_btn_primary\" style={{\"height\":\"48px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#3B82F6\",\"color\":\"#FFFFFF\",\"fontSize\":\"15px\",\"fontWeight\":600,\"padding\":\"12px 28px 12px 28px\",\"borderRadius\":\"10px 10px 10px 10px\"}}>\n            Start Building Now\n          </button>\n          <button id=\"sec_1_hero_btn_secondary\" style={{\"height\":\"48px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(30, 41, 59, 0.8)\",\"color\":\"#F8FAFC\",\"fontSize\":\"15px\",\"fontWeight\":600,\"padding\":\"12px 24px 12px 24px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"10px 10px 10px 10px\"}}>\n            View Documentation\n          </button>\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/components/FeaturesGrid.jsx",
+        "content": "import React from 'react';\nimport { Layers, Zap, Activity } from 'lucide-react';\n\nexport default function FeaturesGrid(props) {\n  return (\n    <section id=\"sec_2_card-grid\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"padding\":\"40px 24px 60px 24px\"}}>\n      <div id=\"sec_2_card-grid_container\" style={{\"width\":\"100%\",\"maxWidth\":\"1140px\",\"display\":\"grid\",\"gridTemplateColumns\":\"repeat(auto-fit, minmax(320px, 1fr))\",\"gap\":\"24px\"}}>\n        <article id=\"sec_2_card-grid_card_0\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"12px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"28px 28px 28px 28px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\",\"boxShadow\":\"0 4px 6px -1px rgba(0, 0, 0, 0.1)\"}}>\n          <Layers size={24} style={{\"width\":\"24px\",\"height\":\"24px\",\"display\":\"block\",\"color\":\"#3B82F6\"}} id=\"sec_2_card-grid_card_0_icon\" />\n          <h2 id=\"sec_2_card-grid_card_0_title\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"18px\",\"fontWeight\":600}}>\n            Structured UI IR\n          </h2>\n          <p id=\"sec_2_card-grid_card_0_desc\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"lineHeight\":1.5}}>\n            Framework-agnostic intermediate language isolating vision perception from code output.\n          </p>\n        </article>\n        <article id=\"sec_2_card-grid_card_1\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"12px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"28px 28px 28px 28px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\",\"boxShadow\":\"0 4px 6px -1px rgba(0, 0, 0, 0.1)\"}}>\n          <Zap size={24} style={{\"width\":\"24px\",\"height\":\"24px\",\"display\":\"block\",\"color\":\"#3B82F6\"}} id=\"sec_2_card-grid_card_1_icon\" />\n          <h2 id=\"sec_2_card-grid_card_1_title\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"18px\",\"fontWeight\":600}}>\n            Multi-Target Generators\n          </h2>\n          <p id=\"sec_2_card-grid_card_1_desc\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"lineHeight\":1.5}}>\n            Synthesizes idiomatic React 19, Vanilla JS, and Flutter from a single analyzed tree.\n          </p>\n        </article>\n        <article id=\"sec_2_card-grid_card_2\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"12px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"28px 28px 28px 28px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\",\"boxShadow\":\"0 4px 6px -1px rgba(0, 0, 0, 0.1)\"}}>\n          <Activity size={24} style={{\"width\":\"24px\",\"height\":\"24px\",\"display\":\"block\",\"color\":\"#3B82F6\"}} id=\"sec_2_card-grid_card_2_icon\" />\n          <h2 id=\"sec_2_card-grid_card_2_title\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"18px\",\"fontWeight\":600}}>\n            Self-Correction Loop\n          </h2>\n          <p id=\"sec_2_card-grid_card_2_desc\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"lineHeight\":1.5}}>\n            Calculates real SSIM and pixelmatch metrics with targeted surgical CSS/JSX patch engine.\n          </p>\n        </article>\n      </div>\n    </section>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/App.jsx",
+        "content": "import React from 'react';\nimport HeaderNavigation from './components/HeaderNavigation.jsx';\nimport HeroSection from './components/HeroSection.jsx';\nimport FeaturesGrid from './components/FeaturesGrid.jsx';\n\nexport default function App() {\n  return (\n    <div className=\"aiui-page\" style={{\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontFamily\":\"Inter, system-ui, sans-serif\"}}>\n      <HeaderNavigation />\n      <HeroSection />\n      <FeaturesGrid />\n    </div>\n  );\n}\n",
+        "isEntry": true,
+        "language": "jsx"
+      },
+      {
+        "path": "src/main.jsx",
+        "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App.jsx';\nimport './index.css';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>landing-page</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+        "isEntry": false,
+        "language": "html"
+      },
+      {
+        "path": "vite.config.js",
+        "content": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    host: '127.0.0.1',\n  },\n});\n",
+        "isEntry": false,
+        "language": "javascript"
+      },
+      {
+        "path": "package.json",
+        "content": "{\n  \"name\": \"aiui-generated-app\",\n  \"private\": true,\n  \"version\": \"0.1.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"lucide-react\": \"^0.475.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.2.0\"\n  }\n}",
+        "isEntry": false,
+        "language": "json"
+      }
+    ],
+    "entryFile": "src/App.jsx",
+    "staticAssets": {},
+    "dependencies": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0",
+      "lucide-react": "^0.475.0"
+    }
+  },
+  "bestProject": {
+    "target": "react",
+    "files": [
+      {
+        "path": "src/index.css",
+        "content": ":root {\n  --color-primary: #3B82F6;\n  --color-primary-hover: #2563EB;\n  --color-primary-active: #1D4ED8;\n  --color-primary-foreground: #FFFFFF;\n  --color-secondary: #64748B;\n  --color-secondary-foreground: #FFFFFF;\n  --color-background: #0F172A;\n  --color-surface: #F8FAFC;\n  --color-surface-card: #F8FAFC;\n  --color-surface-elevated: #334155;\n  --color-text: #F8FAFC;\n  --color-text-muted: #94A3B8;\n  --color-text-subtle: #64748B;\n  --color-text-inverse: #0F172A;\n  --color-border: #334155;\n  --color-border-light: #475569;\n  --color-border-focus: #3B82F6;\n  --color-accent: rgba(59, 130, 246, 0.15);\n  --color-success: #10B981;\n  --color-warning: #F59E0B;\n  --color-error: #EF4444;\n  --color-info: #06B6D4;\n  --font-sans: Inter, system-ui, sans-serif;\n  --font-serif: Georgia, serif;\n  --font-mono: Fira Code, monospace;\n  --font-display: Inter, system-ui, sans-serif;\n  --text-xs: 12px;\n  --text-sm: 14px;\n  --text-base: 16px;\n  --text-md: 18px;\n  --text-lg: 20px;\n  --text-xl: 24px;\n  --text-2xl: 30px;\n  --text-3xl: 36px;\n  --text-4xl: 48px;\n  --space-0: 0px;\n  --space-1: 4px;\n  --space-2: 8px;\n  --space-3: 12px;\n  --space-4: 16px;\n  --space-5: 20px;\n  --space-6: 24px;\n  --space-8: 32px;\n  --space-10: 40px;\n  --space-12: 48px;\n  --space-16: 64px;\n  --space-20: 80px;\n  --space-24: 96px;\n  --radius-none: 0px;\n  --radius-sm: 4px;\n  --radius-md: 9999px;\n  --radius-lg: 12px;\n  --radius-xl: 16px;\n  --radius-full: 9999px;\n  --shadow-none: none;\n  --shadow-sm: 0 4px 12px rgba(59, 130, 246, 0.25);\n  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);\n  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);\n}\n\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nhtml, body, #root {\n  width: 100%;\n  min-height: 100%;\n  font-family: var(--font-sans);\n  background-color: var(--color-background);\n  color: var(--color-text);\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\nbutton {\n  font-family: inherit;\n  cursor: pointer;\n  border: none;\n  background: none;\n  transition: all 0.2s ease-in-out;\n}\n\nbutton:hover {\n  filter: brightness(1.08);\n}\n\nbutton:active {\n  transform: translateY(1px);\n}\n\ninput, textarea, select {\n  font-family: inherit;\n  font-size: inherit;\n  outline: none;\n}\n\na {\n  color: inherit;\n  text-decoration: none;\n}\n\n/* Base utility classes derived from UI IR */\n.aiui-page {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n  width: 100%;\n  background-color: var(--color-background);\n  color: var(--color-text);\n}\n\n.aiui-container {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n}\n\n.aiui-card {\n  background-color: var(--color-surface);\n  border: 1px solid var(--color-border);\n  border-radius: var(--radius-md);\n  box-shadow: var(--shadow-md);\n}\n\n.aiui-glass {\n  background: rgba(30, 41, 59, 0.7);\n  backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n",
+        "isEntry": false,
+        "language": "css"
+      },
+      {
+        "path": "src/components/HeaderNavigation.jsx",
+        "content": "import React from 'react';\n\nexport default function HeaderNavigation(props) {\n  return (\n    <header id=\"sec_0_navbar\" style={{\"width\":\"100%\",\"height\":\"72px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"space-between\",\"alignItems\":\"center\",\"gap\":\"24px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"16px 32px 16px 32px\",\"border\":\"1px solid #334155\"}}>\n      <h2 id=\"sec_0_navbar_logo\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"20px\",\"fontWeight\":700,\"letterSpacing\":\"-0.02em\"}}>\n        AIUI Autonomous Engine\n      </h2>\n      <div id=\"sec_0_navbar_nav_links\" style={{\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"gap\":\"28px\",\"flexWrap\":\"nowrap\"}}>\n        <p id=\"sec_0_navbar_link_1\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"fontWeight\":500}}>\n          Features\n        </p>\n        <p id=\"sec_0_navbar_link_2\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"fontWeight\":500}}>\n          Solutions\n        </p>\n        <p id=\"sec_0_navbar_link_3\" style={{\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"fontWeight\":500}}>\n          Pricing\n        </p>\n      </div>\n      <button id=\"sec_0_navbar_actions\" style={{\"height\":\"40px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#3B82F6\",\"color\":\"#FFFFFF\",\"fontSize\":\"14px\",\"fontWeight\":600,\"padding\":\"8px 18px 8px 18px\",\"borderRadius\":\"8px 8px 8px 8px\",\"boxShadow\":\"0 4px 12px rgba(59, 130, 246, 0.25)\"}}>\n        Get Started\n      </button>\n    </header>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/components/HeroSection.jsx",
+        "content": "import React from 'react';\n\nexport default function HeroSection(props) {\n  return (\n    <section id=\"sec_1_hero\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"20px\",\"flexWrap\":\"nowrap\",\"textAlign\":\"center\",\"padding\":\"80px 24px 60px 24px\"}}>\n      <div id=\"sec_1_hero_content\" style={{\"width\":\"100%\",\"maxWidth\":\"840px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"gap\":\"16px\",\"flexWrap\":\"nowrap\",\"textAlign\":\"center\"}}>\n        <span id=\"sec_1_hero_badge\" style={{\"display\":\"inline-block\",\"backgroundColor\":\"rgba(59, 130, 246, 0.15)\",\"color\":\"#3B82F6\",\"fontSize\":\"12px\",\"fontWeight\":600,\"padding\":\"6px 14px 6px 14px\",\"border\":\"1px solid rgba(59, 130, 246, 0.3)\",\"borderRadius\":\"9999px 9999px 9999px 9999px\"}}>\n          ✦ Next-Gen Autonomous UI Engineering\n        </span>\n        <h2 id=\"sec_1_hero_heading\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"44px\",\"fontWeight\":800,\"lineHeight\":1.15,\"letterSpacing\":\"-0.03em\"}}>\n          Transform Screenshots Into Pixel-Perfect Production Code\n        </h2>\n        <p id=\"sec_1_hero_subheading\" style={{\"width\":\"100%\",\"maxWidth\":\"640px\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"18px\",\"lineHeight\":1.6}}>\n          AIUI autonomously analyzes UI design, extracts design tokens, builds component trees, and self-corrects using computer vision.\n        </p>\n        <div id=\"sec_1_hero_cta_group\" style={{\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"16px\",\"flexWrap\":\"nowrap\",\"margin\":\"12px 0px 0px 0px\"}}>\n          <button id=\"sec_1_hero_btn_primary\" style={{\"height\":\"48px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#3B82F6\",\"color\":\"#FFFFFF\",\"fontSize\":\"15px\",\"fontWeight\":600,\"padding\":\"12px 28px 12px 28px\",\"borderRadius\":\"10px 10px 10px 10px\"}}>\n            Start Building Now\n          </button>\n          <button id=\"sec_1_hero_btn_secondary\" style={{\"height\":\"48px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"rgba(30, 41, 59, 0.8)\",\"color\":\"#F8FAFC\",\"fontSize\":\"15px\",\"fontWeight\":600,\"padding\":\"12px 24px 12px 24px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"10px 10px 10px 10px\"}}>\n            View Documentation\n          </button>\n        </div>\n      </div>\n    </section>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/components/FeaturesGrid.jsx",
+        "content": "import React from 'react';\nimport { Layers, Zap, Activity } from 'lucide-react';\n\nexport default function FeaturesGrid(props) {\n  return (\n    <section id=\"sec_2_card-grid\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"padding\":\"40px 24px 60px 24px\"}}>\n      <div id=\"sec_2_card-grid_container\" style={{\"width\":\"100%\",\"maxWidth\":\"1140px\",\"display\":\"grid\",\"gridTemplateColumns\":\"repeat(auto-fit, minmax(320px, 1fr))\",\"gap\":\"24px\"}}>\n        <article id=\"sec_2_card-grid_card_0\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"12px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"28px 28px 28px 28px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\",\"boxShadow\":\"0 4px 6px -1px rgba(0, 0, 0, 0.1)\"}}>\n          <Layers size={24} style={{\"width\":\"24px\",\"height\":\"24px\",\"display\":\"block\",\"color\":\"#3B82F6\"}} id=\"sec_2_card-grid_card_0_icon\" />\n          <h2 id=\"sec_2_card-grid_card_0_title\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"18px\",\"fontWeight\":600}}>\n            Structured UI IR\n          </h2>\n          <p id=\"sec_2_card-grid_card_0_desc\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"lineHeight\":1.5}}>\n            Framework-agnostic intermediate language isolating vision perception from code output.\n          </p>\n        </article>\n        <article id=\"sec_2_card-grid_card_1\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"12px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"28px 28px 28px 28px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\",\"boxShadow\":\"0 4px 6px -1px rgba(0, 0, 0, 0.1)\"}}>\n          <Zap size={24} style={{\"width\":\"24px\",\"height\":\"24px\",\"display\":\"block\",\"color\":\"#3B82F6\"}} id=\"sec_2_card-grid_card_1_icon\" />\n          <h2 id=\"sec_2_card-grid_card_1_title\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"18px\",\"fontWeight\":600}}>\n            Multi-Target Generators\n          </h2>\n          <p id=\"sec_2_card-grid_card_1_desc\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"lineHeight\":1.5}}>\n            Synthesizes idiomatic React 19, Vanilla JS, and Flutter from a single analyzed tree.\n          </p>\n        </article>\n        <article id=\"sec_2_card-grid_card_2\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"12px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"28px 28px 28px 28px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\",\"boxShadow\":\"0 4px 6px -1px rgba(0, 0, 0, 0.1)\"}}>\n          <Activity size={24} style={{\"width\":\"24px\",\"height\":\"24px\",\"display\":\"block\",\"color\":\"#3B82F6\"}} id=\"sec_2_card-grid_card_2_icon\" />\n          <h2 id=\"sec_2_card-grid_card_2_title\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"18px\",\"fontWeight\":600}}>\n            Self-Correction Loop\n          </h2>\n          <p id=\"sec_2_card-grid_card_2_desc\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"14px\",\"lineHeight\":1.5}}>\n            Calculates real SSIM and pixelmatch metrics with targeted surgical CSS/JSX patch engine.\n          </p>\n        </article>\n      </div>\n    </section>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/App.jsx",
+        "content": "import React from 'react';\nimport HeaderNavigation from './components/HeaderNavigation.jsx';\nimport HeroSection from './components/HeroSection.jsx';\nimport FeaturesGrid from './components/FeaturesGrid.jsx';\n\nexport default function App() {\n  return (\n    <div className=\"aiui-page\" style={{\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontFamily\":\"Inter, system-ui, sans-serif\"}}>\n      <HeaderNavigation />\n      <HeroSection />\n      <FeaturesGrid />\n    </div>\n  );\n}\n",
+        "isEntry": true,
+        "language": "jsx"
+      },
+      {
+        "path": "src/main.jsx",
+        "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App.jsx';\nimport './index.css';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>landing-page</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+        "isEntry": false,
+        "language": "html"
+      },
+      {
+        "path": "vite.config.js",
+        "content": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    host: '127.0.0.1',\n  },\n});\n",
+        "isEntry": false,
+        "language": "javascript"
+      },
+      {
+        "path": "package.json",
+        "content": "{\n  \"name\": \"aiui-generated-app\",\n  \"private\": true,\n  \"version\": \"0.1.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"lucide-react\": \"^0.475.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.2.0\"\n  }\n}",
+        "isEntry": false,
+        "language": "json"
+      }
+    ],
+    "entryFile": "src/App.jsx",
+    "staticAssets": {},
+    "dependencies": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0",
+      "lucide-react": "^0.475.0"
+    }
+  },
+  "completedAt": "2026-08-23T11:23:58.941Z"
+}

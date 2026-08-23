@@ -51,7 +51,7 @@
           "language": "json"
         }
       ],
-      "timestamp": "2026-08-23T11:11:57.098Z"
+      "timestamp": "2026-08-23T11:36:03.686Z"
     }
   ],
   "costLogs": [
@@ -63,16 +63,16 @@
       "completionTokens": 0,
       "estimatedCostUsd": 0,
       "latencyMs": 1,
-      "timestamp": "2026-08-23T11:11:55.665Z"
+      "timestamp": "2026-08-23T11:36:02.076Z"
     }
   ],
   "totalCostUsd": 0,
   "totalTokensIn": 0,
   "totalTokensOut": 0,
-  "startedAt": "2026-08-23T11:11:55.664Z",
+  "startedAt": "2026-08-23T11:36:02.075Z",
   "ir": {
     "version": "1.0.0",
-    "id": "ir_1787483515665",
+    "id": "ir_1787484962076",
     "name": "bench_card-ui",
     "viewport": {
       "width": 1280,
@@ -864,7 +864,7 @@
     "metadata": {
       "sourceType": "screenshot",
       "confidence": 0.96,
-      "extractedAt": "2026-08-23T11:11:55.665Z",
+      "extractedAt": "2026-08-23T11:36:02.076Z",
       "targetFrameworks": [
         "react",
         "vanillajs",
@@ -1164,5 +1164,5 @@
       "lucide-react": "^0.475.0"
     }
   },
-  "completedAt": "2026-08-23T11:11:57.098Z"
+  "completedAt": "2026-08-23T11:36:03.687Z"
 }

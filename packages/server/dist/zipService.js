@@ -16,5 +16,21 @@ export class ZipService {
         }
         archive.finalize();
     }
+    /**
+     * Generates a zip archive Buffer in-memory.
+     */
+    static async createProjectZip(project) {
+        return new Promise((resolve, reject) => {
+            const archive = archiver("zip", { zlib: { level: 9 } });
+            const buffers = [];
+            archive.on("data", (chunk) => buffers.push(chunk));
+            archive.on("end", () => resolve(Buffer.concat(buffers)));
+            archive.on("error", (err) => reject(err));
+            for (const file of project.files) {
+                archive.append(file.content, { name: file.path });
+            }
+            archive.finalize();
+        });
+    }
 }
 //# sourceMappingURL=zipService.js.map
