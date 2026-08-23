@@ -28,6 +28,7 @@ yarn-debug.log*
 yarn-error.log*
 .tempmediaStorage/
 .system_generated/
+scratch/
 
 # OS & Editor Files
 .DS_Store

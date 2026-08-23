@@ -98,7 +98,8 @@ export function App() {
       });
 
       if (!res.ok) {
-        throw new Error(`Failed to start run: ${res.statusText}`);
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Server responded with ${res.status} ${res.statusText}`);
       }
 
       const { runId } = await res.json();
@@ -146,8 +147,13 @@ export function App() {
             setFiles(state.currentProject.files);
           }
 
-          if (state.status === "completed" || state.status === "failed") {
-            setCurrentStage(state.status === "completed" ? "completed" : "failed");
+          if (
+            state.status === "completed" ||
+            state.status === "success" ||
+            state.status === "max_iterations_reached" ||
+            state.status === "failed"
+          ) {
+            setCurrentStage(state.status === "failed" ? "failed" : "completed");
             stopRun();
           }
         } catch {}

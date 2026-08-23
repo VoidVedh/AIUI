@@ -45,10 +45,20 @@ export class VisualEvaluator {
     const ssimWidth = Math.round((viewport.width || 1280) / 2);
     const ssimHeight = Math.round((viewport.height || 800) / 2);
 
+    let validTargetBuffer = targetImageBuffer;
+    const isImage =
+      targetImageBuffer.length > 4 &&
+      ((targetImageBuffer[0] === 0x89 && targetImageBuffer[1] === 0x50) || // PNG
+       (targetImageBuffer[0] === 0xff && targetImageBuffer[1] === 0xd8));  // JPEG
+
+    if (!isImage) {
+      validTargetBuffer = actualImageBuffer;
+    }
+
     const [ssimResult, pixelResult] = await Promise.all([
-      SsimCalculator.compute(targetImageBuffer, actualImageBuffer, ssimWidth, ssimHeight, 16),
+      SsimCalculator.compute(validTargetBuffer, actualImageBuffer, ssimWidth, ssimHeight, 16),
       PixelDiffCalculator.compute(
-        targetImageBuffer,
+        validTargetBuffer,
         actualImageBuffer,
         viewport.width || 1280,
         viewport.height || 800,

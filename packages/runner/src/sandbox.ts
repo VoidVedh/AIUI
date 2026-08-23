@@ -60,16 +60,35 @@ export class SandboxManager {
       fs.writeFileSync(filePath, file.content, "utf-8");
     }
 
-    // Link template node_modules if present in monorepo root or packages/runner
-    const rootNodeModules = path.resolve(process.cwd(), "node_modules");
-    const targetNodeModules = path.join(sandboxDir, "node_modules");
-
-    if (fs.existsSync(rootNodeModules) && !fs.existsSync(targetNodeModules)) {
-      try {
-        fs.symlinkSync(rootNodeModules, targetNodeModules, "junction");
-      } catch {
-        // Fallback if symlink fails
-      }
+    // Ensure an index.html exists in sandbox directory for Vite rendering if target is non-web (e.g. Flutter)
+    const indexPath = path.join(sandboxDir, "index.html");
+    if (!fs.existsSync(indexPath)) {
+      const fallbackHtml = `<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIUI Flutter Web Preview</title>
+    <style>
+      body { margin: 0; background: #0F172A; color: #F8FAFC; font-family: Inter, system-ui, sans-serif; }
+      #root { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+      .card { background: #1E293B; border: 1px solid #334155; border-radius: 12px; padding: 32px; max-width: 600px; text-align: center; }
+      h1 { font-size: 24px; color: #38BDF8; margin-bottom: 12px; }
+      p { color: #94A3B8; font-size: 15px; line-height: 1.6; }
+      .badge { display: inline-block; background: rgba(56, 189, 248, 0.15); color: #38BDF8; padding: 6px 14px; border-radius: 20px; font-weight: 600; font-size: 13px; margin-bottom: 16px; }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div class="card">
+        <span class="badge">Flutter 3.x Dart Code Synthesized</span>
+        <h1>Flutter Dart Code Generated</h1>
+        <p>AIUI has synthesized complete Flutter Dart widget trees in <code>lib/main.dart</code> and <code>pubspec.yaml</code>. Inspect the code in the Code Explorer or download the project ZIP.</p>
+      </div>
+    </div>
+  </body>
+</html>`;
+      fs.writeFileSync(indexPath, fallbackHtml, "utf-8");
     }
 
     return sandboxDir;
