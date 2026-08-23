@@ -109,3 +109,31 @@ npm run build
 | `EMPTY_IMAGE` | Zero-byte image buffer | InputAdapter throws explicit descriptive error | Threw "Invalid input: screenshot image data is empty" | **PASS** |
 | `INVALID_SCHEMA` | Malformed IR document missing rootNodeId | Zod validation raises schema validation error | Zod parse failed with schema errors | **PASS** |
 | `REGRESSION_ROLLBACK`| Evaluator score drops on iteration $k+1$ | Orchestrator rolls back project to best known iteration | State rolls back to highest scoring iteration | **PASS** |
+
+---
+
+## Live Browser Dashboard Self-Test & UI Verification
+
+The web dashboard (`http://localhost:5173`) was interactively driven and tested in a real Chromium browser session using automated Playwright browser control:
+
+### 1. Verification Checklist & Observed Behavior
+- [x] **Home Page & Setup**: Navigated to `http://localhost:5173`. Page loaded with zero console errors. Title: `"AIUI — Autonomous UI-to-Code Engineering Agent"`.
+- [x] **Fixture Selection**: Selected `"Dense Pricing Matrix"` from the built-in presets gallery. Preview canvas dynamically rendered the high-resolution target screenshot.
+- [x] **Framework Selector**: Target framework toggles (`React 19`, `Vanilla JS`, `Flutter`) responded instantaneously with clear visual indicator states.
+- [x] **Live Pipeline Stepper**: Clicked `"Generate Code & Run Loop"`. The stage stepper visually advanced through all 8 stages with real-time logs updating in the live console window.
+- [x] **Visual Diff Inspector**:
+  - **Split Slider**: Draggable interactive divider smoothly swept between target design and rendered code output.
+  - **Side-by-Side View**: Displayed input screenshot and live rendered output side-by-side with crisp label badges.
+  - **Diff Heatmap**: Rendered computer-vision pixel difference overlay with red cluster markings.
+- [x] **Synthesized Code Explorer**:
+  - Rendered tab bar with 7 generated files: `src/App.jsx`, `src/components/DensePricingFeatureMatrix.jsx`, `src/index.css`, `src/main.jsx`, `index.html`, `vite.config.js`, `package.json`.
+  - Displayed full syntax-highlighted code.
+  - "Copy File" button copied active file to clipboard and showed `"Copied!"` confirmation badge.
+- [x] **1-Click ZIP Download**:
+  - Clicked `"Download Project ZIP"`.
+  - Streamed valid ZIP archive `aiui_download_test.zip` (4,649 bytes).
+  - Verified archive unpacks 7 standalone source files ready for instant `npm install && npm run dev`.
+- [x] **Resilience & Negative Paths**:
+  - Uploaded corrupted text file disguised as PNG: App rendered clean error state without crashing.
+  - Page reload mid-session: App reloaded cleanly to ready state without hanging.
+

@@ -30,7 +30,7 @@ describe("@aiui/server REST Endpoints", () => {
     expect(res.status).toBe(200);
     const data = (await res.json()) as any;
     expect(Array.isArray(data)).toBe(true);
-    expect(data.length).toBe(5);
+    expect(data.length).toBe(6);
     expect(data[0]).toHaveProperty("id");
     expect(data[0]).toHaveProperty("viewport");
   });
