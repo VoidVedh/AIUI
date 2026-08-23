@@ -124,7 +124,7 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/png,image/jpeg,image/webp"
+          accept="image/png,image/jpeg,image/webp,application/json,.json"
           style={{ display: "none" }}
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
@@ -144,8 +144,8 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
           </div>
         ) : (
           <div>
-            <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>Or Drop Custom Screenshot Here</span>
-            <p style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>PNG, JPG or WebP up to 20MB</p>
+            <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>Or Drop Custom Screenshot / Figma JSON Here</span>
+            <p style={{ fontSize: "0.75rem", color: "var(--text-muted)" }}>PNG, JPG, WebP or Figma REST JSON up to 20MB</p>
           </div>
         )}
       </div>

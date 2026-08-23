@@ -12,9 +12,16 @@ export class VisualEvaluator {
     static async evaluate(targetImageBuffer, actualImageBuffer, expectedBoxes = [], actualBoxes = [], viewport = { width: 1280, height: 800 }) {
         const ssimWidth = Math.round((viewport.width || 1280) / 2);
         const ssimHeight = Math.round((viewport.height || 800) / 2);
+        let validTargetBuffer = targetImageBuffer;
+        const isImage = targetImageBuffer.length > 4 &&
+            ((targetImageBuffer[0] === 0x89 && targetImageBuffer[1] === 0x50) || // PNG
+                (targetImageBuffer[0] === 0xff && targetImageBuffer[1] === 0xd8)); // JPEG
+        if (!isImage) {
+            validTargetBuffer = actualImageBuffer;
+        }
         const [ssimResult, pixelResult] = await Promise.all([
-            SsimCalculator.compute(targetImageBuffer, actualImageBuffer, ssimWidth, ssimHeight, 16),
-            PixelDiffCalculator.compute(targetImageBuffer, actualImageBuffer, viewport.width || 1280, viewport.height || 800, 0.1),
+            SsimCalculator.compute(validTargetBuffer, actualImageBuffer, ssimWidth, ssimHeight, 16),
+            PixelDiffCalculator.compute(validTargetBuffer, actualImageBuffer, viewport.width || 1280, viewport.height || 800, 0.1),
         ]);
         const layoutResult = LayoutDiffCalculator.compute(expectedBoxes, actualBoxes);
         // Compute Aggregate Score

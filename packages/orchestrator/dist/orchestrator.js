@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import { DesignTokenEngine, ComponentPlanner, ReactGenerator, VanillaJsGenerator, FlutterGenerator, CodeValidator, } from "@aiui/core";
+import { DesignTokenEngine, ComponentPlanner, ReactGenerator, VanillaJsGenerator, FlutterGenerator, CodeValidator, FigmaInputAdapter, } from "@aiui/core";
 import { VisualEvaluator } from "@aiui/evaluator";
 import { PlaywrightRenderer } from "@aiui/runner";
 import { StateManager } from "./stateManager.js";
@@ -48,11 +48,27 @@ export class PipelineOrchestrator {
         };
         try {
             // 1. Stage: Visual / UI Analysis
-            logProgress("analyzing", "Analyzing UI screenshot and generating structured UI IR...");
+            logProgress("analyzing", "Analyzing UI design and generating structured UI IR...");
             const docName = options.fixtureName || options.name || runId;
-            const analysisResult = await this.provider.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", docName);
-            state.ir = analysisResult.data;
-            this.recordCostLog(state, analysisResult.costLog);
+            const isJsonPayload = mimeType === "application/json" ||
+                imageBuffer.toString("utf-8").trim().startsWith("{");
+            if (isJsonPayload) {
+                const figmaAdapter = new FigmaInputAdapter();
+                state.ir = await figmaAdapter.parse({
+                    type: "figma",
+                    data: imageBuffer,
+                    name: docName,
+                    viewportHint: viewport,
+                });
+            }
+            else {
+                const analysisResult = await this.provider.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", docName);
+                state.ir = analysisResult.data;
+                this.recordCostLog(state, analysisResult.costLog);
+            }
+            if (!state.ir) {
+                throw new Error("Perception failed to synthesize canonical UI IR document.");
+            }
             // 2. Stage: Design Token Extraction
             logProgress("extracting_tokens", "Extracting design tokens (colors, typography, spacing, radius)...");
             state.tokens = DesignTokenEngine.extractTokens(state.ir);
