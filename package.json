@@ -1,0 +1,36 @@
+{
+  "name": "aiui-monorepo",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AIUI — Autonomous UI-to-Code Engineering Agent",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "dev:server": "npm run dev --workspace=@aiui/server",
+    "dev:web": "npm run dev --workspace=@aiui/web",
+    "start:server": "npm run start --workspace=@aiui/server",
+    "test": "vitest run",
+    "test:core": "vitest run packages/core",
+    "test:evaluator": "vitest run packages/evaluator",
+    "test:runner": "vitest run packages/runner",
+    "test:orchestrator": "vitest run packages/orchestrator",
+    "test:server": "vitest run packages/server",
+    "test:e2e": "vitest run tests/e2e",
+    "test:resilience": "vitest run tests/negative",
+    "lint": "eslint . --ext .ts,.tsx",
+    "clean": "rm -rf node_modules packages/*/node_modules packages/*/dist"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.19",
+    "@types/pixelmatch": "^5.2.6",
+    "@types/pngjs": "^6.0.5",
+    "@types/ws": "^8.5.14",
+    "@vitejs/plugin-react": "^4.7.0",
+    "prettier": "^3.5.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}
