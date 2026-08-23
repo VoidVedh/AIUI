@@ -66,6 +66,8 @@ export interface PipelineRunState {
 
 export interface OrchestratorOptions {
   runId?: string;
+  name?: string;
+  fixtureName?: string;
   target?: "react" | "vanillajs" | "flutter";
   maxIterations?: number;
   similarityThreshold?: number;

@@ -215,6 +215,100 @@ const FIXTURES = [
   </footer>
 </body>
 </html>`
+  },
+  {
+    name: "dense-matrix-table",
+    title: "Dense Pricing & Feature Matrix",
+    width: 1280,
+    height: 800,
+    html: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0b1120; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; -webkit-font-smoothing: antialiased; }
+    nav { height: 64px; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; background: #0f172a; border-bottom: 1px solid #1e293b; }
+    .logo { font-size: 18px; font-weight: 700; color: #f8fafc; letter-spacing: -0.01em; }
+    .badge { background: #3b82f6; color: white; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; margin-left: 8px; }
+    .header-content { text-align: center; padding: 36px 20px 24px; }
+    h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; }
+    p.sub { font-size: 14px; color: #94a3b8; }
+    .matrix-wrap { max-width: 1180px; margin: 0 auto 40px; padding: 0 20px; width: 100%; }
+    .matrix-grid { display: grid; grid-template-columns: 260px repeat(3, 1fr); background: #0f172a; border: 1px solid #1e293b; border-radius: 12px; overflow: hidden; }
+    .cell { padding: 14px 18px; border-bottom: 1px solid #1e293b; border-right: 1px solid #1e293b; font-size: 13px; display: flex; align-items: center; }
+    .cell:nth-child(4n) { border-right: none; }
+    .row-header { background: #131d33; font-weight: 600; color: #f8fafc; }
+    .plan-title { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .plan-price { font-size: 22px; font-weight: 800; color: #3b82f6; }
+    .plan-sub { font-size: 11px; color: #94a3b8; }
+    .tier-featured { background: rgba(59,130,246,0.06); }
+    .pill { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 10px; font-weight: 600; }
+    .pill-green { background: rgba(16,185,129,0.15); color: #10b981; }
+    .pill-blue { background: rgba(59,130,246,0.15); color: #3b82f6; }
+    .btn-plan { width: 100%; padding: 8px; border-radius: 6px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; text-align: center; }
+    .btn-pri { background: #3b82f6; color: white; }
+    .btn-sec { background: #1e293b; color: #f8fafc; border: 1px solid #334155; }
+    .check { color: #10b981; font-weight: 700; }
+    .dash { color: #475569; }
+    .foot-note { text-align: center; font-size: 12px; color: #64748b; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div style="display:flex;align-items:center;"><span class="logo">AIUI Enterprise Cloud</span><span class="badge">PRO</span></div>
+    <div style="font-size:13px;color:#94a3b8;">Autonomous UI Pipeline Matrix</div>
+  </nav>
+  <div class="header-content">
+    <h1>Compare Plans & Autonomous Capabilities</h1>
+    <p class="sub">Choose the right tier for self-healing UI synthesis and automated visual evaluation.</p>
+  </div>
+  <div class="matrix-wrap">
+    <div class="matrix-grid">
+      <!-- Row 1: Plan Headers -->
+      <div class="cell row-header" style="flex-direction:column;align-items:flex-start;justify-content:center;">
+        <span style="font-weight:700;font-size:14px;">Platform Capabilities</span>
+        <span style="font-size:11px;color:#94a3b8;margin-top:2px;">Compare features side-by-side</span>
+      </div>
+      <div class="cell" style="flex-direction:column;align-items:flex-start;">
+        <div class="plan-title">Starter</div>
+        <div class="plan-price">$29 <span class="plan-sub">/ mo</span></div>
+      </div>
+      <div class="cell tier-featured" style="flex-direction:column;align-items:flex-start;">
+        <div style="display:flex;justify-content:space-between;width:100%;align-items:center;">
+          <div class="plan-title">Professional</div>
+          <span class="pill pill-blue">Popular</span>
+        </div>
+        <div class="plan-price">$99 <span class="plan-sub">/ mo</span></div>
+      </div>
+      <div class="cell" style="flex-direction:column;align-items:flex-start;">
+        <div class="plan-title">Enterprise</div>
+        <div class="plan-price">$299 <span class="plan-sub">/ mo</span></div>
+      </div>
+
+      <!-- Row 2: Target Frameworks -->
+      <div class="cell row-header">Multi-Target Generators</div>
+      <div class="cell"><span class="pill pill-green">React 19</span></div>
+      <div class="cell tier-featured"><span class="pill pill-green">React + Vanilla JS</span></div>
+      <div class="cell"><span class="pill pill-green">React + JS + Flutter</span></div>
+
+      <!-- Row 3: Evaluation -->
+      <div class="cell row-header">MSSIM + PixelMatch CV</div>
+      <div class="cell"><span class="check">✓ Standard (5 iter)</span></div>
+      <div class="cell tier-featured"><span class="check">✓ Subpixel Gaussian</span></div>
+      <div class="cell"><span class="check">✓ Ultra-HD Bounding Box</span></div>
+
+      <!-- Row 4: CTAs -->
+      <div class="cell row-header" style="border-bottom:none;">Selection</div>
+      <div class="cell" style="border-bottom:none;"><button class="btn-plan btn-sec">Choose Starter</button></div>
+      <div class="cell tier-featured" style="border-bottom:none;"><button class="btn-plan btn-pri">Upgrade Pro</button></div>
+      <div class="cell" style="border-bottom:none;"><button class="btn-plan btn-sec">Contact Sales</button></div>
+    </div>
+    <div class="foot-note">All tiers include process-level sandboxed execution and automated regression rollback.</div>
+  </div>
+</body>
+</html>`
   }
 ];
 

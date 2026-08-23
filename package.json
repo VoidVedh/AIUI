@@ -8,6 +8,8 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces",
+    "start": "./start.sh",
+    "start:all": "npx tsx scripts/start_all.ts",
     "dev:server": "npm run dev --workspace=@aiui/server",
     "dev:web": "npm run dev --workspace=@aiui/web",
     "start:server": "npm run start --workspace=@aiui/server",
