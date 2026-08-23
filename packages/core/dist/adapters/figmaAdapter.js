@@ -29,7 +29,23 @@ export class FigmaInputAdapter {
             figmaDoc = input.data;
         }
         // Extract root frame or canvas
-        const rootNode = figmaDoc.document?.children?.[0]?.children?.[0] || figmaDoc.nodes?.[Object.keys(figmaDoc.nodes || {})[0]]?.document || figmaDoc;
+        let rootNode = figmaDoc;
+        if (figmaDoc.nodes && Object.keys(figmaDoc.nodes).length > 0) {
+            const firstKey = Object.keys(figmaDoc.nodes)[0];
+            rootNode = figmaDoc.nodes[firstKey]?.document || figmaDoc.nodes[firstKey];
+        }
+        else if (figmaDoc.document) {
+            const firstChild = figmaDoc.document.children?.[0];
+            if (firstChild?.type === "CANVAS") {
+                rootNode = firstChild.children?.[0] || firstChild;
+            }
+            else if (firstChild) {
+                rootNode = firstChild;
+            }
+            else {
+                rootNode = figmaDoc.document;
+            }
+        }
         if (!rootNode) {
             throw new Error("Could not locate a valid root Frame or Component in Figma document.");
         }
@@ -65,11 +81,17 @@ export class FigmaInputAdapter {
         }
         const bounds = fNode.absoluteBoundingBox || { x: 0, y: 0, width: 0, height: 0 };
         const styles = {};
-        // Fills
+        // Fills (Color vs BackgroundColor)
         if (fNode.fills && fNode.fills.length > 0) {
             const visibleFill = fNode.fills.find((f) => f.visible !== false && f.color);
             if (visibleFill && visibleFill.color) {
-                styles.backgroundColor = this.figmaColorToHex(visibleFill.color);
+                const hexColor = this.figmaColorToHex(visibleFill.color);
+                if (nodeType === "text" || nodeType === "heading" || nodeType === "icon") {
+                    styles.color = hexColor;
+                }
+                else {
+                    styles.backgroundColor = hexColor;
+                }
             }
         }
         // Strokes / Borders
@@ -126,16 +148,28 @@ export class FigmaInputAdapter {
                 styles.boxShadow = `${shadow.offset.x || 0}px ${shadow.offset.y || 4}px ${shadow.radius || 10}px ${colorStr}`;
             }
         }
-        // Layout
+        // Layout (Auto-layout & Flexbox)
         const isFlex = fNode.layoutMode === "HORIZONTAL" || fNode.layoutMode === "VERTICAL";
         const layout = {
             display: isFlex ? "flex" : "block",
             flexDirection: fNode.layoutMode === "HORIZONTAL" ? "row" : "column",
             gap: fNode.itemSpacing || 0,
             alignItems: fNode.counterAxisAlignItems === "CENTER" ? "center" : "stretch",
-            justifyContent: fNode.primaryAxisAlignItems === "SPACE_BETWEEN" ? "space-between" : fNode.primaryAxisAlignItems === "CENTER" ? "center" : "flex-start",
+            justifyContent: fNode.primaryAxisAlignItems === "SPACE_BETWEEN"
+                ? "space-between"
+                : fNode.primaryAxisAlignItems === "CENTER"
+                    ? "center"
+                    : "flex-start",
             flexWrap: "nowrap",
         };
+        // Content resolution
+        let content = undefined;
+        if (fNode.characters) {
+            content = { text: fNode.characters };
+        }
+        else if (nodeType === "icon") {
+            content = { iconName: fNode.name || "Sparkles" };
+        }
         nodeMap[irId] = {
             id: irId,
             type: nodeType,
@@ -149,34 +183,56 @@ export class FigmaInputAdapter {
             },
             layout,
             styles,
-            content: fNode.characters ? { text: fNode.characters } : undefined,
+            content,
             confidence: 0.99,
         };
     }
     resolveNodeType(fNode) {
-        const nameLower = fNode.name.toLowerCase();
-        if (fNode.type === "TEXT") {
-            if (nameLower.includes("title") || nameLower.includes("heading") || (fNode.style?.fontSize && fNode.style.fontSize >= 24)) {
+        const nameLower = (fNode.name || "").toLowerCase();
+        const typeUpper = (fNode.type || "").toUpperCase();
+        // 1. Text Nodes
+        if (typeUpper === "TEXT") {
+            if (nameLower.includes("title") ||
+                nameLower.includes("heading") ||
+                (fNode.style?.fontSize && fNode.style.fontSize >= 24)) {
                 return "heading";
             }
             return "text";
         }
+        // 2. Vector / Icon / Shape Nodes
+        if (typeUpper === "VECTOR" ||
+            typeUpper === "BOOLEAN_OPERATION" ||
+            typeUpper === "STAR" ||
+            typeUpper === "ELLIPSE" ||
+            typeUpper === "LINE" ||
+            nameLower.includes("icon") ||
+            nameLower.includes("svg") ||
+            nameLower.includes("logo") ||
+            nameLower.includes("badge_icon")) {
+            return "icon";
+        }
+        // 3. Components & Instances Semantic Classification
         if (nameLower.includes("button") || nameLower.includes("btn") || nameLower.includes("cta")) {
             return "button";
         }
-        if (nameLower.includes("nav") || nameLower.includes("header")) {
+        if (nameLower.includes("nav") ||
+            nameLower.includes("header") ||
+            nameLower.includes("appbar") ||
+            nameLower.includes("app bar") ||
+            nameLower.includes("topbar") ||
+            nameLower.includes("top bar")) {
             return "navbar";
         }
         if (nameLower.includes("side") || nameLower.includes("drawer")) {
             return "sidebar";
         }
-        if (nameLower.includes("card")) {
+        if (nameLower.includes("card") || nameLower.includes("tile") || nameLower.includes("item")) {
             return "card";
         }
-        if (nameLower.includes("input") || nameLower.includes("field")) {
+        if (nameLower.includes("input") || nameLower.includes("field") || nameLower.includes("search")) {
             return "input";
         }
-        if (nameLower.includes("grid")) {
+        if (nameLower.includes("grid") || nameLower.includes("matrix") || nameLower.includes("columns")) {
             return "grid";
         }
         return "container";
