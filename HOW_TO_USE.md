@@ -50,17 +50,17 @@ Select the target language you want generated:
 - **Vanilla JavaScript** — Pure HTML5, CSS3, and JavaScript with zero extra libraries.
 - **Flutter** — Mobile application code for iOS and Android.
 
-### 3. Click "Start Autonomous Pipeline"
+### 3. Click "Generate Code & Run Loop"
 Sit back and watch the AI engineer work in real time!
-- **Stage 1 — Analyzing UI**: Scans the screenshot and detects buttons, headings, cards, and layouts.
+- **Stage 1 — Analyzing UI**: Scans the design screenshot and detects buttons, headings, cards, and layouts.
 - **Stage 2 — Extracting Design Tokens**: Reads the exact color palette, font sizes, margins, and borders.
 - **Stage 3 — Planning Components**: Breaks the screen into clean, modular building blocks.
 - **Stage 4 — Generating Code**: Writes real, error-free production code.
 - **Stage 5 — Browser Rendering & Self-Correction**: Renders the code in a private sandbox, compares it with your original screenshot using computer vision, and automatically fine-tunes any visual differences until the similarity reaches 92%+!
 
 ### 4. Inspect & Download Your Code
-- Once finished, you can browse all generated source files in the built-in **Code Inspector**.
-- Click the **Download Code (.zip)** button to save the complete project to your computer.
+- Once finished, you can browse all generated source files in the built-in **Code Explorer**.
+- Click the **Download Full Project (.ZIP)** button to save the complete project to your computer.
 
 ---
 
