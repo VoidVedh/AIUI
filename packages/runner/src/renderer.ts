@@ -118,10 +118,11 @@ export class PlaywrightRenderer {
 
       // 4. Navigate and wait for DOM + network idle
       await page.goto(serverUrl, { waitUntil: "networkidle", timeout: timeoutMs });
-      await page.waitForSelector("#root", { timeout: 10000 });
+      await page.waitForSelector("#root", { state: "attached", timeout: 10000 });
+      await page.waitForSelector("#root > *", { state: "attached", timeout: 10000 }).catch(() => {});
 
-      // Small pause to allow CSS animations/fonts to settle
-      await page.waitForTimeout(350);
+      // Allow CSS layout and font rendering to fully settle
+      await page.waitForTimeout(500);
 
       // 5. Capture screenshot
       const screenshotBuffer = await page.screenshot({
