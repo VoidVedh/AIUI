@@ -104,53 +104,84 @@ export function App() {
       const { runId } = await res.json();
       setCurrentRunId(runId);
 
-      // Connect to SSE stream
-      const eventSource = new EventSource(`/api/runs/${runId}/events`);
+      // Polling & SSE synchronization loop for 100% reliability
+      let pollInterval: any = null;
 
-      eventSource.addEventListener("progress", (e) => {
-        const payload = JSON.parse(e.data);
-        if (payload.stage) setCurrentStage(payload.stage);
-        if (payload.log) setLogs((prev) => [...prev, payload.log]);
-        if (payload.iteration) setCurrentIteration(payload.iteration);
-        if (payload.currentScore) setCurrentScore(payload.currentScore);
-
-        if (payload.history && payload.history.length > 0) {
-          const latest = payload.history[payload.history.length - 1];
-          setSsimScore(latest.ssimScore || 0);
-          setPixelMatchScore(latest.pixelMatchScore || 0);
-          setLayoutIouScore(latest.layoutIouScore || 0);
-          setHistory(payload.history);
-
-          // Update preview images from artifacts
-          setRenderedImageUrl(`/api/runs/${runId}/artifacts/rendered_iter_${latest.iteration}.png`);
-          setDiffImageUrl(`/api/runs/${runId}/artifacts/diff_iter_${latest.iteration}.png`);
-        }
-
-        if (payload.costLogs) {
-          const tokens = payload.costLogs.reduce((acc: number, c: any) => acc + (c.promptTokens || 0) + (c.completionTokens || 0), 0);
-          const cost = payload.costLogs.reduce((acc: number, c: any) => acc + (c.estimatedCostUsd || 0), 0);
-          setTotalTokens(tokens);
-          setTotalCost(cost);
-        }
-      });
-
-      eventSource.addEventListener("complete", (e) => {
-        const payload = JSON.parse(e.data);
-        setCurrentStage("completed");
+      const stopRun = () => {
         setIsRunning(false);
         setServerStatus("connected");
-        if (payload.similarityScore) setCurrentScore(payload.similarityScore);
-        if (payload.files) setFiles(payload.files);
-        setLogs((prev) => [...prev, `[PIPELINE_COMPLETE] Autonomous run finalized with score: ${(payload.similarityScore * 100).toFixed(1)}%`]);
-        eventSource.close();
-      });
+        if (pollInterval) clearInterval(pollInterval);
+      };
 
-      eventSource.addEventListener("error", (e: any) => {
-        console.error("SSE error:", e);
-        setIsRunning(false);
-        setServerStatus("connected");
-        eventSource.close();
-      });
+      const syncState = async () => {
+        try {
+          const stateRes = await fetch(`/api/runs/${runId}/state`);
+          if (!stateRes.ok) return;
+          const state = await stateRes.json();
+
+          if (state.currentStage) setCurrentStage(state.currentStage);
+          if (state.totalIterations) setCurrentIteration(state.totalIterations);
+          if (state.similarityScore) setCurrentScore(state.similarityScore);
+          if (state.logs && state.logs.length > 0) setLogs(state.logs);
+
+          if (state.history && state.history.length > 0) {
+            const latest = state.history[state.history.length - 1];
+            setSsimScore(latest.ssimScore || 0);
+            setPixelMatchScore(latest.pixelMatchScore || 0);
+            setLayoutIouScore(latest.layoutIouScore || 0);
+            setHistory(state.history);
+
+            setRenderedImageUrl(`/api/runs/${runId}/artifacts/rendered_iter_${latest.iteration}.png`);
+            setDiffImageUrl(`/api/runs/${runId}/artifacts/diff_iter_${latest.iteration}.png`);
+          }
+
+          if (state.costLogs) {
+            const tokens = state.costLogs.reduce((acc: number, c: any) => acc + (c.promptTokens || 0) + (c.completionTokens || 0), 0);
+            const cost = state.costLogs.reduce((acc: number, c: any) => acc + (c.estimatedCostUsd || 0), 0);
+            setTotalTokens(tokens);
+            setTotalCost(cost);
+          }
+
+          if (state.currentProject?.files && state.currentProject.files.length > 0) {
+            setFiles(state.currentProject.files);
+          }
+
+          if (state.status === "completed" || state.status === "failed") {
+            setCurrentStage(state.status === "completed" ? "completed" : "failed");
+            stopRun();
+          }
+        } catch {}
+      };
+
+      pollInterval = setInterval(syncState, 800);
+      syncState();
+
+      // Connect to SSE stream for instantaneous progressive push
+      try {
+        const eventSource = new EventSource(`/api/runs/${runId}/events`);
+
+        eventSource.addEventListener("progress", (e) => {
+          const payload = JSON.parse(e.data);
+          if (payload.stage) setCurrentStage(payload.stage);
+          if (payload.log) setLogs((prev) => [...prev, payload.log]);
+          if (payload.iteration) setCurrentIteration(payload.iteration);
+          if (payload.currentScore) setCurrentScore(payload.currentScore);
+        });
+
+        eventSource.addEventListener("complete", (e) => {
+          const payload = JSON.parse(e.data);
+          setCurrentStage("completed");
+          if (payload.similarityScore) setCurrentScore(payload.similarityScore);
+          if (payload.files) setFiles(payload.files);
+          eventSource.close();
+          syncState();
+          stopRun();
+        });
+
+        eventSource.addEventListener("error", () => {
+          eventSource.close();
+        });
+      } catch {}
     } catch (err: any) {
       setLogs((prev) => [...prev, `[ERROR] ${err.message}`]);
       setIsRunning(false);

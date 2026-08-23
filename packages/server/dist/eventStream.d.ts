@@ -5,6 +5,7 @@ export interface SseEvent {
 }
 export declare class EventStreamManager {
     private static clients;
+    private static eventBuffers;
     static addClient(runId: string, res: Response): void;
     static broadcast(runId: string, event: string, data: any): void;
     static closeRun(runId: string): void;

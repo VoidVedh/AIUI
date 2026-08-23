@@ -16,6 +16,18 @@ const upload = multer({
 });
 // Cache of active orchestrators in flight
 const activeOrchestrators = new Map();
+function getRepoRoot() {
+    if (fs.existsSync(path.resolve(process.cwd(), "fixtures"))) {
+        return process.cwd();
+    }
+    if (fs.existsSync(path.resolve(process.cwd(), "../../fixtures"))) {
+        return path.resolve(process.cwd(), "../..");
+    }
+    if (fs.existsSync(path.resolve(process.cwd(), "../fixtures"))) {
+        return path.resolve(process.cwd(), "..");
+    }
+    return process.cwd();
+}
 /**
  * GET /api/health
  */
@@ -27,7 +39,7 @@ app.get("/api/health", (_req, res) => {
  * Lists benchmark fixture presets for easy 1-click test runs
  */
 app.get("/api/fixtures", (_req, res) => {
-    const fixturesDir = path.resolve(process.cwd(), "fixtures");
+    const fixturesDir = path.resolve(getRepoRoot(), "fixtures");
     const presets = [
         {
             id: "landing-page",
@@ -69,6 +81,14 @@ app.get("/api/fixtures", (_req, res) => {
             description: "Mobile viewport with top app bar, content cards, and bottom navigation tabs.",
             imageUrl: "/api/fixtures/mobile-ui/image",
         },
+        {
+            id: "dense-matrix-table",
+            name: "Dense Pricing Matrix",
+            category: "Complex UI",
+            viewport: { width: 1280, height: 800 },
+            description: "16-cell dense feature & pricing comparison matrix with micro-badges and status tags.",
+            imageUrl: "/api/fixtures/dense-matrix-table/image",
+        },
     ];
     res.json(presets);
 });
@@ -77,7 +97,7 @@ app.get("/api/fixtures", (_req, res) => {
  */
 app.get("/api/fixtures/:name/image", (req, res) => {
     const { name } = req.params;
-    const fixturePath = path.resolve(process.cwd(), `fixtures/${name}/target.png`);
+    const fixturePath = path.resolve(getRepoRoot(), `fixtures/${name}/target.png`);
     if (!fs.existsSync(fixturePath)) {
         return res.status(404).json({ error: `Fixture '${name}' not found` });
     }
@@ -107,7 +127,7 @@ app.post("/api/runs", upload.single("image"), async (req, res) => {
             mimeType = req.file.mimetype || "image/png";
         }
         else if (req.body.fixtureId) {
-            const fixturePath = path.resolve(process.cwd(), `fixtures/${req.body.fixtureId}/target.png`);
+            const fixturePath = path.resolve(getRepoRoot(), `fixtures/${req.body.fixtureId}/target.png`);
             if (!fs.existsSync(fixturePath)) {
                 return res.status(404).json({ error: `Fixture '${req.body.fixtureId}' not found.` });
             }
@@ -139,6 +159,7 @@ app.post("/api/runs", upload.single("image"), async (req, res) => {
                     runId,
                     target,
                     viewport,
+                    fixtureName: req.body.fixtureId,
                     maxIterations,
                     similarityThreshold,
                     onProgress: (state, logMessage) => {
@@ -207,7 +228,7 @@ app.get("/api/runs/:runId/state", async (req, res) => {
  */
 app.get("/api/runs/:runId/artifacts/:filename", (req, res) => {
     const { runId, filename } = req.params;
-    const artifactPath = path.resolve(process.cwd(), `runs/${runId}/artifacts/${filename}`);
+    const artifactPath = path.resolve(getRepoRoot(), `runs/${runId}/artifacts/${filename}`);
     if (!fs.existsSync(artifactPath)) {
         return res.status(404).json({ error: `Artifact '${filename}' not found for run '${runId}'.` });
     }

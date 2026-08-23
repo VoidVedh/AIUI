@@ -1,63 +1,12 @@
 {
-  "runId": "bench_landing-page",
+  "runId": "run_1787483415903_za1di",
   "target": "react",
-  "currentStage": "completed",
-  "status": "success",
-  "similarityScore": 0.9315,
-  "bestIteration": 1,
+  "currentStage": "failed",
+  "status": "failed",
+  "similarityScore": 0,
+  "bestIteration": 0,
   "totalIterations": 1,
-  "history": [
-    {
-      "iteration": 1,
-      "stage": "evaluating",
-      "similarityScore": 0.9315,
-      "ssimScore": 0.8629,
-      "pixelMatchScore": 0.9807,
-      "layoutIouScore": 1,
-      "issues": [],
-      "screenshotArtifactPath": "runs/bench_landing-page/artifacts/rendered_iter_1.png",
-      "diffArtifactPath": "runs/bench_landing-page/artifacts/diff_iter_1.png",
-      "codeFiles": [
-        {
-          "path": "src/index.css",
-          "language": "css"
-        },
-        {
-          "path": "src/components/HeaderNavigation.jsx",
-          "language": "jsx"
-        },
-        {
-          "path": "src/components/HeroSection.jsx",
-          "language": "jsx"
-        },
-        {
-          "path": "src/components/FeaturesGrid.jsx",
-          "language": "jsx"
-        },
-        {
-          "path": "src/App.jsx",
-          "language": "jsx"
-        },
-        {
-          "path": "src/main.jsx",
-          "language": "jsx"
-        },
-        {
-          "path": "index.html",
-          "language": "html"
-        },
-        {
-          "path": "vite.config.js",
-          "language": "javascript"
-        },
-        {
-          "path": "package.json",
-          "language": "json"
-        }
-      ],
-      "timestamp": "2026-08-23T11:11:52.854Z"
-    }
-  ],
+  "history": [],
   "costLogs": [
     {
       "stage": "analyzing",
@@ -66,18 +15,18 @@
       "promptTokens": 0,
       "completionTokens": 0,
       "estimatedCostUsd": 0,
-      "latencyMs": 5,
-      "timestamp": "2026-08-23T11:11:50.904Z"
+      "latencyMs": 2,
+      "timestamp": "2026-08-23T11:10:15.906Z"
     }
   ],
   "totalCostUsd": 0,
   "totalTokensIn": 0,
   "totalTokensOut": 0,
-  "startedAt": "2026-08-23T11:11:50.898Z",
+  "startedAt": "2026-08-23T11:10:15.903Z",
   "ir": {
     "version": "1.0.0",
-    "id": "ir_1787483510900",
-    "name": "bench_landing-page",
+    "id": "ir_1787483415905",
+    "name": "run_1787483415903_za1di",
     "viewport": {
       "width": 1280,
       "height": 800,
@@ -1185,7 +1134,7 @@
     "metadata": {
       "sourceType": "screenshot",
       "confidence": 0.96,
-      "extractedAt": "2026-08-23T11:11:50.900Z",
+      "extractedAt": "2026-08-23T11:10:15.905Z",
       "targetFrameworks": [
         "react",
         "vanillajs",
@@ -1428,7 +1377,7 @@
       },
       {
         "path": "index.html",
-        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>bench_landing-page</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>run_1787483415903_za1di</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
         "isEntry": false,
         "language": "html"
       },
@@ -1494,7 +1443,7 @@
       },
       {
         "path": "index.html",
-        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>bench_landing-page</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>run_1787483415903_za1di</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
         "isEntry": false,
         "language": "html"
       },
@@ -1519,5 +1468,6 @@
       "lucide-react": "^0.475.0"
     }
   },
-  "completedAt": "2026-08-23T11:11:52.854Z"
+  "errorMessage": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n  - waiting for locator('#root') to be visible\n    24 × locator resolved to hidden <div id=\"root\"></div>\n",
+  "completedAt": "2026-08-23T11:10:26.831Z"
 }
