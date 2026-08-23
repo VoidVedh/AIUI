@@ -1,0 +1,872 @@
+{
+  "runId": "bench_mobile-ui",
+  "target": "react",
+  "currentStage": "completed",
+  "status": "success",
+  "similarityScore": 0.9498,
+  "bestIteration": 1,
+  "totalIterations": 1,
+  "history": [
+    {
+      "iteration": 1,
+      "stage": "evaluating",
+      "similarityScore": 0.9498,
+      "ssimScore": 0.8949,
+      "pixelMatchScore": 0.9917,
+      "layoutIouScore": 1,
+      "issues": [],
+      "screenshotArtifactPath": "runs/bench_mobile-ui/artifacts/rendered_iter_1.png",
+      "diffArtifactPath": "runs/bench_mobile-ui/artifacts/diff_iter_1.png",
+      "codeFiles": [
+        {
+          "path": "src/index.css",
+          "language": "css"
+        },
+        {
+          "path": "src/components/MobileAppCanvas.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/App.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "src/main.jsx",
+          "language": "jsx"
+        },
+        {
+          "path": "index.html",
+          "language": "html"
+        },
+        {
+          "path": "vite.config.js",
+          "language": "javascript"
+        },
+        {
+          "path": "package.json",
+          "language": "json"
+        }
+      ],
+      "timestamp": "2026-08-23T10:26:40.720Z"
+    }
+  ],
+  "costLogs": [
+    {
+      "stage": "analyzing",
+      "provider": "offline-cv",
+      "model": "deterministic-cv-engine",
+      "promptTokens": 0,
+      "completionTokens": 0,
+      "estimatedCostUsd": 0,
+      "latencyMs": 0,
+      "timestamp": "2026-08-23T10:26:39.456Z"
+    }
+  ],
+  "totalCostUsd": 0,
+  "totalTokensIn": 0,
+  "totalTokensOut": 0,
+  "startedAt": "2026-08-23T10:26:39.455Z",
+  "ir": {
+    "version": "1.0.0",
+    "id": "ir_1787480799456",
+    "name": "bench_mobile-ui",
+    "viewport": {
+      "width": 390,
+      "height": 844,
+      "devicePixelRatio": 1
+    },
+    "rootNodeId": "page_root",
+    "nodes": {
+      "page_root": {
+        "id": "page_root",
+        "type": "page",
+        "name": "Page",
+        "parentId": null,
+        "childIds": [
+          "sec_0_mobile"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "viewport"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "100%",
+          "minHeight": "100vh"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "color": "#F8FAFC",
+          "fontFamily": "Inter, system-ui, sans-serif"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_mobile": {
+        "id": "sec_0_mobile",
+        "type": "section",
+        "name": "Mobile App Canvas",
+        "parentId": "page_root",
+        "childIds": [
+          "sec_0_mobile_app_bar",
+          "sec_0_mobile_card_list",
+          "sec_0_mobile_bottom_nav"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "100%",
+          "maxWidth": 390,
+          "minHeight": 700
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "space-between",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#0F172A",
+          "margin": {
+            "top": 0,
+            "right": 0,
+            "bottom": 0,
+            "left": 0
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_mobile_app_bar": {
+        "id": "sec_0_mobile_app_bar",
+        "type": "header",
+        "parentId": "sec_0_mobile",
+        "childIds": [
+          "sec_0_mobile_bar_title"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": 56
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          }
+        },
+        "confidence": 0.99
+      },
+      "sec_0_mobile_bar_title": {
+        "id": "sec_0_mobile_bar_title",
+        "type": "heading",
+        "parentId": "sec_0_mobile_app_bar",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "16px",
+          "fontWeight": 700
+        },
+        "content": {
+          "text": "AIUI Mobile"
+        },
+        "confidence": 0.99
+      },
+      "sec_0_mobile_card_list": {
+        "id": "sec_0_mobile_card_list",
+        "type": "container",
+        "parentId": "sec_0_mobile",
+        "childIds": [
+          "sec_0_mobile_mcard_1",
+          "sec_0_mobile_mcard_2"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 14,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "padding": {
+            "top": 20,
+            "right": 16,
+            "bottom": 20,
+            "left": 16
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_mobile_mcard_1": {
+        "id": "sec_0_mobile_mcard_1",
+        "type": "card",
+        "parentId": "sec_0_mobile_card_list",
+        "childIds": [
+          "sec_0_mobile_mcard_1_t",
+          "sec_0_mobile_mcard_1_b"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "flex-start",
+          "gap": 8,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "padding": {
+            "top": 18,
+            "right": 18,
+            "bottom": 18,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          },
+          "borderRadius": {
+            "topLeft": 12,
+            "topRight": 12,
+            "bottomRight": 12,
+            "bottomLeft": 12
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_mobile_mcard_1_t": {
+        "id": "sec_0_mobile_mcard_1_t",
+        "type": "heading",
+        "parentId": "sec_0_mobile_mcard_1",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "15px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "Real-time Pipeline"
+        },
+        "confidence": 0.99
+      },
+      "sec_0_mobile_mcard_1_b": {
+        "id": "sec_0_mobile_mcard_1_b",
+        "type": "text",
+        "parentId": "sec_0_mobile_mcard_1",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "13px"
+        },
+        "content": {
+          "text": "Optimized mobile layout rendered via unified IR."
+        },
+        "confidence": 0.97
+      },
+      "sec_0_mobile_mcard_2": {
+        "id": "sec_0_mobile_mcard_2",
+        "type": "card",
+        "parentId": "sec_0_mobile_card_list",
+        "childIds": [
+          "sec_0_mobile_mcard_2_t",
+          "sec_0_mobile_mcard_2_b"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "flex-start",
+          "gap": 8,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "padding": {
+            "top": 18,
+            "right": 18,
+            "bottom": 18,
+            "left": 18
+          },
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          },
+          "borderRadius": {
+            "topLeft": 12,
+            "topRight": 12,
+            "bottomRight": 12,
+            "bottomLeft": 12
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_mobile_mcard_2_t": {
+        "id": "sec_0_mobile_mcard_2_t",
+        "type": "heading",
+        "parentId": "sec_0_mobile_mcard_2",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#F8FAFC",
+          "fontSize": "15px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "Self-Healing Engine"
+        },
+        "confidence": 0.99
+      },
+      "sec_0_mobile_mcard_2_b": {
+        "id": "sec_0_mobile_mcard_2_b",
+        "type": "text",
+        "parentId": "sec_0_mobile_mcard_2",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "block",
+          "flexDirection": "column",
+          "justifyContent": "flex-start",
+          "alignItems": "stretch",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "13px"
+        },
+        "content": {
+          "text": "Optimized mobile layout rendered via unified IR."
+        },
+        "confidence": 0.97
+      },
+      "sec_0_mobile_bottom_nav": {
+        "id": "sec_0_mobile_bottom_nav",
+        "type": "footer",
+        "parentId": "sec_0_mobile",
+        "childIds": [
+          "sec_0_mobile_b_tab_1",
+          "sec_0_mobile_b_tab_2",
+          "sec_0_mobile_b_tab_3"
+        ],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "100%",
+          "height": 60
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "row",
+          "justifyContent": "space-around",
+          "alignItems": "center",
+          "gap": 0,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "backgroundColor": "#1E293B",
+          "border": {
+            "width": 1,
+            "style": "solid",
+            "color": "#334155"
+          }
+        },
+        "confidence": 0.98
+      },
+      "sec_0_mobile_b_tab_1": {
+        "id": "sec_0_mobile_b_tab_1",
+        "type": "button",
+        "parentId": "sec_0_mobile_bottom_nav",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#3B82F6",
+          "fontSize": "12px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "Home"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_mobile_b_tab_2": {
+        "id": "sec_0_mobile_b_tab_2",
+        "type": "button",
+        "parentId": "sec_0_mobile_bottom_nav",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "12px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "Activity"
+        },
+        "confidence": 0.98
+      },
+      "sec_0_mobile_b_tab_3": {
+        "id": "sec_0_mobile_b_tab_3",
+        "type": "button",
+        "parentId": "sec_0_mobile_bottom_nav",
+        "childIds": [],
+        "position": {
+          "x": 0,
+          "y": 0,
+          "relativeTo": "flow"
+        },
+        "dimensions": {
+          "width": "auto",
+          "height": "auto"
+        },
+        "layout": {
+          "display": "flex",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "center",
+          "gap": 4,
+          "flexWrap": "nowrap"
+        },
+        "styles": {
+          "color": "#94A3B8",
+          "fontSize": "12px",
+          "fontWeight": 600
+        },
+        "content": {
+          "text": "Profile"
+        },
+        "confidence": 0.98
+      }
+    },
+    "metadata": {
+      "sourceType": "screenshot",
+      "confidence": 0.96,
+      "extractedAt": "2026-08-23T10:26:39.456Z",
+      "targetFrameworks": [
+        "react",
+        "vanillajs",
+        "flutter"
+      ]
+    }
+  },
+  "tokens": {
+    "colors": {
+      "primary": "#3B82F6",
+      "primaryHover": "#2563EB",
+      "primaryActive": "#1D4ED8",
+      "primaryForeground": "#FFFFFF",
+      "secondary": "#64748B",
+      "secondaryForeground": "#FFFFFF",
+      "background": "#0F172A",
+      "surface": "#F8FAFC",
+      "surfaceCard": "#F8FAFC",
+      "surfaceElevated": "#334155",
+      "text": "#F8FAFC",
+      "textMuted": "#94A3B8",
+      "textSubtle": "#64748B",
+      "textInverse": "#0F172A",
+      "border": "#334155",
+      "borderLight": "#475569",
+      "borderFocus": "#3B82F6",
+      "accent": "#8B5CF6",
+      "success": "#10B981",
+      "warning": "#F59E0B",
+      "error": "#EF4444",
+      "info": "#06B6D4",
+      "gradients": {}
+    },
+    "typography": {
+      "fontFamilies": {
+        "sans": "Inter, system-ui, sans-serif",
+        "serif": "Georgia, serif",
+        "mono": "Fira Code, monospace",
+        "display": "Inter, system-ui, sans-serif"
+      },
+      "fontSizes": {
+        "xs": "12px",
+        "sm": "14px",
+        "base": "16px",
+        "md": "18px",
+        "lg": "20px",
+        "xl": "24px",
+        "2xl": "30px",
+        "3xl": "36px",
+        "4xl": "48px"
+      },
+      "fontWeights": {
+        "normal": 400,
+        "medium": 500,
+        "semibold": 600,
+        "bold": 700
+      },
+      "lineHeights": {
+        "tight": 1.25,
+        "normal": 1.5,
+        "relaxed": 1.75
+      },
+      "letterSpacings": {
+        "tight": "-0.025em",
+        "normal": "0em",
+        "wide": "0.025em"
+      }
+    },
+    "spacing": {
+      "scale": {
+        "0": "0px",
+        "1": "4px",
+        "2": "8px",
+        "3": "12px",
+        "4": "16px",
+        "5": "20px",
+        "6": "24px",
+        "8": "32px",
+        "10": "40px",
+        "12": "48px",
+        "16": "64px",
+        "20": "80px",
+        "24": "96px"
+      }
+    },
+    "radius": {
+      "none": "0px",
+      "sm": "4px",
+      "md": "12px",
+      "lg": "12px",
+      "xl": "16px",
+      "full": "9999px"
+    },
+    "shadows": {
+      "none": "none",
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+      "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+      "inner": "inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)"
+    }
+  },
+  "plan": {
+    "rootComponentId": "app_root",
+    "components": {
+      "app_root": {
+        "id": "app_root",
+        "name": "App",
+        "category": "layout",
+        "irNodeIds": [
+          "page_root"
+        ],
+        "isReusable": false,
+        "filePath": "src/App.jsx",
+        "props": [],
+        "childComponentIds": [
+          "comp_sec_0_mobile"
+        ],
+        "stateVariables": [],
+        "stylingStrategy": "css-custom-props"
+      },
+      "comp_sec_0_mobile": {
+        "id": "comp_sec_0_mobile",
+        "name": "MobileAppCanvas",
+        "category": "section",
+        "irNodeIds": [
+          "sec_0_mobile",
+          "sec_0_mobile_app_bar",
+          "sec_0_mobile_card_list",
+          "sec_0_mobile_bottom_nav",
+          "sec_0_mobile_bar_title",
+          "sec_0_mobile_mcard_1",
+          "sec_0_mobile_mcard_2",
+          "sec_0_mobile_b_tab_1",
+          "sec_0_mobile_b_tab_2",
+          "sec_0_mobile_b_tab_3",
+          "sec_0_mobile_mcard_1_t",
+          "sec_0_mobile_mcard_1_b",
+          "sec_0_mobile_mcard_2_t",
+          "sec_0_mobile_mcard_2_b"
+        ],
+        "isReusable": false,
+        "filePath": "src/components/MobileAppCanvas.jsx",
+        "props": [],
+        "childComponentIds": [],
+        "stateVariables": [],
+        "stylingStrategy": "css-custom-props"
+      }
+    },
+    "entryFile": "src/App.jsx",
+    "sharedStylesFile": "src/index.css"
+  },
+  "currentProject": {
+    "target": "react",
+    "files": [
+      {
+        "path": "src/index.css",
+        "content": ":root {\n  --color-primary: #3B82F6;\n  --color-primary-hover: #2563EB;\n  --color-primary-active: #1D4ED8;\n  --color-primary-foreground: #FFFFFF;\n  --color-secondary: #64748B;\n  --color-secondary-foreground: #FFFFFF;\n  --color-background: #0F172A;\n  --color-surface: #F8FAFC;\n  --color-surface-card: #F8FAFC;\n  --color-surface-elevated: #334155;\n  --color-text: #F8FAFC;\n  --color-text-muted: #94A3B8;\n  --color-text-subtle: #64748B;\n  --color-text-inverse: #0F172A;\n  --color-border: #334155;\n  --color-border-light: #475569;\n  --color-border-focus: #3B82F6;\n  --color-accent: #8B5CF6;\n  --color-success: #10B981;\n  --color-warning: #F59E0B;\n  --color-error: #EF4444;\n  --color-info: #06B6D4;\n  --font-sans: Inter, system-ui, sans-serif;\n  --font-serif: Georgia, serif;\n  --font-mono: Fira Code, monospace;\n  --font-display: Inter, system-ui, sans-serif;\n  --text-xs: 12px;\n  --text-sm: 14px;\n  --text-base: 16px;\n  --text-md: 18px;\n  --text-lg: 20px;\n  --text-xl: 24px;\n  --text-2xl: 30px;\n  --text-3xl: 36px;\n  --text-4xl: 48px;\n  --space-0: 0px;\n  --space-1: 4px;\n  --space-2: 8px;\n  --space-3: 12px;\n  --space-4: 16px;\n  --space-5: 20px;\n  --space-6: 24px;\n  --space-8: 32px;\n  --space-10: 40px;\n  --space-12: 48px;\n  --space-16: 64px;\n  --space-20: 80px;\n  --space-24: 96px;\n  --radius-none: 0px;\n  --radius-sm: 4px;\n  --radius-md: 12px;\n  --radius-lg: 12px;\n  --radius-xl: 16px;\n  --radius-full: 9999px;\n  --shadow-none: none;\n  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);\n  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);\n  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);\n}\n\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nhtml, body, #root {\n  width: 100%;\n  min-height: 100%;\n  font-family: var(--font-sans);\n  background-color: var(--color-background);\n  color: var(--color-text);\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\nbutton {\n  font-family: inherit;\n  cursor: pointer;\n  border: none;\n  background: none;\n  transition: all 0.2s ease-in-out;\n}\n\nbutton:hover {\n  filter: brightness(1.08);\n}\n\nbutton:active {\n  transform: translateY(1px);\n}\n\ninput, textarea, select {\n  font-family: inherit;\n  font-size: inherit;\n  outline: none;\n}\n\na {\n  color: inherit;\n  text-decoration: none;\n}\n\n/* Base utility classes derived from UI IR */\n.aiui-page {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n  width: 100%;\n  background-color: var(--color-background);\n  color: var(--color-text);\n}\n\n.aiui-container {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n}\n\n.aiui-card {\n  background-color: var(--color-surface);\n  border: 1px solid var(--color-border);\n  border-radius: var(--radius-md);\n  box-shadow: var(--shadow-md);\n}\n\n.aiui-glass {\n  background: rgba(30, 41, 59, 0.7);\n  backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n",
+        "isEntry": false,
+        "language": "css"
+      },
+      {
+        "path": "src/components/MobileAppCanvas.jsx",
+        "content": "import React from 'react';\n\nexport default function MobileAppCanvas(props) {\n  return (\n    <section id=\"sec_0_mobile\" style={{\"width\":\"100%\",\"height\":\"100%\",\"maxWidth\":\"390px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"space-between\",\"alignItems\":\"stretch\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"margin\":\"0px 0px 0px 0px\"}}>\n      <header id=\"sec_0_mobile_app_bar\" style={{\"width\":\"100%\",\"height\":\"56px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"border\":\"1px solid #334155\"}}>\n        <h2 id=\"sec_0_mobile_bar_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"16px\",\"fontWeight\":700}}>\n          AIUI Mobile\n        </h2>\n      </header>\n      <div id=\"sec_0_mobile_card_list\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"stretch\",\"gap\":\"14px\",\"flexWrap\":\"nowrap\",\"padding\":\"20px 16px 20px 16px\"}}>\n        <article id=\"sec_0_mobile_mcard_1\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"18px 18px 18px 18px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\"}}>\n          <h2 id=\"sec_0_mobile_mcard_1_t\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"15px\",\"fontWeight\":600}}>\n            Real-time Pipeline\n          </h2>\n          <p id=\"sec_0_mobile_mcard_1_b\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"13px\"}}>\n            Optimized mobile layout rendered via unified IR.\n          </p>\n        </article>\n        <article id=\"sec_0_mobile_mcard_2\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"18px 18px 18px 18px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\"}}>\n          <h2 id=\"sec_0_mobile_mcard_2_t\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"15px\",\"fontWeight\":600}}>\n            Self-Healing Engine\n          </h2>\n          <p id=\"sec_0_mobile_mcard_2_b\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"13px\"}}>\n            Optimized mobile layout rendered via unified IR.\n          </p>\n        </article>\n      </div>\n      <footer id=\"sec_0_mobile_bottom_nav\" style={{\"width\":\"100%\",\"height\":\"60px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"space-around\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"border\":\"1px solid #334155\"}}>\n        <button id=\"sec_0_mobile_b_tab_1\" style={{\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"color\":\"#3B82F6\",\"fontSize\":\"12px\",\"fontWeight\":600}}>\n          Home\n        </button>\n        <button id=\"sec_0_mobile_b_tab_2\" style={{\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"color\":\"#94A3B8\",\"fontSize\":\"12px\",\"fontWeight\":600}}>\n          Activity\n        </button>\n        <button id=\"sec_0_mobile_b_tab_3\" style={{\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"color\":\"#94A3B8\",\"fontSize\":\"12px\",\"fontWeight\":600}}>\n          Profile\n        </button>\n      </footer>\n    </section>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/App.jsx",
+        "content": "import React from 'react';\nimport MobileAppCanvas from './components/MobileAppCanvas.jsx';\n\nexport default function App() {\n  return (\n    <div className=\"aiui-page\" style={{\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontFamily\":\"Inter, system-ui, sans-serif\"}}>\n      <MobileAppCanvas />\n    </div>\n  );\n}\n",
+        "isEntry": true,
+        "language": "jsx"
+      },
+      {
+        "path": "src/main.jsx",
+        "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App.jsx';\nimport './index.css';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>bench_mobile-ui</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+        "isEntry": false,
+        "language": "html"
+      },
+      {
+        "path": "vite.config.js",
+        "content": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    host: '127.0.0.1',\n  },\n});\n",
+        "isEntry": false,
+        "language": "javascript"
+      },
+      {
+        "path": "package.json",
+        "content": "{\n  \"name\": \"aiui-generated-app\",\n  \"private\": true,\n  \"version\": \"0.1.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"lucide-react\": \"^0.475.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.2.0\"\n  }\n}",
+        "isEntry": false,
+        "language": "json"
+      }
+    ],
+    "entryFile": "src/App.jsx",
+    "staticAssets": {},
+    "dependencies": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0",
+      "lucide-react": "^0.475.0"
+    }
+  },
+  "bestProject": {
+    "target": "react",
+    "files": [
+      {
+        "path": "src/index.css",
+        "content": ":root {\n  --color-primary: #3B82F6;\n  --color-primary-hover: #2563EB;\n  --color-primary-active: #1D4ED8;\n  --color-primary-foreground: #FFFFFF;\n  --color-secondary: #64748B;\n  --color-secondary-foreground: #FFFFFF;\n  --color-background: #0F172A;\n  --color-surface: #F8FAFC;\n  --color-surface-card: #F8FAFC;\n  --color-surface-elevated: #334155;\n  --color-text: #F8FAFC;\n  --color-text-muted: #94A3B8;\n  --color-text-subtle: #64748B;\n  --color-text-inverse: #0F172A;\n  --color-border: #334155;\n  --color-border-light: #475569;\n  --color-border-focus: #3B82F6;\n  --color-accent: #8B5CF6;\n  --color-success: #10B981;\n  --color-warning: #F59E0B;\n  --color-error: #EF4444;\n  --color-info: #06B6D4;\n  --font-sans: Inter, system-ui, sans-serif;\n  --font-serif: Georgia, serif;\n  --font-mono: Fira Code, monospace;\n  --font-display: Inter, system-ui, sans-serif;\n  --text-xs: 12px;\n  --text-sm: 14px;\n  --text-base: 16px;\n  --text-md: 18px;\n  --text-lg: 20px;\n  --text-xl: 24px;\n  --text-2xl: 30px;\n  --text-3xl: 36px;\n  --text-4xl: 48px;\n  --space-0: 0px;\n  --space-1: 4px;\n  --space-2: 8px;\n  --space-3: 12px;\n  --space-4: 16px;\n  --space-5: 20px;\n  --space-6: 24px;\n  --space-8: 32px;\n  --space-10: 40px;\n  --space-12: 48px;\n  --space-16: 64px;\n  --space-20: 80px;\n  --space-24: 96px;\n  --radius-none: 0px;\n  --radius-sm: 4px;\n  --radius-md: 12px;\n  --radius-lg: 12px;\n  --radius-xl: 16px;\n  --radius-full: 9999px;\n  --shadow-none: none;\n  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);\n  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);\n  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);\n  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);\n}\n\n*, *::before, *::after {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n}\n\nhtml, body, #root {\n  width: 100%;\n  min-height: 100%;\n  font-family: var(--font-sans);\n  background-color: var(--color-background);\n  color: var(--color-text);\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale;\n}\n\nbutton {\n  font-family: inherit;\n  cursor: pointer;\n  border: none;\n  background: none;\n  transition: all 0.2s ease-in-out;\n}\n\nbutton:hover {\n  filter: brightness(1.08);\n}\n\nbutton:active {\n  transform: translateY(1px);\n}\n\ninput, textarea, select {\n  font-family: inherit;\n  font-size: inherit;\n  outline: none;\n}\n\na {\n  color: inherit;\n  text-decoration: none;\n}\n\n/* Base utility classes derived from UI IR */\n.aiui-page {\n  display: flex;\n  flex-direction: column;\n  min-height: 100vh;\n  width: 100%;\n  background-color: var(--color-background);\n  color: var(--color-text);\n}\n\n.aiui-container {\n  width: 100%;\n  max-width: 1280px;\n  margin: 0 auto;\n}\n\n.aiui-card {\n  background-color: var(--color-surface);\n  border: 1px solid var(--color-border);\n  border-radius: var(--radius-md);\n  box-shadow: var(--shadow-md);\n}\n\n.aiui-glass {\n  background: rgba(30, 41, 59, 0.7);\n  backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.1);\n}\n",
+        "isEntry": false,
+        "language": "css"
+      },
+      {
+        "path": "src/components/MobileAppCanvas.jsx",
+        "content": "import React from 'react';\n\nexport default function MobileAppCanvas(props) {\n  return (\n    <section id=\"sec_0_mobile\" style={{\"width\":\"100%\",\"height\":\"100%\",\"maxWidth\":\"390px\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"space-between\",\"alignItems\":\"stretch\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#0F172A\",\"margin\":\"0px 0px 0px 0px\"}}>\n      <header id=\"sec_0_mobile_app_bar\" style={{\"width\":\"100%\",\"height\":\"56px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"border\":\"1px solid #334155\"}}>\n        <h2 id=\"sec_0_mobile_bar_title\" style={{\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"16px\",\"fontWeight\":700}}>\n          AIUI Mobile\n        </h2>\n      </header>\n      <div id=\"sec_0_mobile_card_list\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"stretch\",\"gap\":\"14px\",\"flexWrap\":\"nowrap\",\"padding\":\"20px 16px 20px 16px\"}}>\n        <article id=\"sec_0_mobile_mcard_1\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"18px 18px 18px 18px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\"}}>\n          <h2 id=\"sec_0_mobile_mcard_1_t\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"15px\",\"fontWeight\":600}}>\n            Real-time Pipeline\n          </h2>\n          <p id=\"sec_0_mobile_mcard_1_b\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"13px\"}}>\n            Optimized mobile layout rendered via unified IR.\n          </p>\n        </article>\n        <article id=\"sec_0_mobile_mcard_2\" style={{\"width\":\"100%\",\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"flex-start\",\"alignItems\":\"flex-start\",\"gap\":\"8px\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"padding\":\"18px 18px 18px 18px\",\"border\":\"1px solid #334155\",\"borderRadius\":\"12px 12px 12px 12px\"}}>\n          <h2 id=\"sec_0_mobile_mcard_2_t\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#F8FAFC\",\"fontSize\":\"15px\",\"fontWeight\":600}}>\n            Self-Healing Engine\n          </h2>\n          <p id=\"sec_0_mobile_mcard_2_b\" style={{\"width\":\"100%\",\"display\":\"block\",\"color\":\"#94A3B8\",\"fontSize\":\"13px\"}}>\n            Optimized mobile layout rendered via unified IR.\n          </p>\n        </article>\n      </div>\n      <footer id=\"sec_0_mobile_bottom_nav\" style={{\"width\":\"100%\",\"height\":\"60px\",\"display\":\"flex\",\"flexDirection\":\"row\",\"justifyContent\":\"space-around\",\"alignItems\":\"center\",\"flexWrap\":\"nowrap\",\"backgroundColor\":\"#1E293B\",\"border\":\"1px solid #334155\"}}>\n        <button id=\"sec_0_mobile_b_tab_1\" style={{\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"color\":\"#3B82F6\",\"fontSize\":\"12px\",\"fontWeight\":600}}>\n          Home\n        </button>\n        <button id=\"sec_0_mobile_b_tab_2\" style={{\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"color\":\"#94A3B8\",\"fontSize\":\"12px\",\"fontWeight\":600}}>\n          Activity\n        </button>\n        <button id=\"sec_0_mobile_b_tab_3\" style={{\"display\":\"flex\",\"flexDirection\":\"column\",\"justifyContent\":\"center\",\"alignItems\":\"center\",\"gap\":\"4px\",\"flexWrap\":\"nowrap\",\"color\":\"#94A3B8\",\"fontSize\":\"12px\",\"fontWeight\":600}}>\n          Profile\n        </button>\n      </footer>\n    </section>\n  );\n}\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "src/App.jsx",
+        "content": "import React from 'react';\nimport MobileAppCanvas from './components/MobileAppCanvas.jsx';\n\nexport default function App() {\n  return (\n    <div className=\"aiui-page\" style={{\"backgroundColor\":\"#0F172A\",\"color\":\"#F8FAFC\",\"fontFamily\":\"Inter, system-ui, sans-serif\"}}>\n      <MobileAppCanvas />\n    </div>\n  );\n}\n",
+        "isEntry": true,
+        "language": "jsx"
+      },
+      {
+        "path": "src/main.jsx",
+        "content": "import React from 'react';\nimport ReactDOM from 'react-dom/client';\nimport App from './App.jsx';\nimport './index.css';\n\nReactDOM.createRoot(document.getElementById('root')).render(\n  <React.StrictMode>\n    <App />\n  </React.StrictMode>\n);\n",
+        "isEntry": false,
+        "language": "jsx"
+      },
+      {
+        "path": "index.html",
+        "content": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>bench_mobile-ui</title>\n    <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\" />\n    <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin />\n    <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap\" rel=\"stylesheet\" />\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.jsx\"></script>\n  </body>\n</html>\n",
+        "isEntry": false,
+        "language": "html"
+      },
+      {
+        "path": "vite.config.js",
+        "content": "import { defineConfig } from 'vite';\nimport react from '@vitejs/plugin-react';\n\nexport default defineConfig({\n  plugins: [react()],\n  server: {\n    port: 3000,\n    host: '127.0.0.1',\n  },\n});\n",
+        "isEntry": false,
+        "language": "javascript"
+      },
+      {
+        "path": "package.json",
+        "content": "{\n  \"name\": \"aiui-generated-app\",\n  \"private\": true,\n  \"version\": \"0.1.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"dependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"lucide-react\": \"^0.475.0\"\n  },\n  \"devDependencies\": {\n    \"@vitejs/plugin-react\": \"^4.3.4\",\n    \"vite\": \"^6.2.0\"\n  }\n}",
+        "isEntry": false,
+        "language": "json"
+      }
+    ],
+    "entryFile": "src/App.jsx",
+    "staticAssets": {},
+    "dependencies": {
+      "react": "^19.0.0",
+      "react-dom": "^19.0.0",
+      "lucide-react": "^0.475.0"
+    }
+  },
+  "completedAt": "2026-08-23T10:26:40.721Z"
+}

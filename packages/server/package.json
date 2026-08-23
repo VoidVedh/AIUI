@@ -1,0 +1,30 @@
+{
+  "name": "@aiui/server",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts"
+  },
+  "dependencies": {
+    "@aiui/core": "*",
+    "@aiui/evaluator": "*",
+    "@aiui/orchestrator": "*",
+    "@aiui/runner": "*",
+    "archiver": "^7.0.1",
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "devDependencies": {
+    "@types/archiver": "^6.0.3",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/multer": "^1.4.12",
+    "@types/node": "^20.17.19",
+    "typescript": "^5.7.3"
+  }
+}

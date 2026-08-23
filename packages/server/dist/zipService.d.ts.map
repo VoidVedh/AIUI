@@ -1,0 +1,1 @@
+{"version":3,"file":"zipService.d.ts","sourceRoot":"","sources":["../src/zipService.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,gBAAgB,EAAE,MAAM,YAAY,CAAC;AAC9C,OAAO,EAAE,QAAQ,EAAE,MAAM,SAAS,CAAC;AAEnC,qBAAa,UAAU;IACrB;;OAEG;WACW,gBAAgB,CAAC,OAAO,EAAE,gBAAgB,EAAE,WAAW,EAAE,MAAM,EAAE,GAAG,EAAE,QAAQ,GAAG,IAAI;CAkBpG"}
