@@ -43,6 +43,10 @@ export class PipelineOrchestrator {
     mimeType = "image/png",
     options: OrchestratorOptions = {}
   ): Promise<PipelineRunState> {
+    if (!imageBuffer || (Buffer.isBuffer(imageBuffer) && imageBuffer.length === 0)) {
+      throw new Error("Invalid input: screenshot image data is empty or missing.");
+    }
+
     const runId = options.runId || `run_${Date.now()}_${crypto.randomBytes(4).toString("hex")}`;
     const target = options.target || "react";
     const maxIterations = options.maxIterations || 5;
