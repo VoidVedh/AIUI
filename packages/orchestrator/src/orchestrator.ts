@@ -150,6 +150,75 @@ export class PipelineOrchestrator {
       logProgress("validating_code", "Validating React syntax and module imports...");
       this.validateProject(state.currentProject);
 
+      // Optional: Best-of-N Candidate Generation Pass
+      if (options.bestOfN && options.bestOfN > 1 && !isJsonPayload) {
+        logProgress("generating_code", `Running Best-of-${options.bestOfN} candidate selection...`);
+        const candidateCount = options.bestOfN;
+        let bestCandidateScore = -1;
+        let selectedCandidateProject = project;
+        let selectedIr = state.ir;
+        let selectedTokens = state.tokens;
+        let selectedPlan = state.plan;
+
+        for (let c = 0; c < candidateCount; c++) {
+          try {
+            let candProject = project;
+            let candIr = state.ir;
+            let candTokens = state.tokens;
+            let candPlan = state.plan;
+
+            if (c > 0) {
+              const candAnalysis = await this.provider.analyzeScreenshot(
+                imageBuffer,
+                mimeType,
+                viewport,
+                "analyzing",
+                `${docName}_cand_${c + 1}`
+              );
+              candIr = candAnalysis.data;
+              this.recordCostLog(state, candAnalysis.costLog);
+              candTokens = DesignTokenEngine.extractTokens(candIr);
+              candPlan = ComponentPlanner.planComponents(candIr);
+              candProject = await generator.generate(candIr, candTokens, candPlan);
+              this.validateProject(candProject);
+            }
+
+            const candRender = await PlaywrightRenderer.render(candProject, {
+              runId: `${runId}_cand_${c + 1}`,
+              iteration: 0,
+              viewport,
+              timeoutMs: 25000,
+            });
+
+            if (candRender && candRender.screenshotBuffer) {
+              const candEval = await VisualEvaluator.evaluate(
+                imageBuffer,
+                candRender.screenshotBuffer,
+                [],
+                candRender.boundingBoxes,
+                viewport
+              );
+              if (candEval.overallSimilarity > bestCandidateScore) {
+                bestCandidateScore = candEval.overallSimilarity;
+                selectedCandidateProject = candProject;
+                selectedIr = candIr;
+                selectedTokens = candTokens;
+                selectedPlan = candPlan;
+              }
+            }
+          } catch {
+            // Keep default candidate on error
+          }
+        }
+
+        state.currentProject = selectedCandidateProject;
+        state.bestProject = selectedCandidateProject;
+        state.ir = selectedIr;
+        state.tokens = selectedTokens;
+        state.plan = selectedPlan;
+        logProgress("generating_code", `Selected best candidate from ${candidateCount} samples.`);
+      }
+
       // Extract expected bounding boxes from IR
       const expectedBoxes = Object.values(state.ir.nodes).map((n) => ({
         id: n.id,

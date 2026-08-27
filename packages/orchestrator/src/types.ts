@@ -75,5 +75,6 @@ export interface OrchestratorOptions {
   runTimeoutMs?: number;
   viewport?: { width: number; height: number };
   providerName?: "gemini" | "openai" | "anthropic" | "offline";
+  bestOfN?: number;
   onProgress?: (state: PipelineRunState, logMessage: string) => void;
 }

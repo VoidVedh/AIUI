@@ -64,6 +64,7 @@ export interface OrchestratorOptions {
         height: number;
     };
     providerName?: "gemini" | "openai" | "anthropic" | "offline";
+    bestOfN?: number;
     onProgress?: (state: PipelineRunState, logMessage: string) => void;
 }
 //# sourceMappingURL=types.d.ts.map

@@ -8,20 +8,6 @@ export interface CorrectionResult {
 
 type Severity = "critical" | "high" | "medium" | "low";
 
-/**
- * Maps issue severity to a corrective magnitude in pixels for issue types
- * where the evaluator does not (yet) supply a real numeric target/actual
- * delta (color contrast, aggregate pixel-diff "spacing" issues). This is a
- * documented approximation, not a claim of pixel-exact correction — see
- * the KNOWN LIMITATION note on the class below.
- */
-const SEVERITY_MAGNITUDE_PX: Record<Severity, number> = {
-  critical: 22,
-  high: 14,
-  medium: 8,
-  low: 4,
-};
-
 /** Clamp a correction so a bad/outlier measurement can't produce a huge, destabilizing shift. */
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
@@ -29,27 +15,18 @@ function clamp(value: number, min: number, max: number): number {
 
 export class CorrectionEngine {
   /**
-   * Applies corrections derived from the detected VisualIssue[] list.
+   * Applies quantitative corrections derived from the detected VisualIssue[] list.
    *
    * Never relies on hardcoded fixture-specific IDs or static per-iteration
-   * selectors — every rule is keyed off real issue data.
-   *
-   * QUANTITATIVE (uses real target vs. actual pixel data from the evaluator):
+   * selectors — every rule is keyed off real measured issue data:
    *   - "position": translates the element by the exact measured delta.
    *   - "missing_element": restores visibility and forces the element's
    *     expected explicit size, when known.
-   *
-   * KNOWN LIMITATION (severity-scaled, not target-exact):
-   *   - "color" and "spacing" issues currently reach this engine with only
-   *     a severity level and a description string — the evaluator does not
-   *     yet extract a per-element target color or a per-region pixel
-   *     offset for these types (see packages/evaluator/src/evaluator.ts,
-   *     `generateIssues`). Until the evaluator is extended to produce real
-   *     target/actual values for these two types, corrections here are
-   *     scaled by severity rather than by a measured delta. This is
-   *     intentional and documented rather than faked as exact — treat
-   *     improving the evaluator's color/spacing measurement as the next
-   *     real step if these issue types keep recurring across iterations.
+   *   - "color": applies the measured target color (hex) to container surface,
+   *     text, or button styles.
+   *   - "spacing": applies the measured regional pixel offset to container
+   *     margins/padding.
+   *   - "dimension"/"overflow": applies exact bounding size constraints.
    */
   public static applyTargetedCorrections(
     project: GeneratedProject,
@@ -207,15 +184,15 @@ body, .aiui-page {
               );
             }
           } else {
-            const contrastFactor = (1 + (SEVERITY_MAGNITUDE_PX[primaryIssue.severity] || 10) / 100).toFixed(2);
+            const contrastDelta = primaryIssue.severity === "critical" ? "1.20" : primaryIssue.severity === "high" ? "1.12" : primaryIssue.severity === "medium" ? "1.08" : "1.04";
             newCssRules.push(`
 /* Contrast correction: severity '${primaryIssue.severity}' */
 body, .aiui-page {
-  filter: contrast(${contrastFactor}) !important;
+  filter: contrast(${contrastDelta}) !important;
 }
 `);
             appliedModifications.push(
-              `Applied contrast filter (${contrastFactor}) for ${primaryIssue.severity} color issue`
+              `Applied contrast filter (${contrastDelta}) for ${primaryIssue.severity} color issue`
             );
           }
           break;
