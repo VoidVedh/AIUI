@@ -5,7 +5,8 @@ export declare class OpenAIProvider implements VisionProvider, LLMProvider {
     readonly name = "openai";
     private client;
     private fallback;
-    constructor(apiKey?: string);
+    private model;
+    constructor(apiKey?: string, model?: string);
     analyzeScreenshot(imageBuffer: Buffer, mimeType: string, viewport: {
         width: number;
         height: number;

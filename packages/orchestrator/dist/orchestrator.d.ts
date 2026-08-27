@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { PipelineRunState, OrchestratorOptions } from "./types.js";
 import { StateManager } from "./stateManager.js";
 import { VisionProvider, LLMProvider } from "./providers/index.js";

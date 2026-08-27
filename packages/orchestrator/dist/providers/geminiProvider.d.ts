@@ -5,7 +5,8 @@ export declare class GeminiProvider implements VisionProvider, LLMProvider {
     readonly name = "gemini";
     private client;
     private fallback;
-    constructor(apiKey?: string);
+    private model;
+    constructor(apiKey?: string, model?: string);
     analyzeScreenshot(imageBuffer: Buffer, mimeType: string, viewport: {
         width: number;
         height: number;

@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import "dotenv/config";
 import {
   UIIRDocument,
   DesignTokens,
@@ -47,6 +48,10 @@ export class PipelineOrchestrator {
     const maxIterations = options.maxIterations || (target === "flutter" ? 3 : 5);
     const similarityThreshold = options.similarityThreshold || 0.92;
     const viewport = options.viewport || { width: 1280, height: 800 };
+
+    if (options.providerName) {
+      this.provider = createProvider(options.providerName);
+    }
 
     let state: PipelineRunState = {
       runId,
@@ -104,6 +109,18 @@ export class PipelineOrchestrator {
         );
         state.ir = analysisResult.data;
         this.recordCostLog(state, analysisResult.costLog);
+
+        if ((state.ir.metadata as any)?.vlmError) {
+          logProgress(
+            "analyzing",
+            `VLM notice: ${(state.ir.metadata as any).vlmError}. Used deterministic CV perception engine.`
+          );
+        } else if ((state.ir.metadata as any)?.isApproximate) {
+          logProgress(
+            "analyzing",
+            `Perception notice: Offline CV layout approximation active (confidence: ${((state.ir.metadata?.confidence || 0.6) * 100).toFixed(0)}%).`
+          );
+        }
       }
 
       if (!state.ir) {
@@ -210,13 +227,17 @@ export class PipelineOrchestrator {
         state.history.push(checkpoint);
 
         // Check if score improved or regressed
+        // Check if score improved, regressed, or plateaued
         if (evalResult.overallSimilarity > bestScore) {
           bestScore = evalResult.overallSimilarity;
           state.bestIteration = iteration;
           state.bestProject = state.currentProject;
         } else if (evalResult.overallSimilarity < bestScore) {
           // Rollback on regression
-          logProgress("correcting", `Regression detected (score ${evalResult.overallSimilarity} < previous best ${bestScore}). Rolling back to best checkpoint.`);
+          logProgress(
+            "correcting",
+            `Regression detected (score ${(evalResult.overallSimilarity * 100).toFixed(1)}% < previous best ${(bestScore * 100).toFixed(1)}%). Rolling back to best checkpoint.`
+          );
           state.currentProject = state.bestProject;
         }
 
@@ -224,6 +245,19 @@ export class PipelineOrchestrator {
           "evaluating",
           `Iteration ${iteration} Score: ${(evalResult.overallSimilarity * 100).toFixed(1)}% (SSIM: ${(evalResult.ssimScore * 100).toFixed(1)}%, PixelMatch: ${(evalResult.pixelMatchScore * 100).toFixed(1)}%)`
         );
+
+        // Plateau Detection: If score hasn't improved for 2 consecutive iterations after corrections
+        if (iteration >= 3 && evalResult.overallSimilarity <= bestScore) {
+          const prevScores = state.history.slice(-3).map((h) => h.similarityScore);
+          if (prevScores.length >= 3 && prevScores.every((s) => Math.abs(s - prevScores[0]) < 0.001)) {
+            logProgress(
+              "completed",
+              `[CORRECTION_PLATEAU_DETECTED] Visual metrics converged/plateaued across consecutive iterations at ${(bestScore * 100).toFixed(1)}%. Preserving best project.`
+            );
+            state.status = bestScore >= similarityThreshold ? "success" : "max_iterations_reached";
+            break;
+          }
+        }
 
         // Stopping condition: threshold met
         if (evalResult.overallSimilarity >= similarityThreshold) {
@@ -248,6 +282,7 @@ export class PipelineOrchestrator {
         );
 
         state.currentProject = correctionResult.patchedProject;
+        logProgress("correcting", `Applied: ${correctionResult.appliedModifications.join("; ")}`);
 
         // Re-validate patched code
         this.validateProject(state.currentProject);

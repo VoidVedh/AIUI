@@ -58,4 +58,31 @@ describe("@aiui/evaluator", () => {
     expect(res.passed).toBe(true);
     expect(res.diffImageBuffer.length).toBeGreaterThan(0);
   });
+
+  it("should extract quantitative color and spacing differences with real target/actual data", async () => {
+    const dashboardFixturePath = path.resolve(process.cwd(), "fixtures/dashboard/target.png");
+    const dashImageBuffer = fs.readFileSync(dashboardFixturePath);
+
+    const diffResult = await PixelDiffCalculator.compute(sampleImageBuffer, dashImageBuffer, 1280, 800);
+    expect(diffResult.topDiffRegions.length).toBeGreaterThan(0);
+
+    const firstRegion = diffResult.topDiffRegions[0];
+    expect(firstRegion.bounds).toBeDefined();
+    expect(firstRegion.targetColor.hex).toMatch(/^#[0-9A-F]{6}$/i);
+    expect(firstRegion.actualColor.hex).toMatch(/^#[0-9A-F]{6}$/i);
+    expect(firstRegion.offset).toBeDefined();
+
+    const evalResult = await VisualEvaluator.evaluate(
+      sampleImageBuffer,
+      dashImageBuffer,
+      [{ id: "page_nav", x: 0, y: 0, width: 1280, height: 72 }],
+      [{ id: "page_nav", x: 0, y: 0, width: 1280, height: 72 }]
+    );
+
+    expect(evalResult.issues.length).toBeGreaterThan(0);
+    const colorOrSpacing = evalResult.issues.find((i) => i.type === "color" || i.type === "spacing");
+    expect(colorOrSpacing).toBeDefined();
+    expect(colorOrSpacing?.target).toBeDefined();
+    expect(colorOrSpacing?.actual).toBeDefined();
+  });
 });

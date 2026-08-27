@@ -177,11 +177,9 @@ a {
 /* Base utility classes derived from UI IR */
 .aiui-page {
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  background-color: var(--color-background);
-  color: var(--color-text);
+  box-sizing: border-box;
 }
 
 .aiui-container {
@@ -218,8 +216,8 @@ a {
             const subCompTags = Object.values(subComponents)
                 .map(name => `      <${name} />`)
                 .join("\n");
-            const styleObj = this.nodeStyleToReactInline(rootNode?.styles);
-            bodyJsx = `    <div className="aiui-page" style={${JSON.stringify(styleObj)}}>\n${subCompTags}\n    </div>`;
+            const styleObj = this.nodeStyleToReactInline(rootNode?.styles, rootNode?.layout, rootNode?.dimensions);
+            bodyJsx = `    <div id="${ir.rootNodeId}" data-aiui-id="${ir.rootNodeId}" className="aiui-page" style={${JSON.stringify(styleObj)}}>\n${subCompTags}\n    </div>`;
         }
         else {
             bodyJsx = this.renderNodeToJsx(ir.rootNodeId, ir.nodes, 2, iconImports);
@@ -261,7 +259,7 @@ ${jsxContent}
         const tag = this.resolveHtmlTag(node.type);
         const styleObj = this.nodeStyleToReactInline(node.styles, node.layout, node.dimensions);
         const styleAttr = Object.keys(styleObj).length > 0 ? ` style={${JSON.stringify(styleObj)}}` : "";
-        const idAttr = ` id="${node.id}"`;
+        const idAttr = ` id="${node.id}" data-aiui-id="${node.id}"`;
         // Handle Atomic leaf nodes
         if (node.type === "icon" && node.content?.iconName) {
             const iconComp = this.resolveLucideIcon(node.content.iconName);
@@ -368,8 +366,17 @@ ${jsxContent}
             if (dimensions.height && dimensions.height !== "auto") {
                 inline.height = typeof dimensions.height === "number" ? `${dimensions.height}px` : dimensions.height;
             }
+            if (dimensions.minWidth) {
+                inline.minWidth = typeof dimensions.minWidth === "number" ? `${dimensions.minWidth}px` : dimensions.minWidth;
+            }
+            if (dimensions.minHeight) {
+                inline.minHeight = typeof dimensions.minHeight === "number" ? `${dimensions.minHeight}px` : dimensions.minHeight;
+            }
             if (dimensions.maxWidth) {
                 inline.maxWidth = typeof dimensions.maxWidth === "number" ? `${dimensions.maxWidth}px` : dimensions.maxWidth;
+            }
+            if (dimensions.maxHeight) {
+                inline.maxHeight = typeof dimensions.maxHeight === "number" ? `${dimensions.maxHeight}px` : dimensions.maxHeight;
             }
         }
         if (layout) {
@@ -380,6 +387,8 @@ ${jsxContent}
                     inline.justifyContent = layout.justifyContent;
                 if (layout.alignItems)
                     inline.alignItems = layout.alignItems;
+                if (layout.alignSelf)
+                    inline.alignSelf = layout.alignSelf;
                 if (layout.gap) {
                     inline.gap = typeof layout.gap === "number" ? `${layout.gap}px` : layout.gap;
                 }

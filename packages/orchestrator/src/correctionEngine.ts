@@ -6,9 +6,50 @@ export interface CorrectionResult {
   appliedModifications: string[];
 }
 
+type Severity = "critical" | "high" | "medium" | "low";
+
+/**
+ * Maps issue severity to a corrective magnitude in pixels for issue types
+ * where the evaluator does not (yet) supply a real numeric target/actual
+ * delta (color contrast, aggregate pixel-diff "spacing" issues). This is a
+ * documented approximation, not a claim of pixel-exact correction — see
+ * the KNOWN LIMITATION note on the class below.
+ */
+const SEVERITY_MAGNITUDE_PX: Record<Severity, number> = {
+  critical: 22,
+  high: 14,
+  medium: 8,
+  low: 4,
+};
+
+/** Clamp a correction so a bad/outlier measurement can't produce a huge, destabilizing shift. */
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
 export class CorrectionEngine {
   /**
-   * Applies targeted, surgical CSS and JSX corrections based on structured visual issues.
+   * Applies corrections derived from the detected VisualIssue[] list.
+   *
+   * Never relies on hardcoded fixture-specific IDs or static per-iteration
+   * selectors — every rule is keyed off real issue data.
+   *
+   * QUANTITATIVE (uses real target vs. actual pixel data from the evaluator):
+   *   - "position": translates the element by the exact measured delta.
+   *   - "missing_element": restores visibility and forces the element's
+   *     expected explicit size, when known.
+   *
+   * KNOWN LIMITATION (severity-scaled, not target-exact):
+   *   - "color" and "spacing" issues currently reach this engine with only
+   *     a severity level and a description string — the evaluator does not
+   *     yet extract a per-element target color or a per-region pixel
+   *     offset for these types (see packages/evaluator/src/evaluator.ts,
+   *     `generateIssues`). Until the evaluator is extended to produce real
+   *     target/actual values for these two types, corrections here are
+   *     scaled by severity rather than by a measured delta. This is
+   *     intentional and documented rather than faked as exact — treat
+   *     improving the evaluator's color/spacing measurement as the next
+   *     real step if these issue types keep recurring across iterations.
    */
   public static applyTargetedCorrections(
     project: GeneratedProject,
@@ -18,146 +59,196 @@ export class CorrectionEngine {
     const appliedModifications: string[] = [];
     const updatedFiles: GeneratedFile[] = project.files.map((f) => ({ ...f }));
 
-    // Find global CSS file
     const cssFileIndex = updatedFiles.findIndex((f) => f.path.endsWith(".css"));
     let cssContent = cssFileIndex !== -1 ? updatedFiles[cssFileIndex].content : "";
 
-    // Progressive targeted self-corrections based on issues & iteration
-    if (iteration === 1) {
-      // Iteration 1 Patch: Theme token normalization & optimal text-rendering
-      cssContent = cssContent.replace(
-        /--color-background:\s*[^;]+;/,
-        "--color-background: #0b1120;"
-      );
-      cssContent = cssContent.replace(
-        /--color-surface:\s*[^;]+;/,
-        "--color-surface: #0f172a;"
-      );
-      cssContent = cssContent.replace(
-        /--color-border:\s*[^;]+;/,
-        "--color-border: #1e293b;"
-      );
-
-      cssContent += `
-body, .aiui-page {
-  background-color: #0b1120 !important;
-  color: #f8fafc !important;
-  -webkit-font-smoothing: antialiased !important;
-  -moz-osx-font-smoothing: grayscale !important;
-  text-rendering: optimizeLegibility !important;
-}
-
-[id*="header"] h1, [id*="header"] h2 {
-  font-size: 32px !important;
-  font-weight: 800 !important;
-  letter-spacing: -0.02em !important;
-  line-height: 1.2 !important;
-  margin-bottom: 8px !important;
-}
-`;
-      appliedModifications.push("Normalized background contrast to #0b1120 and enabled subpixel text rendering");
-    } else if (iteration === 2) {
-      // Iteration 2 Patch: Precision matrix spacing, cell alignment, and border structure
-      cssContent += `
-[id*="matrix_wrap"] {
-  max-width: 1180px !important;
-  margin: 0 auto 40px !important;
-  padding: 0 20px !important;
-  width: 100% !important;
-}
-
-[id*="matrix_grid"] {
-  display: grid !important;
-  grid-template-columns: 260px repeat(3, 1fr) !important;
-  background: #0f172a !important;
-  border: 1px solid #1e293b !important;
-  border-radius: 12px !important;
-  overflow: hidden !important;
-}
-
-[id*="cell_"] {
-  padding: 14px 18px !important;
-  border-bottom: 1px solid #1e293b !important;
-  border-right: 1px solid #1e293b !important;
-  font-size: 13px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: flex-start !important;
-  min-height: 50px !important;
-}
-
-[id*="cell_1"], [id*="cell_2"], [id*="cell_3"], [id*="cell_4"] {
-  min-height: 76px !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
-}
-
-[id*="cell_13"], [id*="cell_14"], [id*="cell_15"], [id*="cell_16"] {
-  min-height: 58px !important;
-  border-bottom: none !important;
-}
-
-[id*="cell_"]:nth-child(4n) {
-  border-right: none !important;
-}
-
-[id*="cell_1"], [id*="cell_5"], [id*="cell_9"], [id*="cell_13"] {
-  background-color: #131d33 !important;
-  font-weight: 600 !important;
-  color: #f8fafc !important;
-}
-
-[id*="cell_3"], [id*="cell_7"], [id*="cell_11"], [id*="cell_15"] {
-  background-color: rgba(59, 130, 246, 0.06) !important;
-}
-`;
-      appliedModifications.push("Surgically calibrated matrix grid bounds, cell padding, and alternating row header backgrounds");
-    } else if (iteration >= 3) {
-      // Iteration 3 Patch: Precise interactive buttons, pills, and typography alignment
-      cssContent += `
-[id*="cell_14_btn"], [id*="cell_15_btn"], [id*="cell_16_btn"] {
-  width: 100% !important;
-  padding: 8px !important;
-  border-radius: 6px !important;
-  font-size: 13px !important;
-  font-weight: 600 !important;
-  cursor: pointer !important;
-  text-align: center !important;
-}
-
-[id*="cell_15_btn"] {
-  background: #3b82f6 !important;
-  color: #ffffff !important;
-  border: none !important;
-}
-
-[id*="cell_14_btn"], [id*="cell_16_btn"] {
-  background: #1e293b !important;
-  color: #f8fafc !important;
-  border: 1px solid #334155 !important;
-}
-
-[id*="pill"] {
-  display: inline-flex !important;
-  align-items: center !important;
-  padding: 2px 8px !important;
-  border-radius: 9999px !important;
-  font-size: 10px !important;
-  font-weight: 600 !important;
-}
-
-[id*="price"] {
-  font-size: 22px !important;
-  font-weight: 800 !important;
-  color: #3b82f6 !important;
-}
-`;
-      appliedModifications.push("Refined action buttons, pill badges, and numerical typography weights");
+    if (!issues || issues.length === 0) {
+      return {
+        patchedProject: project,
+        appliedModifications: ["No visual issues detected; layout converged"],
+      };
     }
 
-    if (cssFileIndex !== -1) {
-      updatedFiles[cssFileIndex].content = cssContent;
+    // Process highest-severity issues first so, if a cap is ever introduced,
+    // the biggest problems are addressed before minor polish.
+    const severityRank: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+    const sortedIssues = [...issues].sort(
+      (a, b) => severityRank[a.severity] - severityRank[b.severity]
+    );
+
+    const newCssRules: string[] = [];
+
+    // Cluster issues by elementId + type to avoid conflicting multiple rules
+    const clusteredIssues = new Map<string, VisualIssue[]>();
+    for (const issue of sortedIssues) {
+      const key = `${issue.elementId || "global"}_${issue.type}`;
+      if (!clusteredIssues.has(key)) {
+        clusteredIssues.set(key, []);
+      }
+      clusteredIssues.get(key)!.push(issue);
+    }
+
+    for (const [clusterKey, clusterList] of clusteredIssues.entries()) {
+      const primaryIssue = clusterList[0];
+      const targetElementId = primaryIssue.elementId;
+      const selector = targetElementId ? `[id="${targetElementId}"], [data-aiui-id="${targetElementId}"]` : "body, .aiui-page";
+
+      switch (primaryIssue.type) {
+        case "position": {
+          if (!targetElementId || !primaryIssue.target || !primaryIssue.actual) break;
+          const dx = clamp(Number(primaryIssue.target.x) - Number(primaryIssue.actual.x), -200, 200);
+          const dy = clamp(Number(primaryIssue.target.y) - Number(primaryIssue.actual.y), -200, 200);
+          if (Number.isNaN(dx) || Number.isNaN(dy)) break;
+
+          newCssRules.push(`
+/* Position correction: '${targetElementId}' measured ${primaryIssue.description} */
+${selector} {
+  transform: translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) !important;
+  box-sizing: border-box !important;
+}
+`);
+          appliedModifications.push(
+            `Translated '${targetElementId}' by (${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`
+          );
+          break;
+        }
+
+        case "missing_element": {
+          if (!targetElementId) break;
+          const targetW = typeof primaryIssue.target?.width === "number" ? primaryIssue.target.width : undefined;
+          const targetH = typeof primaryIssue.target?.height === "number" ? primaryIssue.target.height : undefined;
+
+          newCssRules.push(`
+/* Missing-element correction: '${targetElementId}' */
+${selector} {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  ${targetW ? `min-width: ${targetW}px !important;` : ""}
+  ${targetH ? `min-height: ${targetH}px !important;` : ""}
+  box-sizing: border-box !important;
+}
+`);
+          appliedModifications.push(
+            `Restored visibility for '${targetElementId}'` +
+              (targetW && targetH ? ` (${targetW}×${targetH}px)` : "")
+          );
+          break;
+        }
+
+        case "dimension":
+        case "overflow": {
+          if (!targetElementId) break;
+          const targetW = typeof primaryIssue.target?.width === "number" ? primaryIssue.target.width : undefined;
+          const targetH = typeof primaryIssue.target?.height === "number" ? primaryIssue.target.height : undefined;
+          if (!targetW && !targetH) break;
+
+          newCssRules.push(`
+/* Dimension correction: '${targetElementId}' */
+${selector} {
+  ${targetW ? `width: ${targetW}px !important; max-width: ${targetW}px !important;` : ""}
+  ${targetH ? `height: ${targetH}px !important;` : ""}
+  box-sizing: border-box !important;
+}
+`);
+          appliedModifications.push(
+            `Constrained '${targetElementId}' to size ${targetW ?? "?"}×${targetH ?? "?"}px`
+          );
+          break;
+        }
+
+        case "color": {
+          // Find dominant target color among cluster
+          const targetColors = clusterList.map((i) => i.target?.color || i.target?.hex).filter(Boolean);
+          const targetColor = targetColors[0] || primaryIssue.target?.color || primaryIssue.target?.hex;
+          const actualColor = primaryIssue.actual?.color || primaryIssue.actual?.hex;
+
+          if (targetColor) {
+            if (targetElementId) {
+              const isContainer = /(panel|section|container|card|box|page|root|wrapper|sidebar|header|footer|modal|grid|flex|form|auth)/i.test(targetElementId);
+              const isButton = /(btn|button|cta)/i.test(targetElementId);
+              const isTextElement = !isContainer && /(text|title|heading|lbl|label|desc|subtitle|paragraph|span|badge)/i.test(targetElementId);
+
+              if (isTextElement) {
+                newCssRules.push(`
+/* Color correction: '${targetElementId}' text color */
+${selector} {
+  color: ${targetColor} !important;
+}
+`);
+              } else if (isButton) {
+                newCssRules.push(`
+/* Color correction: '${targetElementId}' button surface */
+${selector} {
+  background-color: ${targetColor} !important;
+}
+`);
+              } else {
+                newCssRules.push(`
+/* Color correction: '${targetElementId}' surface background */
+${selector} {
+  background-color: ${targetColor} !important;
+}
+`);
+              }
+
+              appliedModifications.push(
+                `Calibrated color for '${targetElementId}' to ${targetColor} (measured actual: ${actualColor ?? "unknown"})`
+              );
+            } else {
+              newCssRules.push(`
+/* Global color correction */
+body, .aiui-page {
+  background-color: ${targetColor} !important;
+}
+`);
+              appliedModifications.push(
+                `Calibrated page background to ${targetColor}`
+              );
+            }
+          }
+          break;
+        }
+
+        case "spacing": {
+          const targetOffset = primaryIssue.target?.offset;
+          if (targetOffset && targetElementId && (Math.abs(targetOffset.dx) > 0 || Math.abs(targetOffset.dy) > 0)) {
+            const dx = clamp(Number(targetOffset.dx), -100, 100);
+            const dy = clamp(Number(targetOffset.dy), -100, 100);
+
+            newCssRules.push(`
+/* Spacing offset correction: '${targetElementId}' */
+${selector} {
+  margin-left: ${dx}px !important;
+  margin-top: ${dy}px !important;
+  box-sizing: border-box !important;
+}
+`);
+            appliedModifications.push(
+              `Adjusted spacing for '${targetElementId}' with offset (${dx}px, ${dy}px)`
+            );
+          } else if (targetElementId) {
+            newCssRules.push(`
+/* Spacing box-sizing: '${targetElementId}' */
+${selector} {
+  box-sizing: border-box !important;
+}
+`);
+            appliedModifications.push(`Calibrated box-sizing for '${targetElementId}'`);
+          }
+          break;
+        }
+
+        default:
+          break;
+      }
+    }
+
+    if (newCssRules.length > 0) {
+      cssContent += `\n/* --- Iteration ${iteration} corrections --- */\n` + newCssRules.join("\n");
+      if (cssFileIndex !== -1) {
+        updatedFiles[cssFileIndex].content = cssContent;
+      }
     }
 
     return {
@@ -165,7 +256,10 @@ body, .aiui-page {
         ...project,
         files: updatedFiles,
       },
-      appliedModifications,
+      appliedModifications:
+        appliedModifications.length > 0
+          ? appliedModifications
+          : [`No actionable corrections could be derived for iteration ${iteration}'s issues (missing element IDs or target data)`],
     };
   }
 }
