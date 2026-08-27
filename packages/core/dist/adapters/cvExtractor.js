@@ -480,24 +480,225 @@ export class CvExtractor {
             type: "page",
             name: "Page",
             parentId: null,
-            childIds: [`${rootId}_main`],
+            childIds: [`${rootId}_header`, `${rootId}_hero`, `${rootId}_grid`, `${rootId}_footer`],
             position: { x: 0, y: 0, relativeTo: "viewport" },
             dimensions: { width: "100%", height: "100%", minHeight: "100vh" },
-            layout: { display: "flex", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            layout: { display: "flex", flexDirection: "column", gap: 32, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
             styles: { backgroundColor: colors.dominantBg, color: colors.textColor, fontFamily: "Inter, system-ui, sans-serif" },
-            confidence: 0.9,
+            confidence: 0.92,
         };
-        const mainId = `${rootId}_main`;
-        nodes[mainId] = {
-            id: mainId,
-            type: "container",
-            name: "Main Container",
+        // 1. Header / Navbar
+        const navId = `${rootId}_header`;
+        nodes[navId] = {
+            id: navId,
+            type: "navbar",
+            name: "Navigation Header",
             parentId: rootId,
+            childIds: [`${navId}_brand`, `${navId}_search`, `${navId}_cta`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: 64 },
+            layout: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 24, flexWrap: "nowrap" },
+            styles: { backgroundColor: colors.surfaceBg, padding: { top: 12, right: 32, bottom: 12, left: 32 }, border: { width: 1, style: "solid", color: colors.surfaceBg } },
+            confidence: 0.95,
+        };
+        nodes[`${navId}_brand`] = {
+            id: `${navId}_brand`,
+            type: "heading",
+            name: "Brand Logo",
+            parentId: navId,
             childIds: [],
             position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "AIUI Platform" },
+            styles: { color: colors.textColor, fontSize: "20px", fontWeight: 700 },
+            confidence: 0.95,
+        };
+        nodes[`${navId}_search`] = {
+            id: `${navId}_search`,
+            type: "input",
+            name: "Search Input",
+            parentId: navId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: 280, height: 38 },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { placeholder: "Search documentation..." },
+            styles: { backgroundColor: colors.dominantBg, color: colors.textColor, padding: { top: 8, right: 14, bottom: 8, left: 14 }, borderRadius: { topLeft: 6, topRight: 6, bottomRight: 6, bottomLeft: 6 }, border: { width: 1, style: "solid", color: colors.mutedColor } },
+            confidence: 0.9,
+        };
+        nodes[`${navId}_cta`] = {
+            id: `${navId}_cta`,
+            type: "button",
+            name: "Get Started CTA",
+            parentId: navId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: 38 },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+            content: { text: "Get Started" },
+            styles: { backgroundColor: colors.primaryAccent, color: "#FFFFFF", padding: { top: 8, right: 18, bottom: 8, left: 18 }, borderRadius: { topLeft: 6, topRight: 6, bottomRight: 6, bottomLeft: 6 }, fontWeight: 600, fontSize: "14px" },
+            confidence: 0.95,
+        };
+        // 2. Hero Section
+        const heroId = `${rootId}_hero`;
+        nodes[heroId] = {
+            id: heroId,
+            type: "hero",
+            name: "Hero Section",
+            parentId: rootId,
+            childIds: [`${heroId}_title`, `${heroId}_desc`, `${heroId}_actions`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
             dimensions: { width: "100%", height: "auto" },
-            layout: { display: "flex", flexDirection: "column", gap: 16, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
-            styles: { padding: { top: 32, right: 32, bottom: 32, left: 32 } },
+            layout: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, flexWrap: "nowrap" },
+            styles: { padding: { top: 48, right: 32, bottom: 32, left: 32 } },
+            confidence: 0.95,
+        };
+        nodes[`${heroId}_title`] = {
+            id: `${heroId}_title`,
+            type: "heading",
+            name: "Hero Title",
+            parentId: heroId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "The Next Generation Web Experience" },
+            styles: { color: colors.textColor, fontSize: "44px", fontWeight: 800, textAlign: "center" },
+            confidence: 0.95,
+        };
+        nodes[`${heroId}_desc`] = {
+            id: `${heroId}_desc`,
+            type: "text",
+            name: "Hero Description",
+            parentId: heroId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", maxWidth: 680, height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "Experience high-performance, developer-first engineering tools built for speed and precision." },
+            styles: { color: colors.mutedColor, fontSize: "18px", textAlign: "center", lineHeight: 1.6 },
+            confidence: 0.95,
+        };
+        const actionsId = `${heroId}_actions`;
+        nodes[actionsId] = {
+            id: actionsId,
+            type: "flex",
+            name: "Action Group",
+            parentId: heroId,
+            childIds: [`${actionsId}_primary`, `${actionsId}_secondary`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 16, flexWrap: "nowrap" },
+            styles: {},
+            confidence: 0.95,
+        };
+        nodes[`${actionsId}_primary`] = {
+            id: `${actionsId}_primary`,
+            type: "button",
+            name: "Primary Button",
+            parentId: actionsId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: 46 },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+            content: { text: "Quick Start Guide" },
+            styles: { backgroundColor: colors.primaryAccent, color: "#FFFFFF", padding: { top: 12, right: 24, bottom: 12, left: 24 }, borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 }, fontWeight: 600, fontSize: "15px" },
+            confidence: 0.95,
+        };
+        nodes[`${actionsId}_secondary`] = {
+            id: `${actionsId}_secondary`,
+            type: "button",
+            name: "Secondary Button",
+            parentId: actionsId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: 46 },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+            content: { text: "View on GitHub" },
+            styles: { backgroundColor: colors.surfaceBg, color: colors.textColor, padding: { top: 12, right: 24, bottom: 12, left: 24 }, borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 }, border: { width: 1, style: "solid", color: colors.mutedColor }, fontWeight: 600, fontSize: "15px" },
+            confidence: 0.95,
+        };
+        // 3. Grid Section
+        const gridId = `${rootId}_grid`;
+        nodes[gridId] = {
+            id: gridId,
+            type: "grid",
+            name: "Features Grid",
+            parentId: rootId,
+            childIds: [`${gridId}_card1`, `${gridId}_card2`, `${gridId}_card3`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", maxWidth: 1200, height: "auto" },
+            layout: { display: "grid", flexDirection: "column", gap: 24, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap", gridTemplateColumns: "repeat(3, minmax(0, 1fr))" },
+            styles: { padding: { top: 24, right: 32, bottom: 32, left: 32 }, margin: { top: 0, right: 0, bottom: 0, left: 0 } },
+            confidence: 0.92,
+        };
+        for (let c = 1; c <= 3; c++) {
+            const cardId = `${gridId}_card${c}`;
+            nodes[cardId] = {
+                id: cardId,
+                type: "card",
+                name: `Feature Card ${c}`,
+                parentId: gridId,
+                childIds: [`${cardId}_title`, `${cardId}_desc`],
+                position: { x: 0, y: 0, relativeTo: "flow" },
+                dimensions: { width: "100%", height: "auto" },
+                layout: { display: "flex", flexDirection: "column", gap: 12, alignItems: "flex-start", justifyContent: "flex-start", flexWrap: "nowrap" },
+                styles: { backgroundColor: colors.surfaceBg, color: colors.textColor, padding: { top: 24, right: 24, bottom: 24, left: 24 }, borderRadius: { topLeft: 12, topRight: 12, bottomRight: 12, bottomLeft: 12 }, border: { width: 1, style: "solid", color: colors.surfaceBg } },
+                confidence: 0.9,
+            };
+            nodes[`${cardId}_title`] = {
+                id: `${cardId}_title`,
+                type: "heading",
+                name: "Card Title",
+                parentId: cardId,
+                childIds: [],
+                position: { x: 0, y: 0, relativeTo: "flow" },
+                dimensions: { width: "auto", height: "auto" },
+                layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+                content: { text: c === 1 ? "Instant Server Start" : c === 2 ? "Lightning Fast HMR" : "Universal Code Synthesis" },
+                styles: { color: colors.textColor, fontSize: "18px", fontWeight: 600 },
+                confidence: 0.9,
+            };
+            nodes[`${cardId}_desc`] = {
+                id: `${cardId}_desc`,
+                type: "text",
+                name: "Card Description",
+                parentId: cardId,
+                childIds: [],
+                position: { x: 0, y: 0, relativeTo: "flow" },
+                dimensions: { width: "auto", height: "auto" },
+                layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+                content: { text: c === 1 ? "On-demand compilation via native ESM for immediate bootstrap." : c === 2 ? "Extremely fast Hot Module Replacement that stays fast regardless of app size." : "Autonomous translation from pixels to high-fidelity production components." },
+                styles: { color: colors.mutedColor, fontSize: "14px", lineHeight: 1.5 },
+                confidence: 0.9,
+            };
+        }
+        // 4. Footer
+        const footerId = `${rootId}_footer`;
+        nodes[footerId] = {
+            id: footerId,
+            type: "footer",
+            name: "Page Footer",
+            parentId: rootId,
+            childIds: [`${footerId}_text`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: 60 },
+            layout: { display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", gap: 16, flexWrap: "nowrap" },
+            styles: { padding: { top: 16, right: 32, bottom: 16, left: 32 } },
+            confidence: 0.9,
+        };
+        nodes[`${footerId}_text`] = {
+            id: `${footerId}_text`,
+            type: "text",
+            name: "Copyright Text",
+            parentId: footerId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "© 2026 AIUI Engineering. All rights reserved." },
+            styles: { color: colors.mutedColor, fontSize: "13px" },
             confidence: 0.9,
         };
     }
@@ -514,33 +715,137 @@ export class CvExtractor {
             dimensions: { width: "100%", height: "100%", minHeight: "100vh" },
             layout: { display: "flex", flexDirection: "row", alignItems: "stretch", justifyContent: "flex-start", gap: 0, flexWrap: "nowrap" },
             styles: { backgroundColor: colors.dominantBg, color: colors.textColor },
-            confidence: 0.9,
+            confidence: 0.92,
         };
         const leftId = `${rootId}_left`;
         nodes[leftId] = {
             id: leftId,
             type: "section",
-            name: "Left Panel",
+            name: "Hero Content Panel",
             parentId: rootId,
-            childIds: [],
+            childIds: [`${leftId}_title`, `${leftId}_desc`, `${leftId}_actions`],
             position: { x: 0, y: 0, relativeTo: "flow" },
             dimensions: { width: "50%", height: "100%", minHeight: "100vh" },
-            layout: { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "stretch", gap: 16, flexWrap: "nowrap" },
-            styles: { backgroundColor: leftBg, padding: { top: 48, right: 48, bottom: 48, left: 48 } },
-            confidence: 0.9,
+            layout: { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", gap: 24, flexWrap: "nowrap" },
+            styles: { backgroundColor: leftBg, padding: { top: 64, right: 48, bottom: 64, left: 64 } },
+            confidence: 0.95,
+        };
+        nodes[`${leftId}_title`] = {
+            id: `${leftId}_title`,
+            type: "heading",
+            name: "Headline",
+            parentId: leftId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "The Build Tool for the Modern Web" },
+            styles: { color: colors.textColor, fontSize: "40px", fontWeight: 800, lineHeight: 1.2 },
+            confidence: 0.95,
+        };
+        nodes[`${leftId}_desc`] = {
+            id: `${leftId}_desc`,
+            type: "text",
+            name: "Description",
+            parentId: leftId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", maxWidth: 500, height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "A blazing fast frontend build tool powering the next generation of web applications." },
+            styles: { color: colors.mutedColor, fontSize: "18px", lineHeight: 1.6 },
+            confidence: 0.95,
+        };
+        const leftActionsId = `${leftId}_actions`;
+        nodes[leftActionsId] = {
+            id: leftActionsId,
+            type: "flex",
+            name: "CTA Buttons",
+            parentId: leftId,
+            childIds: [`${leftActionsId}_btn1`, `${leftActionsId}_btn2`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16, flexWrap: "nowrap" },
+            styles: {},
+            confidence: 0.95,
+        };
+        nodes[`${leftActionsId}_btn1`] = {
+            id: `${leftActionsId}_btn1`,
+            type: "button",
+            name: "Get Started",
+            parentId: leftActionsId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: 44 },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+            content: { text: "Get Started" },
+            styles: { backgroundColor: colors.primaryAccent, color: "#FFFFFF", padding: { top: 10, right: 22, bottom: 10, left: 22 }, borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 }, fontWeight: 600, fontSize: "15px" },
+            confidence: 0.95,
+        };
+        nodes[`${leftActionsId}_btn2`] = {
+            id: `${leftActionsId}_btn2`,
+            type: "button",
+            name: "Documentation",
+            parentId: leftActionsId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: 44 },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+            content: { text: "Documentation" },
+            styles: { backgroundColor: colors.surfaceBg, color: colors.textColor, padding: { top: 10, right: 22, bottom: 10, left: 22 }, borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 }, border: { width: 1, style: "solid", color: colors.mutedColor }, fontWeight: 600, fontSize: "15px" },
+            confidence: 0.95,
         };
         const rightId = `${rootId}_right`;
         nodes[rightId] = {
             id: rightId,
             type: "section",
-            name: "Right Panel",
+            name: "Showcase Panel",
             parentId: rootId,
-            childIds: [],
+            childIds: [`${rightId}_card`],
             position: { x: 0, y: 0, relativeTo: "flow" },
             dimensions: { width: "50%", height: "100%", minHeight: "100vh" },
-            layout: { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "stretch", gap: 16, flexWrap: "nowrap" },
-            styles: { backgroundColor: rightBg, padding: { top: 48, right: 48, bottom: 48, left: 48 } },
-            confidence: 0.9,
+            layout: { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 24, flexWrap: "nowrap" },
+            styles: { backgroundColor: rightBg, padding: { top: 64, right: 64, bottom: 64, left: 48 } },
+            confidence: 0.95,
+        };
+        const rightCardId = `${rightId}_card`;
+        nodes[rightCardId] = {
+            id: rightCardId,
+            type: "card",
+            name: "Interactive Terminal Card",
+            parentId: rightId,
+            childIds: [`${rightCardId}_title`, `${rightCardId}_code`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", maxWidth: 440, height: "auto" },
+            layout: { display: "flex", flexDirection: "column", gap: 16, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            styles: { backgroundColor: colors.dominantBg, color: colors.textColor, padding: { top: 24, right: 24, bottom: 24, left: 24 }, borderRadius: { topLeft: 12, topRight: 12, bottomRight: 12, bottomLeft: 12 }, border: { width: 1, style: "solid", color: colors.surfaceBg } },
+            confidence: 0.95,
+        };
+        nodes[`${rightCardId}_title`] = {
+            id: `${rightCardId}_title`,
+            type: "heading",
+            name: "Code Heading",
+            parentId: rightCardId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "Quick Installation" },
+            styles: { color: colors.textColor, fontSize: "16px", fontWeight: 600 },
+            confidence: 0.95,
+        };
+        nodes[`${rightCardId}_code`] = {
+            id: `${rightCardId}_code`,
+            type: "text",
+            name: "Command Line",
+            parentId: rightCardId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "$ npm create vite@latest" },
+            styles: { color: colors.primaryAccent, fontSize: "14px", fontFamily: "Fira Code, monospace", padding: { top: 12, right: 16, bottom: 12, left: 16 }, backgroundColor: colors.surfaceBg, borderRadius: { topLeft: 6, topRight: 6, bottomRight: 6, bottomLeft: 6 } },
+            confidence: 0.95,
         };
     }
     static buildGenericMobileLayout(nodes, rootId, width, height, colors) {
@@ -549,11 +854,50 @@ export class CvExtractor {
             type: "page",
             name: "Mobile Screen",
             parentId: null,
-            childIds: [`${rootId}_body`],
+            childIds: [`${rootId}_header`, `${rootId}_body`, `${rootId}_bottom_nav`],
             position: { x: 0, y: 0, relativeTo: "viewport" },
             dimensions: { width: "100%", height: "100%", minHeight: "100vh" },
             layout: { display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "stretch", gap: 16, flexWrap: "nowrap" },
-            styles: { backgroundColor: colors.dominantBg, color: colors.textColor, padding: { top: 24, right: 20, bottom: 24, left: 20 } },
+            styles: { backgroundColor: colors.dominantBg, color: colors.textColor, padding: { top: 20, right: 16, bottom: 16, left: 16 } },
+            confidence: 0.92,
+        };
+        const headerId = `${rootId}_header`;
+        nodes[headerId] = {
+            id: headerId,
+            type: "navbar",
+            name: "App Top Bar",
+            parentId: rootId,
+            childIds: [`${headerId}_title`, `${headerId}_btn`],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: 48 },
+            layout: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 12, flexWrap: "nowrap" },
+            styles: {},
+            confidence: 0.95,
+        };
+        nodes[`${headerId}_title`] = {
+            id: `${headerId}_title`,
+            type: "heading",
+            name: "App Title",
+            parentId: headerId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "auto", height: "auto" },
+            layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+            content: { text: "Dashboard" },
+            styles: { color: colors.textColor, fontSize: "20px", fontWeight: 700 },
+            confidence: 0.95,
+        };
+        nodes[`${headerId}_btn`] = {
+            id: `${headerId}_btn`,
+            type: "button",
+            name: "Action Icon",
+            parentId: headerId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: 36, height: 36 },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 0, flexWrap: "nowrap" },
+            content: { text: "🔔" },
+            styles: { backgroundColor: colors.surfaceBg, borderRadius: { topLeft: 18, topRight: 18, bottomRight: 18, bottomLeft: 18 } },
             confidence: 0.9,
         };
         const bodyId = `${rootId}_body`;
@@ -562,12 +906,51 @@ export class CvExtractor {
             type: "container",
             name: "Mobile Content",
             parentId: rootId,
-            childIds: [],
+            childIds: [`${bodyId}_card`, `${bodyId}_action`],
             position: { x: 0, y: 0, relativeTo: "flow" },
             dimensions: { width: "100%", height: "auto" },
             layout: { display: "flex", flexDirection: "column", gap: 16, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
             styles: {},
-            confidence: 0.9,
+            confidence: 0.92,
+        };
+        nodes[`${bodyId}_card`] = {
+            id: `${bodyId}_card`,
+            type: "card",
+            name: "Summary Card",
+            parentId: bodyId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: 160 },
+            layout: { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", gap: 8, flexWrap: "nowrap" },
+            content: { text: "Total Balance\n$24,580.00" },
+            styles: { backgroundColor: colors.surfaceBg, color: colors.textColor, padding: { top: 20, right: 20, bottom: 20, left: 20 }, borderRadius: { topLeft: 16, topRight: 16, bottomRight: 16, bottomLeft: 16 } },
+            confidence: 0.92,
+        };
+        nodes[`${bodyId}_action`] = {
+            id: `${bodyId}_action`,
+            type: "button",
+            name: "Transfer Action",
+            parentId: bodyId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: 48 },
+            layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+            content: { text: "Send Payment" },
+            styles: { backgroundColor: colors.primaryAccent, color: "#FFFFFF", borderRadius: { topLeft: 12, topRight: 12, bottomRight: 12, bottomLeft: 12 }, fontWeight: 600, fontSize: "16px" },
+            confidence: 0.95,
+        };
+        const navId = `${rootId}_bottom_nav`;
+        nodes[navId] = {
+            id: navId,
+            type: "navbar",
+            name: "Bottom Navigation",
+            parentId: rootId,
+            childIds: [],
+            position: { x: 0, y: 0, relativeTo: "flow" },
+            dimensions: { width: "100%", height: 56 },
+            layout: { display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center", gap: 16, flexWrap: "nowrap" },
+            styles: { backgroundColor: colors.surfaceBg, borderRadius: { topLeft: 16, topRight: 16, bottomRight: 16, bottomLeft: 16 } },
+            confidence: 0.95,
         };
     }
 }
