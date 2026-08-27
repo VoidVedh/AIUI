@@ -15,6 +15,7 @@
     "dev:web": "npm run dev --workspace=@aiui/web",
     "start:server": "npm run start --workspace=@aiui/server",
     "test": "vitest run",
+    "test:anti-hardcoding": "vitest run tests/negative/no_fixture_hardcoding.test.ts",
     "test:e2e:live": "vitest run tests/e2e",
     "test:core": "vitest run packages/core",
     "test:evaluator": "vitest run packages/evaluator",
@@ -23,6 +24,8 @@
     "test:server": "vitest run packages/server",
     "test:e2e": "vitest run tests/e2e",
     "test:resilience": "vitest run tests/negative",
+    "benchmark:external": "npx tsx scripts/benchmark_external.ts",
+    "benchmark:internal": "npx tsx scripts/run_benchmarks.ts",
     "lint": "eslint . --ext .ts,.tsx",
     "clean": "rm -rf node_modules packages/*/node_modules packages/*/dist"
   },
