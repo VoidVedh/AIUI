@@ -57,12 +57,26 @@ export class OpenRouterProvider implements VisionProvider, LLMProvider {
         }
 
         const maxTokens = Number(process.env.OPENROUTER_MAX_TOKENS) || 2000;
-        const completion = await this.client!.chat.completions.create({
-          model: this.model,
-          messages: [{ role: "user", content }],
-          response_format: payload.jsonMode ? { type: "json_object" } : undefined,
-          max_tokens: maxTokens,
-        });
+        let completion: any;
+        try {
+          completion = await this.client!.chat.completions.create({
+            model: this.model,
+            messages: [{ role: "user", content }],
+            response_format: payload.jsonMode ? { type: "json_object" } : undefined,
+            max_tokens: maxTokens,
+          });
+        } catch (callErr: any) {
+          if (this.model === "openrouter/free" && (callErr.message.includes("404") || callErr.status === 404)) {
+            completion = await this.client!.chat.completions.create({
+              model: "minimax/minimax-m3:free",
+              messages: [{ role: "user", content }],
+              response_format: payload.jsonMode ? { type: "json_object" } : undefined,
+              max_tokens: maxTokens,
+            });
+          } else {
+            throw callErr;
+          }
+        }
 
         const text = completion.choices[0]?.message?.content || "{}";
         const promptTokens = completion.usage?.prompt_tokens || Math.ceil(payload.prompt.length / 4) + 800;

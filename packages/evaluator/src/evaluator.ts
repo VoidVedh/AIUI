@@ -28,8 +28,8 @@ export interface VisualEvaluationResult {
 
 export class VisualEvaluator {
   public static readonly WEIGHT_SSIM = 0.45;
-  public static readonly WEIGHT_PIXEL = 0.35;
-  public static readonly WEIGHT_LAYOUT = 0.20;
+  public static readonly WEIGHT_LAYOUT = 0.35;
+  public static readonly WEIGHT_PIXEL = 0.20;
   public static readonly STOPPING_THRESHOLD = 0.92;
 
   /**
@@ -40,7 +40,8 @@ export class VisualEvaluator {
     actualImageBuffer: Buffer,
     expectedBoxes: BoundingBox[] = [],
     actualBoxes: Array<{ id: string; x: number; y: number; width: number; height: number }> = [],
-    viewport = { width: 1280, height: 800 }
+    viewport = { width: 1280, height: 800 },
+    imageMasks: Array<{ x: number; y: number; width: number; height: number }> = []
   ): Promise<VisualEvaluationResult> {
     const ssimWidth = Math.round((viewport.width || 1280) / 2);
     const ssimHeight = Math.round((viewport.height || 800) / 2);
@@ -62,7 +63,8 @@ export class VisualEvaluator {
         actualImageBuffer,
         viewport.width || 1280,
         viewport.height || 800,
-        0.1
+        0.1,
+        imageMasks
       ),
     ]);
 
@@ -71,12 +73,12 @@ export class VisualEvaluator {
       actualBoxes
     );
 
-    // Compute Aggregate Score
+    // Compute Aggregate Score (45% SSIM + 35% Layout IoU + 20% Masked PixelMatch)
     const overallSimilarity = Number(
       (
         this.WEIGHT_SSIM * ssimResult.ssim +
-        this.WEIGHT_PIXEL * pixelResult.matchRatio +
-        this.WEIGHT_LAYOUT * layoutResult.averageIou
+        this.WEIGHT_LAYOUT * layoutResult.averageIou +
+        this.WEIGHT_PIXEL * pixelResult.matchRatio
       ).toFixed(4)
     );
 

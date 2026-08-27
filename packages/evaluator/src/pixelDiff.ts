@@ -43,7 +43,8 @@ export class PixelDiffCalculator {
     image2Buffer: Buffer,
     targetWidth = 1280,
     targetHeight = 800,
-    threshold = 0.1
+    threshold = 0.1,
+    masks: Array<{ x: number; y: number; width: number; height: number }> = []
   ): Promise<PixelDiffResult> {
     // 1. Normalize dimensions to RGBA buffers
     const [raw1, raw2] = await Promise.all([
@@ -58,6 +59,26 @@ export class PixelDiffCalculator {
         .raw()
         .toBuffer(),
     ]);
+
+    // Apply region masks if provided (e.g. dynamic images/avatars)
+    if (masks && masks.length > 0) {
+      for (const m of masks) {
+        const xStart = Math.max(0, Math.floor(m.x));
+        const yStart = Math.max(0, Math.floor(m.y));
+        const xEnd = Math.min(targetWidth, Math.ceil(m.x + m.width));
+        const yEnd = Math.min(targetHeight, Math.ceil(m.y + m.height));
+
+        for (let py = yStart; py < yEnd; py++) {
+          for (let px = xStart; px < xEnd; px++) {
+            const idx = (py * targetWidth + px) * 4;
+            raw2[idx] = raw1[idx];
+            raw2[idx + 1] = raw1[idx + 1];
+            raw2[idx + 2] = raw1[idx + 2];
+            raw2[idx + 3] = raw1[idx + 3];
+          }
+        }
+      }
+    }
 
     const totalPixels = targetWidth * targetHeight;
     const diffPng = new PNG({ width: targetWidth, height: targetHeight });

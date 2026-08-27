@@ -1,31 +1,28 @@
 import React, { useState, useEffect } from "react";
 import { Header } from "./components/Header";
-import { ConfigPanel, FixturePreset } from "./components/ConfigPanel";
-import { PipelineStepper, PipelineStage } from "./components/PipelineStepper";
-import { VisualInspector } from "./components/VisualInspector";
-import { MetricsDashboard, IterationCheckpointData } from "./components/MetricsDashboard";
-import { CodeExplorer, GeneratedCodeFile } from "./components/CodeExplorer";
+import { LeftStudioPanel, FixturePreset } from "./components/LeftStudioPanel";
+import { RightStudioPanel, GeneratedCodeFile } from "./components/RightStudioPanel";
+import { DebugDrawer } from "./components/DebugDrawer";
 
 export function App() {
   const [serverStatus, setServerStatus] = useState<"connected" | "disconnected" | "running">("connected");
   const [fixtures, setFixtures] = useState<FixturePreset[]>([]);
-  const [selectedFixtureId, setSelectedFixtureId] = useState<string | null>("landing-page");
+  const [selectedFixtureId, setSelectedFixtureId] = useState<string | null>("card-ui");
   const [customFile, setCustomFile] = useState<File | null>(null);
-  const [target, setTarget] = useState<"react" | "vanillajs" | "flutter">("react");
-  const [similarityThreshold, setSimilarityThreshold] = useState(0.92);
-  const [maxIterations, setMaxIterations] = useState(5);
+  const [similarityThreshold] = useState(0.95);
+  const [maxIterations] = useState(5);
 
   // Pipeline execution state
   const [isRunning, setIsRunning] = useState(false);
   const [currentRunId, setCurrentRunId] = useState<string | null>(null);
-  const [currentStage, setCurrentStage] = useState<PipelineStage>("idle");
+  const [currentStage, setCurrentStage] = useState<string>("idle");
   const [currentIteration, setCurrentIteration] = useState(0);
   const [currentScore, setCurrentScore] = useState(0);
   const [ssimScore, setSsimScore] = useState(0);
   const [pixelMatchScore, setPixelMatchScore] = useState(0);
   const [layoutIouScore, setLayoutIouScore] = useState(0);
   const [logs, setLogs] = useState<string[]>([]);
-  const [history, setHistory] = useState<IterationCheckpointData[]>([]);
+  const [history, setHistory] = useState<any[]>([]);
   const [totalTokens, setTotalTokens] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
 
@@ -42,8 +39,9 @@ export function App() {
       .then((data) => {
         setFixtures(data);
         if (data.length > 0) {
-          setSelectedFixtureId(data[0].id);
-          setTargetImageUrl(data[0].imageUrl);
+          const defaultFixture = data.find((f: any) => f.id === "card-ui") || data[0];
+          setSelectedFixtureId(defaultFixture.id);
+          setTargetImageUrl(defaultFixture.imageUrl);
         }
       })
       .catch(() => {
@@ -81,7 +79,7 @@ export function App() {
     setFiles([]);
 
     const formData = new FormData();
-    formData.append("target", target);
+    formData.append("target", "react");
     formData.append("similarityThreshold", similarityThreshold.toString());
     formData.append("maxIterations", maxIterations.toString());
 
@@ -105,7 +103,6 @@ export function App() {
       const { runId } = await res.json();
       setCurrentRunId(runId);
 
-      // Polling & SSE synchronization loop for 100% reliability
       let pollInterval: any = null;
 
       const stopRun = () => {
@@ -162,7 +159,7 @@ export function App() {
       pollInterval = setInterval(syncState, 800);
       syncState();
 
-      // Connect to SSE stream for instantaneous progressive push
+      // Connect to SSE stream
       try {
         const eventSource = new EventSource(`/api/runs/${runId}/events`);
 
@@ -196,66 +193,43 @@ export function App() {
   };
 
   return (
-    <div className="app-layout">
-      <Header serverStatus={serverStatus} />
+    <div className="studio-layout">
+      <Header serverStatus={serverStatus} threshold={similarityThreshold} />
 
-      <main className="main-content">
-        {/* Top Grid: Config & Stepper */}
-        <div className="grid-config-stepper">
-          <ConfigPanel
-            fixtures={fixtures}
-            selectedFixtureId={selectedFixtureId}
-            onSelectFixture={(id) => {
-              setSelectedFixtureId(id);
-              setCustomFile(null);
-            }}
-            customFile={customFile}
-            onUploadFile={handleUploadFile}
-            target={target}
-            onChangeTarget={setTarget}
-            similarityThreshold={similarityThreshold}
-            onChangeThreshold={setSimilarityThreshold}
-            maxIterations={maxIterations}
-            onChangeMaxIterations={setMaxIterations}
-            onStartRun={startPipelineRun}
-            isRunning={isRunning}
-          />
-
-          <PipelineStepper
-            currentStage={currentStage}
-            logs={logs}
-            currentIteration={currentIteration}
-            maxIterations={maxIterations}
-            currentScore={currentScore}
-            totalTokens={totalTokens}
-            totalCost={totalCost}
-          />
-        </div>
-
-        {/* Middle Grid: Visual Diff Inspector */}
-        <VisualInspector
-          targetImageUrl={targetImageUrl}
-          renderedImageUrl={renderedImageUrl}
-          diffImageUrl={diffImageUrl}
+      <div className="studio-main">
+        <LeftStudioPanel
+          fixtures={fixtures}
+          selectedFixtureId={selectedFixtureId}
+          onSelectFixture={(id) => {
+            setSelectedFixtureId(id);
+            setCustomFile(null);
+          }}
+          customFile={customFile}
+          onUploadFile={handleUploadFile}
+          previewUrl={targetImageUrl}
+          isRunning={isRunning}
+          currentStage={currentStage}
+          currentIteration={currentIteration}
+          maxIterations={maxIterations}
+          totalTokens={totalTokens}
+          totalCost={totalCost}
+          onStartSynthesis={startPipelineRun}
         />
 
-        {/* Metrics & Convergence */}
-        <MetricsDashboard
-          currentScore={currentScore}
-          targetThreshold={similarityThreshold}
+        <RightStudioPanel
+          runId={currentRunId}
+          overallScore={currentScore}
           ssimScore={ssimScore}
           pixelMatchScore={pixelMatchScore}
           layoutIouScore={layoutIouScore}
-          history={history}
-        />
-
-        {/* Generated Production Code Explorer */}
-        <CodeExplorer
+          targetImageUrl={targetImageUrl}
+          renderedImageUrl={renderedImageUrl}
+          diffImageUrl={diffImageUrl}
           files={files}
-          runId={currentRunId}
-          target={target}
         />
-      </main>
+      </div>
+
+      <DebugDrawer logs={logs} history={history} />
     </div>
   );
 }

@@ -8,6 +8,17 @@ export interface SandboxConfig {
   baseDir?: string;
 }
 
+function findMonorepoRoot(startDir = process.cwd()): string {
+  let curr = startDir;
+  while (curr && curr !== path.dirname(curr)) {
+    if (fs.existsSync(path.join(curr, "packages")) && fs.existsSync(path.join(curr, "node_modules", "react"))) {
+      return curr;
+    }
+    curr = path.dirname(curr);
+  }
+  return process.cwd();
+}
+
 export class SandboxManager {
   /**
    * Cleanses environment variables so generated code execution cannot leak API keys or host credentials.
@@ -42,7 +53,7 @@ export class SandboxManager {
     project: GeneratedProject,
     config: SandboxConfig
   ): Promise<string> {
-    const rootBase = config.baseDir || path.resolve(process.cwd(), "runs");
+    const rootBase = config.baseDir || path.resolve(findMonorepoRoot(), "runs");
     const sandboxDir = path.join(rootBase, config.runId, `sandbox_iter_${config.iteration}`);
 
     if (fs.existsSync(sandboxDir)) {
