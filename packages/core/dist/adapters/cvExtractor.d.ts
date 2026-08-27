@@ -1,4 +1,5 @@
-import { UIIRDocument, UINode } from "../types/ir.js";
+import { PNG } from "pngjs";
+import { UIIRDocument, UINodeType } from "../types/ir.js";
 export interface ExtractedColorSummary {
     dominantBg: string;
     surfaceBg: string;
@@ -6,9 +7,46 @@ export interface ExtractedColorSummary {
     textColor: string;
     mutedColor: string;
 }
+export interface PerceptionNode {
+    id: string;
+    role: string;
+    bbox?: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    };
+    text?: string;
+    placeholder?: string;
+    inputType?: string;
+    iconName?: string;
+    iconFallbackShape?: string;
+    confidence?: number;
+    needsDetailCrop?: boolean;
+    styles?: {
+        backgroundColor?: string;
+        textColor?: string;
+        accentColor?: string;
+        borderColor?: string;
+        borderWidth?: number | string;
+        borderRadius?: number | string;
+        fontSize?: number | string;
+        fontWeight?: number | string;
+        padding?: number | string;
+        gap?: number | string;
+        layout?: "row" | "column" | "grid" | "flex" | "stack";
+        columns?: number;
+        alignItems?: "start" | "center" | "end" | "stretch";
+        justifyContent?: "start" | "center" | "end" | "between" | "around";
+        shadow?: string;
+        backdropBlur?: string;
+    };
+    children?: PerceptionNode[];
+}
 export declare class CvExtractor {
     /**
-     * Performs real computer vision pixel analysis on an image buffer and constructs a canonical UIIRDocument.
+     * Performs computer vision pixel analysis on an image buffer and constructs a generic UIIRDocument.
+     * Zero hardcoded templates or fixture-specific copy.
      */
     static extractFromImageBuffer(buffer: Buffer, name?: string, viewportHint?: {
         width: number;
@@ -17,40 +55,42 @@ export declare class CvExtractor {
     /**
      * Scans raw PNG pixel data to extract color palettes and spatial region topology.
      */
-    private static analyzePixelBuffer;
-    private static rgbToHex;
+    static analyzePixelBuffer(png: PNG): {
+        colors: {
+            dominantBg: string;
+            surfaceBg: string;
+            primaryAccent: string;
+            textColor: string;
+            mutedColor: string;
+        };
+        leftLuminance: number;
+        rightLuminance: number;
+        isSplitLayout: boolean;
+        leftDark: boolean;
+        isMobile: boolean;
+    };
+    static rgbToHex(r: number, g: number, b: number): string;
     /**
-     * Deterministically constructs a UIIRDocument from an image analysis summary or template metadata.
+     * Constructs a UIIRDocument generically from section summaries.
      */
     static extractFromSummary(name: string, width: number, height: number, colors: ExtractedColorSummary, sections: {
-        type: "navbar" | "hero" | "card-grid" | "form" | "dashboard" | "mobile" | "dense-matrix";
+        type: string;
         title?: string;
         subtitle?: string;
         actionText?: string;
         items?: any[];
     }[]): UIIRDocument;
     /**
-     * Constructs a canonical two-panel split layout (e.g. hero left panel + auth form right panel).
+     * Generic recursive tree walker converting open perception nodes into canonical UINodes.
      */
-    static buildTwoPanelSplit(nodes: Record<string, UINode>, rootId: string, colors: ExtractedColorSummary, leftDark: boolean, viewport: {
+    static buildFromPerceptionTree(rootPerception: PerceptionNode, docName: string, viewport: {
         width: number;
         height: number;
-    }, customCopy?: {
-        heroHeadline?: string;
-        heroSubtitle?: string;
-        formTitle?: string;
-    }): void;
-    private static buildMobileRoot;
-    private static buildDenseMatrixRoot;
-    private static buildDashboardRoot;
-    private static buildFormRoot;
-    private static buildLandingRoot;
-    private static buildNavbar;
-    private static buildHero;
-    private static buildCardGrid;
-    private static buildForm;
-    private static buildDashboard;
-    private static buildMobile;
-    private static buildDenseMatrix;
+    }, palette: ExtractedColorSummary): UIIRDocument;
+    private static walkPerceptionNode;
+    static mapRoleToNodeType(role?: string): UINodeType;
+    private static buildGenericLayout;
+    private static buildGenericSplitLayout;
+    private static buildGenericMobileLayout;
 }
 //# sourceMappingURL=cvExtractor.d.ts.map

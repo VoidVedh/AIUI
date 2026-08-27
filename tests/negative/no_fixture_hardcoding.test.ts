@@ -47,18 +47,20 @@ describe("Anti-Overfitting Negative Test: No Fixture-Specific Hardcoding", () =>
     return files;
   }
 
-  it("packages/orchestrator/src must contain zero fixture-specific hardcoded selectors or strings", () => {
-    const files = getFilesRecursive(path.resolve(process.cwd(), "packages/orchestrator/src"));
+  it("packages/core/src and packages/orchestrator/src must contain zero fixture-specific hardcoded selectors or strings", () => {
     const violations: { file: string; token: string; line: number }[] = [];
 
-    for (const file of files) {
-      const content = fs.readFileSync(file, "utf-8");
-      const lines = content.split("\n");
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        for (const token of FORBIDDEN_TOKENS) {
-          if (line.includes(token)) {
-            violations.push({ file: path.relative(process.cwd(), file), token, line: i + 1 });
+    for (const dir of SCAN_DIRS) {
+      const files = getFilesRecursive(dir);
+      for (const file of files) {
+        const content = fs.readFileSync(file, "utf-8");
+        const lines = content.split("\n");
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i];
+          for (const token of FORBIDDEN_TOKENS) {
+            if (line.includes(token)) {
+              violations.push({ file: path.relative(process.cwd(), file), token, line: i + 1 });
+            }
           }
         }
       }
@@ -66,7 +68,7 @@ describe("Anti-Overfitting Negative Test: No Fixture-Specific Hardcoding", () =>
 
     expect(
       violations,
-      `Found ${violations.length} forbidden fixture-hardcoded token(s) in packages/orchestrator/src:\n` +
+      `Found ${violations.length} forbidden fixture-hardcoded token(s) in source directories:\n` +
         violations.map((v) => `  - ${v.file}:${v.line} matches "${v.token}"`).join("\n")
     ).toEqual([]);
   });

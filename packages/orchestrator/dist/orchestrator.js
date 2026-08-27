@@ -17,6 +17,9 @@ export class PipelineOrchestrator {
      * Executes the full autonomous UI-to-Code pipeline for a given input image buffer.
      */
     async run(imageBuffer, mimeType = "image/png", options = {}) {
+        if (!imageBuffer || (Buffer.isBuffer(imageBuffer) && imageBuffer.length === 0)) {
+            throw new Error("Invalid input: screenshot image data is empty or missing.");
+        }
         const runId = options.runId || `run_${Date.now()}_${crypto.randomBytes(4).toString("hex")}`;
         const target = options.target || "react";
         const maxIterations = options.maxIterations || 5;

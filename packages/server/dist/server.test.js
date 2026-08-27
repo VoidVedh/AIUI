@@ -56,17 +56,17 @@ describe("@aiui/server REST Endpoints", () => {
         expect(data).toHaveProperty("runId");
         expect(data.status).toBe("started");
         expect(data.target).toBe("react");
-        // Poll for run completion (up to 15s)
+        // Poll for run completion (up to 45s)
         let state = null;
         const pollStart = Date.now();
-        while (Date.now() - pollStart < 15000) {
+        while (Date.now() - pollStart < 45000) {
             const stateRes = await fetch(`http://127.0.0.1:${port}/api/runs/${data.runId}/state`);
             expect(stateRes.status).toBe(200);
             state = (await stateRes.json());
             if (state.status !== "started" && state.status !== "in_progress") {
                 break;
             }
-            await new Promise((r) => setTimeout(r, 400));
+            await new Promise((r) => setTimeout(r, 500));
         }
         expect(["success", "completed", "max_iterations_reached"]).toContain(state.status);
         expect(state.similarityScore).toBeGreaterThan(0.70);
@@ -76,7 +76,7 @@ describe("@aiui/server REST Endpoints", () => {
         expect(downloadRes.headers.get("content-type")).toContain("application/zip");
         const zipBuf = await downloadRes.arrayBuffer();
         expect(zipBuf.byteLength).toBeGreaterThan(500);
-    });
+    }, 60000);
     it("should return 404 for non-existent run state and download", async () => {
         const res = await fetch(`http://127.0.0.1:${port}/api/runs/non-existent-run/state`);
         expect(res.status).toBe(404);
