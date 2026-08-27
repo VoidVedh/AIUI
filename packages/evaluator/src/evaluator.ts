@@ -81,7 +81,7 @@ export class VisualEvaluator {
     );
 
     // Generate Structured Issues
-    const issues = this.generateIssues(ssimResult, pixelResult, layoutResult);
+    const issues = this.generateIssues(ssimResult, pixelResult, layoutResult, actualBoxes);
     const passed = overallSimilarity >= this.STOPPING_THRESHOLD;
 
     return {
@@ -101,11 +101,12 @@ export class VisualEvaluator {
   private static generateIssues(
     ssim: SsimResult,
     pixel: PixelDiffResult,
-    layout: LayoutDiffResult
+    layout: LayoutDiffResult,
+    actualBoxes: Array<{ id: string; x: number; y: number; width: number; height: number }> = []
   ): VisualIssue[] {
     const issues: VisualIssue[] = [];
 
-    // Check Displaced Elements from Layout IOU
+    // 1. Check Displaced Elements from Layout IOU
     for (const d of layout.displacedElements) {
       if (d.iou === 0) {
         issues.push({
@@ -132,26 +133,129 @@ export class VisualEvaluator {
       }
     }
 
-    // Check Color & Contrast Issues from SSIM
-    if (ssim.contrast < 0.90) {
-      issues.push({
-        id: `issue_contrast`,
-        type: "color",
-        severity: "medium",
-        description: `Contrast mismatch detected (contrast index: ${ssim.contrast}). Background or text tones differ from target.`,
-        suggestedFix: `Calibrate text color or container surface background to match target design tokens.`,
-      });
+    // Helper to find the best matching DOM element for a diff region
+    const findMatchedElement = (bounds: { x: number; y: number; width: number; height: number }) => {
+      let bestMatch: { id: string; area: number; overlapArea: number } | null = null;
+      for (const box of actualBoxes) {
+        if (box.id === "root") continue;
+        const ix0 = Math.max(box.x, bounds.x);
+        const iy0 = Math.max(box.y, bounds.y);
+        const ix1 = Math.min(box.x + box.width, bounds.x + bounds.width);
+        const iy1 = Math.min(box.y + box.height, bounds.y + bounds.height);
+        const overlap = Math.max(0, ix1 - ix0) * Math.max(0, iy1 - iy0);
+        const boxArea = box.width * box.height;
+        if (overlap > 0) {
+          if (
+            !bestMatch ||
+            overlap > bestMatch.overlapArea ||
+            (overlap === bestMatch.overlapArea && boxArea < bestMatch.area)
+          ) {
+            bestMatch = { id: box.id, area: boxArea, overlapArea: overlap };
+          }
+        }
+      }
+      return bestMatch?.id || "page_root";
+    };
+
+    // 2. Process Regional Pixel Differences (Color and Spacing)
+    let generatedRegionalIssues = 0;
+    if (pixel.topDiffRegions && pixel.topDiffRegions.length > 0) {
+      for (const region of pixel.topDiffRegions) {
+        const matchedElementId = findMatchedElement(region.bounds);
+        const colorDistance = Math.hypot(
+          region.targetColor.r - region.actualColor.r,
+          region.targetColor.g - region.actualColor.g,
+          region.targetColor.b - region.actualColor.b
+        );
+
+        if (colorDistance >= 25) {
+          // Quantitative Color Issue
+          const severity =
+            colorDistance > 90 || region.diffRatio > 0.4
+              ? "critical"
+              : colorDistance > 50 || region.diffRatio > 0.2
+                ? "high"
+                : "medium";
+
+          issues.push({
+            id: `issue_color_${matchedElementId || `${region.bounds.x}_${region.bounds.y}`}`,
+            elementId: matchedElementId,
+            type: "color",
+            severity,
+            description: `Color mismatch in region (${region.bounds.x}, ${region.bounds.y}) [${region.bounds.width}×${region.bounds.height}px]: target ${region.targetColor.hex} vs actual ${region.actualColor.hex} (ΔE: ${Math.round(colorDistance)})`,
+            target: {
+              color: region.targetColor.hex,
+              r: region.targetColor.r,
+              g: region.targetColor.g,
+              b: region.targetColor.b,
+              a: region.targetColor.a,
+              region: region.bounds,
+            },
+            actual: {
+              color: region.actualColor.hex,
+              r: region.actualColor.r,
+              g: region.actualColor.g,
+              b: region.actualColor.b,
+              a: region.actualColor.a,
+              region: region.bounds,
+            },
+            suggestedFix: `Calibrate surface background or text color for '${matchedElementId || "container"}' to ${region.targetColor.hex}.`,
+          });
+          generatedRegionalIssues++;
+        } else if (Math.hypot(region.offset.dx, region.offset.dy) >= 2 || region.diffRatio >= 0.05) {
+          // Quantitative Spacing / Offset Issue
+          const offsetDist = Math.hypot(region.offset.dx, region.offset.dy);
+          const severity =
+            offsetDist > 24 || region.diffRatio > 0.4
+              ? "critical"
+              : offsetDist > 12 || region.diffRatio > 0.2
+                ? "high"
+                : "medium";
+
+          issues.push({
+            id: `issue_spacing_${matchedElementId || `${region.bounds.x}_${region.bounds.y}`}`,
+            elementId: matchedElementId,
+            type: "spacing",
+            severity,
+            description: `Spacing/offset discrepancy in region (${region.bounds.x}, ${region.bounds.y}) [${region.bounds.width}×${region.bounds.height}px]: offset (${region.offset.dx}px, ${region.offset.dy}px), ${region.diffPixelCount} diff pixels.`,
+            target: {
+              region: region.bounds,
+              offset: region.offset,
+              diffPixels: region.diffPixelCount,
+            },
+            actual: {
+              region: region.bounds,
+              offset: { dx: 0, dy: 0 },
+              diffPixels: region.diffPixelCount,
+            },
+            suggestedFix: `Adjust padding, margin, or gap in region (${region.bounds.x}, ${region.bounds.y}) by (${region.offset.dx}px, ${region.offset.dy}px).`,
+          });
+          generatedRegionalIssues++;
+        }
+      }
     }
 
-    // Check Overall Pixel Diff
-    if (pixel.matchRatio < 0.88) {
-      issues.push({
-        id: `issue_pixel_delta`,
-        type: "spacing",
-        severity: "medium",
-        description: `${pixel.diffPixels} pixels differ from target (${((1 - pixel.matchRatio) * 100).toFixed(1)}% delta).`,
-        suggestedFix: `Inspect diff heatmap to refine padding, font sizes, and container gaps.`,
-      });
+    // 3. Fallback aggregate issues if no regional issues were detected
+    if (generatedRegionalIssues === 0) {
+      if (ssim.contrast < 0.90) {
+        issues.push({
+          id: `issue_contrast`,
+          type: "color",
+          severity: "medium",
+          description: `Contrast mismatch detected (contrast index: ${ssim.contrast}). Background or text tones differ from target.`,
+          suggestedFix: `Calibrate text color or container surface background to match target design tokens.`,
+        });
+      }
+
+      if (pixel.matchRatio < 0.88) {
+        issues.push({
+          id: `issue_pixel_delta`,
+          type: "spacing",
+          severity: "medium",
+          description: `${pixel.diffPixels} pixels differ from target (${((1 - pixel.matchRatio) * 100).toFixed(1)}% delta).`,
+          suggestedFix: `Inspect diff heatmap to refine padding, font sizes, and container gaps.`,
+        });
+      }
     }
 
     return issues;

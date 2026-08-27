@@ -3,19 +3,32 @@ import { UIIRDocument } from "@aiui/core";
 import { VisionProvider, LLMProvider, ModelCallResult } from "./types.js";
 import { OfflineCvProvider } from "./offlineCvProvider.js";
 import { PipelineStage } from "../types.js";
-import { MultiPassVisionAnalyzer, VisionCallPayload, VisionCallResponse } from "../analysis/multiPassAnalyzer.js";
+import { FusionPerceptionEngine, VisionCallPayload, VisionCallResponse } from "../analysis/fusionPerceptionEngine.js";
 
-export class OpenAIProvider implements VisionProvider, LLMProvider {
-  public readonly name = "openai";
+export class OpenRouterProvider implements VisionProvider, LLMProvider {
+  public readonly name = "openrouter";
   private client: OpenAI | null = null;
   private fallback = new OfflineCvProvider();
   private model: string;
+  private allowFallback: boolean;
 
-  constructor(apiKey?: string, model = "gpt-4o") {
-    const key = apiKey || process.env.OPENAI_API_KEY;
-    this.model = model;
+  constructor(apiKey?: string, model?: string, allowFallback = true) {
+    const key = apiKey || process.env.OPENROUTER_API_KEY;
+    this.model = model || process.env.OPENROUTER_MODEL || "openrouter/free";
+    this.allowFallback = allowFallback && process.env.STRICT_LIVE_VLM !== "true";
+
     if (key) {
-      this.client = new OpenAI({ apiKey: key });
+      const siteUrl = process.env.OPENROUTER_SITE_URL || process.env.APP_URL || "https://aiui.dev";
+      const siteName = process.env.OPENROUTER_SITE_NAME || process.env.APP_NAME || "AIUI - Autonomous UI-to-Code";
+
+      this.client = new OpenAI({
+        apiKey: key,
+        baseURL: "https://openrouter.ai/api/v1",
+        defaultHeaders: {
+          "HTTP-Referer": siteUrl,
+          "X-Title": siteName,
+        },
+      });
     }
   }
 
@@ -27,6 +40,9 @@ export class OpenAIProvider implements VisionProvider, LLMProvider {
     name?: string
   ): Promise<ModelCallResult<UIIRDocument>> {
     if (!this.client) {
+      if (!this.allowFallback) {
+        throw new Error(`[LIVE_PROVIDER_ERROR] OpenRouter client not initialized (OPENROUTER_API_KEY missing)`);
+      }
       return this.fallback.analyzeScreenshot(imageBuffer, mimeType, viewport, stage, name);
     }
 
@@ -40,10 +56,12 @@ export class OpenAIProvider implements VisionProvider, LLMProvider {
           content.push({ type: "image_url", image_url: { url: b64 } });
         }
 
+        const maxTokens = Number(process.env.OPENROUTER_MAX_TOKENS) || 2000;
         const completion = await this.client!.chat.completions.create({
           model: this.model,
           messages: [{ role: "user", content }],
           response_format: payload.jsonMode ? { type: "json_object" } : undefined,
+          max_tokens: maxTokens,
         });
 
         const text = completion.choices[0]?.message?.content || "{}";
@@ -51,7 +69,10 @@ export class OpenAIProvider implements VisionProvider, LLMProvider {
         const completionTokens = completion.usage?.completion_tokens || Math.ceil(text.length / 4);
         const latencyMs = Date.now() - callStart;
 
-        const costUsd = (promptTokens * 0.0025 + completionTokens * 0.01) / 1000;
+        // Pricing: Use actual cost from OpenRouter API if available, else estimate
+        const costUsd = (completion.usage as any)?.cost !== undefined
+          ? Number((completion.usage as any).cost)
+          : (promptTokens * 0.0025 + completionTokens * 0.01) / 1000;
 
         return {
           text,
@@ -62,7 +83,7 @@ export class OpenAIProvider implements VisionProvider, LLMProvider {
         };
       };
 
-      return await MultiPassVisionAnalyzer.analyze(
+      return await FusionPerceptionEngine.analyze(
         imageBuffer,
         mimeType,
         viewport,
@@ -71,12 +92,18 @@ export class OpenAIProvider implements VisionProvider, LLMProvider {
         {
           providerName: this.name,
           modelName: this.model,
-          maxRegions: 8,
           stage,
         }
       );
     } catch (err: any) {
-      console.error(`[OpenAIProvider Error] Live VLM perception call failed: ${err.message}`);
+      console.error(`[OpenRouterProvider Error] Live OpenRouter VLM perception call failed: ${err.message}`);
+
+      if (!this.allowFallback) {
+        const httpStatus = err.status || err.statusCode || (err.message.includes("402") ? 402 : "UNKNOWN");
+        throw new Error(
+          `[LIVE_PROVIDER_ERROR]\nHTTP: ${httpStatus}\nMessage: ${err.message}\nModel: ${this.model}\nRequested max tokens: ${process.env.OPENROUTER_MAX_TOKENS || 2000}\nFallback used: NO`
+        );
+      }
 
       // Fallback with transparent error metadata - never mask errors silently
       const fallbackResult = await this.fallback.analyzeScreenshot(imageBuffer, mimeType, viewport, stage, name);
@@ -93,21 +120,28 @@ export class OpenAIProvider implements VisionProvider, LLMProvider {
     stage: PipelineStage = "correcting"
   ): Promise<ModelCallResult<string>> {
     if (!this.client) {
+      if (!this.allowFallback) {
+        throw new Error(`[LIVE_PROVIDER_ERROR] OpenRouter client not initialized for structured correction`);
+      }
       return this.fallback.generateStructuredCorrection(prompt, stage);
     }
 
     const startTime = Date.now();
     try {
+      const maxTokens = Number(process.env.OPENROUTER_MAX_TOKENS) || 2000;
       const response = await this.client.chat.completions.create({
         model: this.model,
         messages: [{ role: "user", content: prompt }],
+        max_tokens: maxTokens,
       });
 
       const content = response.choices[0]?.message?.content || "";
       const latency = Date.now() - startTime;
       const promptTokens = response.usage?.prompt_tokens || 300;
       const completionTokens = response.usage?.completion_tokens || 100;
-      const costUsd = (promptTokens * 0.0025 + completionTokens * 0.01) / 1000;
+      const costUsd = (response.usage as any)?.cost !== undefined
+        ? Number((response.usage as any).cost)
+        : (promptTokens * 0.0025 + completionTokens * 0.01) / 1000;
 
       return {
         data: content,
@@ -123,7 +157,10 @@ export class OpenAIProvider implements VisionProvider, LLMProvider {
         },
       };
     } catch (err: any) {
-      console.error(`[OpenAIProvider Error] Structured correction failed: ${err.message}`);
+      console.error(`[OpenRouterProvider Error] Structured correction failed: ${err.message}`);
+      if (!this.allowFallback) {
+        throw new Error(`[LIVE_PROVIDER_ERROR] Structured correction failed: ${err.message}`);
+      }
       return this.fallback.generateStructuredCorrection(prompt, stage);
     }
   }

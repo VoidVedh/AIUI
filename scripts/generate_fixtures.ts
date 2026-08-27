@@ -35,23 +35,23 @@ const FIXTURES = [
 </head>
 <body>
   <nav>
-    <div class="logo">AIUI Autonomous Engine</div>
+    <div class="logo">Application Suite</div>
     <div class="nav-links"><span>Features</span><span>Solutions</span><span>Pricing</span></div>
     <button class="cta-btn">Get Started</button>
   </nav>
   <div class="hero">
-    <div class="badge">✦ Next-Gen Autonomous UI Engineering</div>
-    <h1>Transform Screenshots Into Pixel-Perfect Production Code</h1>
-    <p class="sub">AIUI autonomously analyzes UI design, extracts design tokens, builds component trees, and self-corrects using computer vision.</p>
+    <div class="badge">✦ Next-Gen Enterprise Solution</div>
+    <h1>Transform Workflows Into Production Results</h1>
+    <p class="sub">Seamlessly integrate workflows, manage structured resources, and deploy scalable systems across your organization.</p>
     <div class="hero-ctas">
-      <button class="btn-pri">Start Building Now</button>
-      <button class="btn-sec">View Documentation</button>
+      <button class="btn-pri">Get Started Free</button>
+      <button class="btn-sec">Learn More</button>
     </div>
   </div>
   <div class="grid">
-    <div class="card"><h3>Structured UI IR</h3><p>Framework-agnostic intermediate language isolating vision perception from code output.</p></div>
-    <div class="card"><h3>Multi-Target Generators</h3><p>Synthesizes idiomatic React 19, Vanilla JS, and Flutter from a single analyzed tree.</p></div>
-    <div class="card"><h3>Self-Correction Loop</h3><p>Calculates real SSIM and pixelmatch metrics with targeted surgical CSS/JSX patch engine.</p></div>
+    <div class="card"><h3>Unified System Architecture</h3><p>Isolates component logic from presentation layers for scalable performance.</p></div>
+    <div class="card"><h3>Automated Workflows</h3><p>Synthesizes modern responsive UI layouts across platforms with high visual fidelity.</p></div>
+    <div class="card"><h3>Continuous Self-Correction</h3><p>Evaluates layout metrics with targeted surgical patches and real-time verification.</p></div>
   </div>
 </body>
 </html>`
@@ -137,13 +137,13 @@ const FIXTURES = [
   <nav><div style="font-size:20px;font-weight:700;">AIUI Platform</div><button style="background:#3b82f6;color:white;padding:8px 18px;border-radius:8px;border:none;font-weight:600;">Sign In</button></nav>
   <div class="form-wrap">
     <div class="card">
-      <h2>Create Your Account</h2>
-      <p class="sub">Join thousands of developers using AIUI.</p>
+      <h2>Sign In</h2>
+      <p class="sub">Please enter your credentials to continue.</p>
       <form>
         <input type="text" placeholder="Full Name" />
         <input type="email" placeholder="Email address" />
         <input type="password" placeholder="Password" />
-        <button type="button" class="btn-submit">Sign Up Free</button>
+        <button type="button" class="btn-submit">Sign In</button>
       </form>
     </div>
   </div>
@@ -173,9 +173,9 @@ const FIXTURES = [
 <body>
   <nav><div style="font-size:20px;font-weight:700;">AIUI Architecture</div><button style="background:#3b82f6;color:white;padding:8px 18px;border-radius:8px;border:none;font-weight:600;">Explore</button></nav>
   <div class="grid">
-    <div class="card"><h3>Structured UI IR</h3><p>Framework-agnostic intermediate language isolating vision perception from code output.</p></div>
-    <div class="card"><h3>Multi-Target Generators</h3><p>Synthesizes idiomatic React 19, Vanilla JS, and Flutter from a single analyzed tree.</p></div>
-    <div class="card"><h3>Self-Correction Loop</h3><p>Calculates real SSIM and pixelmatch metrics with targeted surgical CSS/JSX patch engine.</p></div>
+    <div class="card"><h3>Unified System Architecture</h3><p>Isolates component logic from presentation layers for scalable performance.</p></div>
+    <div class="card"><h3>Automated Workflows</h3><p>Synthesizes modern responsive UI layouts across platforms with high visual fidelity.</p></div>
+    <div class="card"><h3>Continuous Self-Correction</h3><p>Evaluates layout metrics with targeted surgical patches and real-time verification.</p></div>
   </div>
 </body>
 </html>`
@@ -203,10 +203,10 @@ const FIXTURES = [
   </style>
 </head>
 <body>
-  <header>AIUI Mobile</header>
+  <header>Mobile Hub</header>
   <div class="content">
-    <div class="mcard"><h3>Real-time Pipeline</h3><p>Optimized mobile layout rendered via unified IR.</p></div>
-    <div class="mcard"><h3>Self-Healing Engine</h3><p>Optimized mobile layout rendered via unified IR.</p></div>
+    <div class="mcard"><h3>Live Operations</h3><p>Optimized mobile layout rendered via unified IR.</p></div>
+    <div class="mcard"><h3>Security & Encryption</h3><p>Optimized mobile layout rendered via unified IR.</p></div>
   </div>
   <footer>
     <span class="active">Home</span>
@@ -257,11 +257,11 @@ const FIXTURES = [
 </head>
 <body>
   <nav>
-    <div style="display:flex;align-items:center;"><span class="logo">AIUI Enterprise Cloud</span><span class="badge">PRO</span></div>
-    <div style="font-size:13px;color:#94a3b8;">Autonomous UI Pipeline Matrix</div>
+    <div style="display:flex;align-items:center;"><span class="logo">Enterprise Cloud</span><span class="badge">PRO</span></div>
+    <div style="font-size:13px;color:#94a3b8;">Feature Comparison Matrix</div>
   </nav>
   <div class="header-content">
-    <h1>Compare Plans & Autonomous Capabilities</h1>
+    <h1>Compare Plans & Capabilities</h1>
     <p class="sub">Choose the right tier for self-healing UI synthesis and automated visual evaluation.</p>
   </div>
   <div class="matrix-wrap">
@@ -306,6 +306,197 @@ const FIXTURES = [
       <div class="cell" style="border-bottom:none;"><button class="btn-plan btn-sec">Contact Sales</button></div>
     </div>
     <div class="foot-note">All tiers include process-level sandboxed execution and automated regression rollback.</div>
+  </div>
+</body>
+</html>`
+  },
+  {
+    name: "ugeek-signin",
+    title: "Ugeek B2B Marketplace Sign-In",
+    width: 1280,
+    height: 800,
+    html: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; margin: 0; min-height: 100vh; display: flex; }
+    .split-left {
+      width: 50%;
+      background: #0b132b;
+      color: #f8fafc;
+      padding: 48px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid #1e293b;
+    }
+    .brand-logo { font-size: 24px; font-weight: 800; color: #f8fafc; letter-spacing: -0.02em; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.15);
+      color: #60a5fa;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      margin-bottom: 16px;
+    }
+    .hero-title { font-size: 36px; font-weight: 800; line-height: 1.25; letter-spacing: -0.03em; margin-bottom: 16px; }
+    .hero-desc { font-size: 16px; color: #94a3b8; line-height: 1.6; max-width: 480px; margin-bottom: 28px; }
+    .hero-list { display: flex; flex-direction: column; gap: 12px; font-size: 14px; color: #f8fafc; }
+    .hero-list-item { display: flex; align-items: center; gap: 8px; }
+    .check-icon { color: #3b82f6; font-weight: 700; }
+    .left-footer { font-size: 13px; color: #64748b; }
+
+    .split-right {
+      width: 50%;
+      background: #ffffff;
+      color: #0f172a;
+      padding: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .auth-card { width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 16px; }
+    .auth-title { font-size: 28px; font-weight: 700; color: #0f172a; letter-spacing: -0.02em; }
+    .auth-sub { font-size: 14px; color: #64748b; margin-top: -6px; margin-bottom: 6px; }
+    .btn-google {
+      width: 100%;
+      height: 44px;
+      background: #ffffff;
+      color: #1e293b;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    .divider { display: flex; align-items: center; text-align: center; color: #94a3b8; font-size: 12px; font-weight: 600; }
+    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #e2e8f0; }
+    .divider:not(:empty)::before { margin-right: 12px; }
+    .divider:not(:empty)::after { margin-left: 12px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-label { font-size: 13px; font-weight: 600; color: #0f172a; }
+    .form-input {
+      width: 100%;
+      height: 44px;
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 14px;
+      color: #0f172a;
+    }
+    .auth-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #64748b; }
+    .forgot-link { color: #2563eb; font-weight: 600; text-decoration: none; }
+    .btn-signin {
+      width: 100%;
+      height: 46px;
+      background: #2563eb;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+    .auth-footer { font-size: 13px; color: #64748b; text-align: center; margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="split-left">
+    <div class="brand-logo">Ugeek</div>
+    <div class="hero-content">
+      <div class="hero-badge">✦ B2B Marketplace Platform</div>
+      <div class="hero-title">The platform where businesses buy from and sell to other businesses</div>
+      <div class="hero-desc">Connect with verified suppliers, manage bulk purchasing, and streamline commercial workflows in a unified portal.</div>
+      <div class="hero-list">
+        <div class="hero-list-item"><span class="check-icon">✓</span> Verified commercial vendors & buyer network</div>
+        <div class="hero-list-item"><span class="check-icon">✓</span> Instant enterprise quotations & automated invoicing</div>
+        <div class="hero-list-item"><span class="check-icon">✓</span> End-to-end transaction security & escrow support</div>
+      </div>
+    </div>
+    <div class="left-footer">© 2026 Ugeek B2B Marketplace. All rights reserved.</div>
+  </div>
+
+  <div class="split-right">
+    <div class="auth-card">
+      <div class="auth-title">Welcome back!</div>
+      <div class="auth-sub">Please enter your commercial credentials to sign in.</div>
+      <button class="btn-google">G Continue with Google</button>
+      <div class="divider">OR</div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" placeholder="name@company.com" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input class="form-input" type="password" placeholder="••••••••" />
+      </div>
+      <div class="auth-row">
+        <span>Remember me for 30 days</span>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+      <button class="btn-signin">Sign In</button>
+      <div class="auth-footer">Don't have an account? Contact enterprise sales.</div>
+    </div>
+  </div>
+</body>
+</html>`
+  },
+  {
+    name: "checkout-summary",
+    title: "Checkout & Invoice Summary",
+    width: 1280,
+    height: 800,
+    html: `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #0f172a; color: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
+    nav { height: 68px; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; background: #1e293b; border-bottom: 1px solid #334155; }
+    .logo { font-size: 18px; font-weight: 700; color: #f8fafc; }
+    .content-wrap { max-width: 1100px; margin: 40px auto; padding: 0 24px; width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .panel { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 32px; display: flex; flex-direction: column; gap: 20px; }
+    h2 { font-size: 20px; font-weight: 700; }
+    .summary-row { display: flex; justify-content: space-between; font-size: 14px; color: #94a3b8; padding-bottom: 12px; border-bottom: 1px solid #334155; }
+    .total-row { display: flex; justify-content: space-between; font-size: 18px; font-weight: 700; color: #f8fafc; padding-top: 8px; }
+    .card-form { display: flex; flex-direction: column; gap: 14px; }
+    input { background: #0f172a; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px; color: #f8fafc; font-size: 14px; height: 44px; width: 100%; }
+    .btn-pay { background: #10b981; color: white; border: none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 600; cursor: pointer; height: 46px; }
+  </style>
+</head>
+<body>
+  <nav><div class="logo">SaaS Billing Portal</div><span style="font-size:13px;color:#94a3b8;">Secure Checkout</span></nav>
+  <div class="content-wrap">
+    <div class="panel">
+      <h2>Order Summary</h2>
+      <div class="summary-row"><span>Enterprise Tier (Annual)</span><span style="color:#f8fafc;">$2,400.00</span></div>
+      <div class="summary-row"><span>Dedicated Compute Add-on</span><span style="color:#f8fafc;">$480.00</span></div>
+      <div class="summary-row"><span>Annual Discount (20%)</span><span style="color:#10b981;">-$576.00</span></div>
+      <div class="total-row"><span>Total Due Today</span><span style="color:#3b82f6;">$2,304.00</span></div>
+    </div>
+    <div class="panel">
+      <h2>Payment Method</h2>
+      <form class="card-form">
+        <input type="text" placeholder="Cardholder Name" />
+        <input type="text" placeholder="Card Number (•••• •••• •••• ••••)" />
+        <div style="display:flex;gap:12px;"><input type="text" placeholder="MM / YY" /><input type="text" placeholder="CVC" /></div>
+        <button type="button" class="btn-pay">Pay $2,304.00</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>`
