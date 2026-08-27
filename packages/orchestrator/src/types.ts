@@ -39,7 +39,7 @@ export interface IterationCheckpoint {
   timestamp: string;
 }
 
-export type TargetFramework = "react" | "vanillajs" | "flutter";
+export type TargetFramework = "react";
 
 export interface PipelineRunState {
   runId: string;
@@ -68,7 +68,7 @@ export interface OrchestratorOptions {
   runId?: string;
   name?: string;
   fixtureName?: string;
-  target?: "react" | "vanillajs" | "flutter";
+  target?: "react";
   maxIterations?: number;
   similarityThreshold?: number;
   iterationTimeoutMs?: number;

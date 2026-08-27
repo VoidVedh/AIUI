@@ -33,6 +33,11 @@ export declare class PixelDiffCalculator {
      * Performs pixel-by-pixel diff with pixelmatch and outputs a visual diff heatmap buffer,
      * along with sampled color differences and spatial offsets for top differing regions.
      */
-    static compute(image1Buffer: Buffer, image2Buffer: Buffer, targetWidth?: number, targetHeight?: number, threshold?: number): Promise<PixelDiffResult>;
+    static compute(image1Buffer: Buffer, image2Buffer: Buffer, targetWidth?: number, targetHeight?: number, threshold?: number, masks?: Array<{
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    }>): Promise<PixelDiffResult>;
 }
 //# sourceMappingURL=pixelDiff.d.ts.map

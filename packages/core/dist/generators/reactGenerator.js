@@ -266,9 +266,25 @@ ${jsxContent}
             iconImports.add(iconComp);
             return `${pad}<${iconComp} size={${node.dimensions.height === "auto" ? 20 : node.dimensions.height}}${styleAttr} id="${node.id}" />`;
         }
-        if (node.type === "image") {
-            const src = node.content?.src || "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80";
-            const alt = this.escapeHtml(node.content?.alt || "Image");
+        if (node.type === "image" || node.type === "avatar") {
+            let src = node.content?.src;
+            if (!src) {
+                if (node.type === "avatar") {
+                    const avatarId = parseInt(node.id.replace(/\D/g, "") || "1", 10) % 70 || 1;
+                    src = `https://i.pravatar.cc/300?img=${avatarId}`;
+                }
+                else if (node.name?.toLowerCase().includes("bot") ||
+                    node.name?.toLowerCase().includes("character") ||
+                    node.name?.toLowerCase().includes("illustration")) {
+                    src = `https://api.dicebear.com/7.x/bottts/svg?seed=${node.id}`;
+                }
+                else {
+                    const w = typeof node.dimensions.width === "number" ? Math.round(node.dimensions.width) : 400;
+                    const h = typeof node.dimensions.height === "number" ? Math.round(node.dimensions.height) : 300;
+                    src = `https://picsum.photos/seed/${node.id}/${w}/${h}`;
+                }
+            }
+            const alt = this.escapeHtml(node.content?.alt || node.name || "Image");
             return `${pad}<img src="${src}" alt="${alt}"${styleAttr}${idAttr} />`;
         }
         if (node.type === "input") {

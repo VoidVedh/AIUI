@@ -1,9 +1,21 @@
+import fs from "node:fs";
 import path from "node:path";
 import { chromium, Browser, Page } from "playwright";
 import { createServer, ViteDevServer } from "vite";
 import react from "@vitejs/plugin-react";
 import { GeneratedProject } from "@aiui/core";
 import { SandboxManager } from "./sandbox.js";
+
+function findMonorepoRoot(startDir = process.cwd()): string {
+  let curr = startDir;
+  while (curr && curr !== path.dirname(curr)) {
+    if (fs.existsSync(path.join(curr, "packages")) && fs.existsSync(path.join(curr, "node_modules", "react"))) {
+      return curr;
+    }
+    curr = path.dirname(curr);
+  }
+  return process.cwd();
+}
 
 export interface RenderResult {
   screenshotBuffer: Buffer;
@@ -79,17 +91,23 @@ export class PlaywrightRenderer {
     let page: Page | null = null;
 
     try {
-      // 2. Start Vite server programmatically inside sandbox directory with react plugin pre-configured
-      const rootDir = sandboxDir;
+      const monoRoot = findMonorepoRoot();
+      const reactPkg = path.resolve(monoRoot, "node_modules/react");
+      const reactDomPkg = path.resolve(monoRoot, "node_modules/react-dom");
+      const lucidePkg = path.resolve(monoRoot, "node_modules/lucide-react");
+
       viteServer = await createServer({
-        root: rootDir,
+        root: sandboxDir,
         configFile: false,
         plugins: [react() as any],
         resolve: {
           alias: [
-            { find: "react", replacement: path.resolve(process.cwd(), "node_modules/react") },
-            { find: "react-dom", replacement: path.resolve(process.cwd(), "node_modules/react-dom") },
-            { find: "lucide-react", replacement: path.resolve(process.cwd(), "node_modules/lucide-react") },
+            { find: "react/jsx-dev-runtime", replacement: path.resolve(reactPkg, "jsx-dev-runtime.js") },
+            { find: "react/jsx-runtime", replacement: path.resolve(reactPkg, "jsx-runtime.js") },
+            { find: "react-dom/client", replacement: path.resolve(reactDomPkg, "client.js") },
+            { find: "react-dom", replacement: reactDomPkg },
+            { find: "react", replacement: reactPkg },
+            { find: "lucide-react", replacement: lucidePkg },
           ],
         },
         server: {
@@ -98,7 +116,7 @@ export class PlaywrightRenderer {
           strictPort: false,
           fs: {
             strict: false,
-            allow: [process.cwd(), sandboxDir],
+            allow: [monoRoot, process.cwd(), sandboxDir],
           },
         },
         logLevel: "error",

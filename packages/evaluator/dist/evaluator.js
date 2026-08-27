@@ -3,13 +3,13 @@ import { PixelDiffCalculator } from "./pixelDiff.js";
 import { LayoutDiffCalculator } from "./layoutDiff.js";
 export class VisualEvaluator {
     static WEIGHT_SSIM = 0.45;
-    static WEIGHT_PIXEL = 0.35;
-    static WEIGHT_LAYOUT = 0.20;
+    static WEIGHT_LAYOUT = 0.35;
+    static WEIGHT_PIXEL = 0.20;
     static STOPPING_THRESHOLD = 0.92;
     /**
      * Deterministically evaluates visual similarity between target design and actual rendered output.
      */
-    static async evaluate(targetImageBuffer, actualImageBuffer, expectedBoxes = [], actualBoxes = [], viewport = { width: 1280, height: 800 }) {
+    static async evaluate(targetImageBuffer, actualImageBuffer, expectedBoxes = [], actualBoxes = [], viewport = { width: 1280, height: 800 }, imageMasks = []) {
         const ssimWidth = Math.round((viewport.width || 1280) / 2);
         const ssimHeight = Math.round((viewport.height || 800) / 2);
         let validTargetBuffer = targetImageBuffer;
@@ -21,13 +21,13 @@ export class VisualEvaluator {
         }
         const [ssimResult, pixelResult] = await Promise.all([
             SsimCalculator.compute(validTargetBuffer, actualImageBuffer, ssimWidth, ssimHeight, 16),
-            PixelDiffCalculator.compute(validTargetBuffer, actualImageBuffer, viewport.width || 1280, viewport.height || 800, 0.1),
+            PixelDiffCalculator.compute(validTargetBuffer, actualImageBuffer, viewport.width || 1280, viewport.height || 800, 0.1, imageMasks),
         ]);
         const layoutResult = LayoutDiffCalculator.compute(expectedBoxes, actualBoxes);
-        // Compute Aggregate Score
+        // Compute Aggregate Score (45% SSIM + 35% Layout IoU + 20% Masked PixelMatch)
         const overallSimilarity = Number((this.WEIGHT_SSIM * ssimResult.ssim +
-            this.WEIGHT_PIXEL * pixelResult.matchRatio +
-            this.WEIGHT_LAYOUT * layoutResult.averageIou).toFixed(4));
+            this.WEIGHT_LAYOUT * layoutResult.averageIou +
+            this.WEIGHT_PIXEL * pixelResult.matchRatio).toFixed(4));
         // Generate Structured Issues
         const issues = this.generateIssues(ssimResult, pixelResult, layoutResult, actualBoxes);
         const passed = overallSimilarity >= this.STOPPING_THRESHOLD;

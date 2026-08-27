@@ -23,8 +23,8 @@ export interface VisualEvaluationResult {
 }
 export declare class VisualEvaluator {
     static readonly WEIGHT_SSIM = 0.45;
-    static readonly WEIGHT_PIXEL = 0.35;
-    static readonly WEIGHT_LAYOUT = 0.2;
+    static readonly WEIGHT_LAYOUT = 0.35;
+    static readonly WEIGHT_PIXEL = 0.2;
     static readonly STOPPING_THRESHOLD = 0.92;
     /**
      * Deterministically evaluates visual similarity between target design and actual rendered output.
@@ -38,7 +38,12 @@ export declare class VisualEvaluator {
     }>, viewport?: {
         width: number;
         height: number;
-    }): Promise<VisualEvaluationResult>;
+    }, imageMasks?: Array<{
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    }>): Promise<VisualEvaluationResult>;
     private static generateIssues;
 }
 //# sourceMappingURL=evaluator.d.ts.map

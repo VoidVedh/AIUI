@@ -9,11 +9,13 @@
   "scripts": {
     "build": "npm run build --workspaces",
     "start": "./start.sh",
+    "screenshot": "npx tsx scripts/run_screenshot.ts",
     "start:all": "npx tsx scripts/start_all.ts",
     "dev:server": "npm run dev --workspace=@aiui/server",
     "dev:web": "npm run dev --workspace=@aiui/web",
     "start:server": "npm run start --workspace=@aiui/server",
     "test": "vitest run",
+    "test:e2e:live": "vitest run tests/e2e",
     "test:core": "vitest run packages/core",
     "test:evaluator": "vitest run packages/evaluator",
     "test:runner": "vitest run packages/runner",

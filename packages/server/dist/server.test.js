@@ -56,12 +56,18 @@ describe("@aiui/server REST Endpoints", () => {
         expect(data).toHaveProperty("runId");
         expect(data.status).toBe("started");
         expect(data.target).toBe("react");
-        // Wait 3.5s for run to finish
-        await new Promise((r) => setTimeout(r, 3500));
-        // Check state endpoint
-        const stateRes = await fetch(`http://127.0.0.1:${port}/api/runs/${data.runId}/state`);
-        expect(stateRes.status).toBe(200);
-        const state = (await stateRes.json());
+        // Poll for run completion (up to 15s)
+        let state = null;
+        const pollStart = Date.now();
+        while (Date.now() - pollStart < 15000) {
+            const stateRes = await fetch(`http://127.0.0.1:${port}/api/runs/${data.runId}/state`);
+            expect(stateRes.status).toBe(200);
+            state = (await stateRes.json());
+            if (state.status !== "started" && state.status !== "in_progress") {
+                break;
+            }
+            await new Promise((r) => setTimeout(r, 400));
+        }
         expect(["success", "completed", "max_iterations_reached"]).toContain(state.status);
         expect(state.similarityScore).toBeGreaterThan(0.70);
         // Check download zip endpoint

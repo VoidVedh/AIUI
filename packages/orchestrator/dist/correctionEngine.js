@@ -171,6 +171,16 @@ body, .aiui-page {
                             appliedModifications.push(`Calibrated page background to ${targetColor}`);
                         }
                     }
+                    else {
+                        const contrastFactor = (1 + (SEVERITY_MAGNITUDE_PX[primaryIssue.severity] || 10) / 100).toFixed(2);
+                        newCssRules.push(`
+/* Contrast correction: severity '${primaryIssue.severity}' */
+body, .aiui-page {
+  filter: contrast(${contrastFactor}) !important;
+}
+`);
+                        appliedModifications.push(`Applied contrast filter (${contrastFactor}) for ${primaryIssue.severity} color issue`);
+                    }
                     break;
                 }
                 case "spacing": {
