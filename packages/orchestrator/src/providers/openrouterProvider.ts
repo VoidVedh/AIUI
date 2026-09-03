@@ -6,15 +6,35 @@ import { PipelineStage } from "../types.js";
 import { FusionPerceptionEngine, VisionCallPayload, VisionCallResponse } from "../analysis/fusionPerceptionEngine.js";
 
 export class OpenRouterProvider implements VisionProvider, LLMProvider {
-  public readonly name = "openrouter";
+  public readonly name: string;
+  public readonly displayName: string;
+  public readonly modelId: string;
   private client: OpenAI | null = null;
   private fallback = new OfflineCvProvider();
   private model: string;
   private allowFallback: boolean;
 
-  constructor(apiKey?: string, model?: string, allowFallback = true) {
+  constructor(
+    apiKey?: string,
+    model?: string,
+    allowFallback = true,
+    providerName = "openrouter",
+    displayName = "OpenRouter"
+  ) {
+    this.name = providerName;
+    this.displayName = displayName;
     const key = apiKey || process.env.OPENROUTER_API_KEY;
-    this.model = model || process.env.OPENROUTER_MODEL || "openrouter/free";
+
+    // Fully env-driven: for Gemma, require explicit model or GEMMA_MODEL env var (no hardcoded slug baked in).
+    // For generic OpenRouter provider, use model arg, OPENROUTER_MODEL, or openrouter/auto.
+    const resolvedModel =
+      model ||
+      (providerName === "gemma"
+        ? process.env.GEMMA_MODEL || ""
+        : process.env.OPENROUTER_MODEL || "openrouter/auto");
+
+    this.model = resolvedModel;
+    this.modelId = resolvedModel;
     this.allowFallback = allowFallback && process.env.STRICT_LIVE_VLM !== "true";
 
     if (key) {
@@ -32,6 +52,10 @@ export class OpenRouterProvider implements VisionProvider, LLMProvider {
     }
   }
 
+  public isConfigured(): boolean {
+    return Boolean(this.client && this.model);
+  }
+
   public async analyzeScreenshot(
     imageBuffer: Buffer,
     mimeType: string,
@@ -39,11 +63,19 @@ export class OpenRouterProvider implements VisionProvider, LLMProvider {
     stage: PipelineStage = "analyzing",
     name?: string
   ): Promise<ModelCallResult<UIIRDocument>> {
-    if (!this.client) {
+    if (!this.client || !this.model) {
       if (!this.allowFallback) {
-        throw new Error(`[LIVE_PROVIDER_ERROR] OpenRouter client not initialized (OPENROUTER_API_KEY missing)`);
+        throw new Error(
+          `[LIVE_PROVIDER_ERROR] ${this.displayName} (${this.name}) not initialized (OPENROUTER_API_KEY or model env var missing)`
+        );
       }
-      return this.fallback.analyzeScreenshot(imageBuffer, mimeType, viewport, stage, name);
+      const fallbackResult = await this.fallback.analyzeScreenshot(imageBuffer, mimeType, viewport, stage, name);
+      fallbackResult.costLog.provider = `${this.name} (fallback: offline-cv)`;
+      const reason = !this.client ? "OpenRouter client not initialized (API key missing)" : "Model not specified";
+      (fallbackResult.costLog as any).error = reason;
+      (fallbackResult.data.metadata as any).vlmError = reason;
+      (fallbackResult.data.metadata as any).fallbackReason = "provider_unconfigured";
+      return fallbackResult;
     }
 
     try {
@@ -57,31 +89,18 @@ export class OpenRouterProvider implements VisionProvider, LLMProvider {
         }
 
         const maxTokens = Number(process.env.OPENROUTER_MAX_TOKENS) || 2000;
-        let completion: any;
-        try {
-          completion = await this.client!.chat.completions.create({
-            model: this.model,
-            messages: [{ role: "user", content }],
-            response_format: payload.jsonMode ? { type: "json_object" } : undefined,
-            max_tokens: maxTokens,
-          });
-        } catch (callErr: any) {
-          if (this.model === "openrouter/free" && (callErr.message.includes("404") || callErr.status === 404)) {
-            completion = await this.client!.chat.completions.create({
-              model: "minimax/minimax-m3:free",
-              messages: [{ role: "user", content }],
-              response_format: payload.jsonMode ? { type: "json_object" } : undefined,
-              max_tokens: maxTokens,
-            });
-          } else {
-            throw callErr;
-          }
-        }
+        const completion = await this.client!.chat.completions.create({
+          model: this.model,
+          messages: [{ role: "user", content }],
+          response_format: payload.jsonMode ? { type: "json_object" } : undefined,
+          max_tokens: maxTokens,
+        });
 
         const text = completion.choices[0]?.message?.content || "{}";
         const promptTokens = completion.usage?.prompt_tokens || Math.ceil(payload.prompt.length / 4) + 800;
         const completionTokens = completion.usage?.completion_tokens || Math.ceil(text.length / 4);
         const latencyMs = Date.now() - callStart;
+
 
         // Pricing: Use actual cost from OpenRouter API if available, else estimate
         const costUsd = (completion.usage as any)?.cost !== undefined

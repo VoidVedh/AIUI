@@ -84,6 +84,34 @@ flowchart TD
 
 ---
 
+## 🤖 Multi-Model AI Provider Ecosystem
+
+AIUI supports flexible, provider-agnostic visual perception and iterative self-correction:
+
+```
+AIUI Pipeline
+ ├── OpenRouter (Gemma / Claude / GPT)
+ ├── Puter → Gemini (Free tier, zero Google API key required)
+ ├── Google Gemini (Direct API)
+ ├── OpenAI (GPT-4o)
+ ├── Anthropic (Claude 3.5 Sonnet)
+ └── Offline CV Engine (Deterministic fallback)
+```
+
+### Puter (Gemini) Integration
+Puter connects directly to Google Gemini models without requiring a personal Google Cloud API key:
+- **Authentication**: Uses Puter auth token (`PUTER_AUTH_TOKEN` in `.env`) or automatic browser sign-in.
+- **Model Selection**: Defaults to `gemini-2.5-flash` (configurable via `PUTER_MODEL` in `.env`).
+- **Vision & Multi-Modal Perception**: Analyzes raw UI screenshots, detects layout hierarchies, spacing, typography, colors, and extracts structured UI IR nodes.
+- **Self-Correction**: Uses Puter Gemini for semantic code adjustments during the iterative refinement loop.
+- **Resilient Fallback**: If Puter experiences rate limits or network issues, it automatically falls back to OpenRouter (or Offline CV) without halting the run:
+  ```
+  [AIUI][PUTER] Vision (model=gemini-2.5-flash): status=SUCCESS, latency=1320ms.
+  ```
+- **Default Selection**: Set `AI_PROVIDER=puter` in `.env` to make Puter the default provider across the CLI, API, and Studio dashboard.
+
+---
+
 ## 🧪 Benchmark Verification & Generalization Suite
 
 AIUI is evaluated across **both** an internal self-contained suite and an **independent held-out external benchmark** of 16 unseen real-world UI targets without engineered ground truth.

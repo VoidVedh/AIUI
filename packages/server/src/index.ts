@@ -4,7 +4,13 @@ import cors from "cors";
 import multer from "multer";
 import path from "node:path";
 import fs from "node:fs";
-import { PipelineOrchestrator, StateManager, TargetFramework } from "@aiui/orchestrator";
+import {
+  PipelineOrchestrator,
+  StateManager,
+  TargetFramework,
+  getAvailableProviders,
+  SupportedProviderName,
+} from "@aiui/orchestrator";
 import { EventStreamManager } from "./eventStream.js";
 import { ZipService } from "./zipService.js";
 
@@ -116,6 +122,19 @@ app.get("/api/fixtures/:name/image", (req, res) => {
 });
 
 /**
+ * GET /api/providers
+ * Returns catalog of supported Vision & LLM providers with availability status
+ */
+app.get("/api/providers", (_req, res) => {
+  try {
+    const providers = getAvailableProviders();
+    res.json(providers);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Failed to retrieve providers catalog." });
+  }
+});
+
+/**
  * POST /api/runs
  * Starts an autonomous UI-to-Code pipeline run
  */
@@ -127,6 +146,27 @@ app.post("/api/runs", upload.single("image"), async (req: Request, res: Response
     const target: TargetFramework = (req.body.target as TargetFramework) || "react";
     const maxIterations = parseInt(req.body.maxIterations || "5", 10);
     const similarityThreshold = parseFloat(req.body.similarityThreshold || "0.92");
+    const provider = (req.body.provider || process.env.AI_PROVIDER || process.env.DEFAULT_PROVIDER) as SupportedProviderName | undefined;
+    const multiModelMode = (req.body.multiModelMode as "single" | "race") || "single";
+
+    let candidateProviders: SupportedProviderName[] | undefined = undefined;
+    if (req.body.candidateProviders) {
+      if (Array.isArray(req.body.candidateProviders)) {
+        candidateProviders = req.body.candidateProviders;
+      } else if (typeof req.body.candidateProviders === "string") {
+        try {
+          const parsed = JSON.parse(req.body.candidateProviders);
+          if (Array.isArray(parsed)) {
+            candidateProviders = parsed;
+          }
+        } catch {
+          candidateProviders = req.body.candidateProviders
+            .split(",")
+            .map((s: string) => s.trim() as SupportedProviderName)
+            .filter(Boolean);
+        }
+      }
+    }
 
     if (req.body.viewport) {
       try {
@@ -154,11 +194,13 @@ app.post("/api/runs", upload.single("image"), async (req: Request, res: Response
     const orchestrator = new PipelineOrchestrator();
     activeOrchestrators.set(runId, orchestrator);
 
-    // Respond immediately with runId
+    // Respond immediately with runId & configuration
     res.json({
       runId,
       status: "started",
       target,
+      provider: provider || (multiModelMode === "race" ? "race" : "gemma"),
+      multiModelMode,
       viewport,
       similarityThreshold,
       eventsUrl: `/api/runs/${runId}/events`,
@@ -173,6 +215,9 @@ app.post("/api/runs", upload.single("image"), async (req: Request, res: Response
           target,
           viewport,
           fixtureName: req.body.fixtureId,
+          providerName: provider,
+          candidateProviders,
+          multiModelMode,
           maxIterations,
           similarityThreshold,
           onProgress: (state, logMessage) => {
@@ -181,6 +226,10 @@ app.post("/api/runs", upload.single("image"), async (req: Request, res: Response
               log: logMessage,
               iteration: state.totalIterations,
               currentScore: state.similarityScore,
+              provider: state.provider,
+              multiModelMode: state.multiModelMode,
+              candidates: state.candidates,
+              selectedCandidateId: state.selectedCandidateId,
               history: state.history,
               costLogs: state.costLogs,
             });
@@ -192,6 +241,10 @@ app.post("/api/runs", upload.single("image"), async (req: Request, res: Response
           status: finalState?.status,
           similarityScore: finalState?.similarityScore,
           bestIteration: finalState?.bestIteration,
+          provider: finalState?.provider,
+          multiModelMode: finalState?.multiModelMode,
+          candidates: finalState?.candidates,
+          selectedCandidateId: finalState?.selectedCandidateId,
           files: finalState?.currentProject?.files,
           history: finalState?.history,
         });
@@ -207,6 +260,45 @@ app.post("/api/runs", upload.single("image"), async (req: Request, res: Response
     })();
   } catch (err: any) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * POST /api/runs/:runId/select-candidate
+ * Backend hook for manual candidate selection (returns 400 unless run is awaiting selection)
+ */
+app.post("/api/runs/:runId/select-candidate", async (req: Request, res: Response) => {
+  try {
+    const runId = String(req.params.runId);
+    const { candidateId } = req.body;
+
+    if (!candidateId) {
+      return res.status(400).json({ error: "Missing required 'candidateId' in request body." });
+    }
+
+    const state = await StateManager.loadState(runId);
+    if (!state) {
+      return res.status(404).json({ error: `Run '${runId}' not found.` });
+    }
+
+    if (state.multiModelMode !== ("manual_select" as any) || !(state as any).awaitingUserSelection) {
+      return res.status(400).json({
+        error: "Run is not in 'manual_select' mode or is not currently awaiting candidate selection.",
+      });
+    }
+
+    if (state.candidates) {
+      for (const cand of state.candidates) {
+        cand.selected = cand.id === candidateId;
+      }
+    }
+    state.selectedCandidateId = candidateId;
+    (state as any).awaitingUserSelection = false;
+    await StateManager.saveState(state);
+
+    res.json({ status: "candidate_selected", runId, candidateId });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message || "Failed to select candidate." });
   }
 });
 

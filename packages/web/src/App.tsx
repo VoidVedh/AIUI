@@ -12,6 +12,13 @@ export function App() {
   const [similarityThreshold] = useState(0.95);
   const [maxIterations] = useState(5);
 
+  // Multi-Model State
+  const [selectedProvider, setSelectedProvider] = useState<string>("gemma");
+  const [multiModelMode, setMultiModelMode] = useState<"single" | "race">("single");
+  const [candidateProviders, setCandidateProviders] = useState<string[]>(["gemma", "gemini", "openai"]);
+  const [candidates, setCandidates] = useState<any[]>([]);
+  const [selectedCandidateId, setSelectedCandidateId] = useState<string | null>(null);
+
   // Pipeline execution state
   const [isRunning, setIsRunning] = useState(false);
   const [currentRunId, setCurrentRunId] = useState<string | null>(null);
@@ -77,11 +84,18 @@ export function App() {
     setCurrentScore(0);
     setHistory([]);
     setFiles([]);
+    setCandidates([]);
+    setSelectedCandidateId(null);
 
     const formData = new FormData();
     formData.append("target", "react");
     formData.append("similarityThreshold", similarityThreshold.toString());
     formData.append("maxIterations", maxIterations.toString());
+    formData.append("provider", selectedProvider);
+    formData.append("multiModelMode", multiModelMode);
+    if (multiModelMode === "race") {
+      formData.append("candidateProviders", JSON.stringify(candidateProviders));
+    }
 
     if (customFile) {
       formData.append("image", customFile);
@@ -121,6 +135,13 @@ export function App() {
           if (state.totalIterations) setCurrentIteration(state.totalIterations);
           if (state.similarityScore) setCurrentScore(state.similarityScore);
           if (state.logs && state.logs.length > 0) setLogs(state.logs);
+
+          if (state.candidates && state.candidates.length > 0) {
+            setCandidates(state.candidates);
+          }
+          if (state.selectedCandidateId) {
+            setSelectedCandidateId(state.selectedCandidateId);
+          }
 
           if (state.history && state.history.length > 0) {
             const latest = state.history[state.history.length - 1];
@@ -169,6 +190,8 @@ export function App() {
           if (payload.log) setLogs((prev) => [...prev, payload.log]);
           if (payload.iteration) setCurrentIteration(payload.iteration);
           if (payload.currentScore) setCurrentScore(payload.currentScore);
+          if (payload.candidates) setCandidates(payload.candidates);
+          if (payload.selectedCandidateId) setSelectedCandidateId(payload.selectedCandidateId);
         });
 
         eventSource.addEventListener("complete", (e) => {
@@ -176,6 +199,8 @@ export function App() {
           setCurrentStage("completed");
           if (payload.similarityScore) setCurrentScore(payload.similarityScore);
           if (payload.files) setFiles(payload.files);
+          if (payload.candidates) setCandidates(payload.candidates);
+          if (payload.selectedCandidateId) setSelectedCandidateId(payload.selectedCandidateId);
           eventSource.close();
           syncState();
           stopRun();
@@ -214,6 +239,12 @@ export function App() {
           totalTokens={totalTokens}
           totalCost={totalCost}
           onStartSynthesis={startPipelineRun}
+          selectedProvider={selectedProvider}
+          onSelectProvider={setSelectedProvider}
+          multiModelMode={multiModelMode}
+          onToggleMultiModelMode={setMultiModelMode}
+          candidateProviders={candidateProviders}
+          onSelectCandidateProviders={setCandidateProviders}
         />
 
         <RightStudioPanel
@@ -226,6 +257,10 @@ export function App() {
           renderedImageUrl={renderedImageUrl}
           diffImageUrl={diffImageUrl}
           files={files}
+          candidates={candidates}
+          selectedCandidateId={selectedCandidateId}
+          multiModelMode={multiModelMode}
+          isAnalyzing={currentStage === "analyzing" || currentStage === "generating_code"}
         />
       </div>
 

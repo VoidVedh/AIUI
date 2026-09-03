@@ -17,15 +17,36 @@ function findMonorepoRoot(startDir = process.cwd()): string {
   return process.cwd();
 }
 
+export interface DOMElementFact {
+  id: string;
+  dataAiuiId?: string;
+  tag: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  computedStyles: {
+    backgroundColor?: string;
+    color?: string;
+    fontFamily?: string;
+    fontSize?: string;
+    fontWeight?: string;
+    lineHeight?: string;
+    border?: string;
+    borderRadius?: string;
+    padding?: string;
+    margin?: string;
+    display?: string;
+    opacity?: string;
+    position?: string;
+    zIndex?: string;
+  };
+  depth: number;
+}
+
 export interface RenderResult {
   screenshotBuffer: Buffer;
-  boundingBoxes: Array<{
-    id: string;
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  }>;
+  boundingBoxes: Array<DOMElementFact>;
   sandboxDir: string;
   serverUrl: string;
 }
@@ -149,20 +170,78 @@ export class PlaywrightRenderer {
         clip: { x: 0, y: 0, width: viewport.width, height: viewport.height },
       });
 
-      // 6. Extract DOM bounding boxes for all tagged IDs
+      // 6. Extract DOM element facts for all tagged AIUI IDs and elements
       const boundingBoxes = await page.evaluate(() => {
-        const elements = document.querySelectorAll("[id]");
-        const boxes: Array<{ id: string; x: number; y: number; width: number; height: number }> = [];
+        const elements = document.querySelectorAll("[data-aiui-id], [id]");
+        const seen = new Set<string>();
+        const boxes: Array<{
+          id: string;
+          dataAiuiId?: string;
+          tag: string;
+          x: number;
+          y: number;
+          width: number;
+          height: number;
+          computedStyles: {
+            backgroundColor?: string;
+            color?: string;
+            fontFamily?: string;
+            fontSize?: string;
+            fontWeight?: string;
+            lineHeight?: string;
+            border?: string;
+            borderRadius?: string;
+            padding?: string;
+            margin?: string;
+            display?: string;
+            opacity?: string;
+            position?: string;
+            zIndex?: string;
+          };
+          depth: number;
+        }> = [];
 
         elements.forEach((el) => {
+          const aiuiId = el.getAttribute("data-aiui-id") || el.id;
+          if (!aiuiId || seen.has(aiuiId)) return;
+          seen.add(aiuiId);
+
           const rect = el.getBoundingClientRect();
           if (rect.width > 0 && rect.height > 0) {
+            const cs = window.getComputedStyle(el);
+
+            let depth = 0;
+            let p: Element | null = el.parentElement;
+            while (p) {
+              depth++;
+              p = p.parentElement;
+            }
+
             boxes.push({
-              id: el.id,
+              id: aiuiId,
+              dataAiuiId: el.getAttribute("data-aiui-id") || undefined,
+              tag: el.tagName.toUpperCase(),
               x: Math.round(rect.left),
               y: Math.round(rect.top),
               width: Math.round(rect.width),
               height: Math.round(rect.height),
+              computedStyles: {
+                backgroundColor: cs.backgroundColor,
+                color: cs.color,
+                fontFamily: cs.fontFamily,
+                fontSize: cs.fontSize,
+                fontWeight: cs.fontWeight,
+                lineHeight: cs.lineHeight,
+                border: cs.border,
+                borderRadius: cs.borderRadius,
+                padding: `${cs.paddingTop} ${cs.paddingRight} ${cs.paddingBottom} ${cs.paddingLeft}`,
+                margin: `${cs.marginTop} ${cs.marginRight} ${cs.marginBottom} ${cs.marginLeft}`,
+                display: cs.display,
+                opacity: cs.opacity,
+                position: cs.position,
+                zIndex: cs.zIndex,
+              },
+              depth,
             });
           }
         });

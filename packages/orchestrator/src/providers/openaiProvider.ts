@@ -7,16 +7,23 @@ import { MultiPassVisionAnalyzer, VisionCallPayload, VisionCallResponse } from "
 
 export class OpenAIProvider implements VisionProvider, LLMProvider {
   public readonly name = "openai";
+  public readonly displayName = "OpenAI GPT-4o";
+  public readonly modelId: string;
   private client: OpenAI | null = null;
   private fallback = new OfflineCvProvider();
   private model: string;
 
-  constructor(apiKey?: string, model = "gpt-4o") {
+  constructor(apiKey?: string, model?: string) {
     const key = apiKey || process.env.OPENAI_API_KEY;
-    this.model = model;
+    this.model = model || process.env.OPENAI_MODEL || "gpt-4o";
+    this.modelId = this.model;
     if (key) {
       this.client = new OpenAI({ apiKey: key });
     }
+  }
+
+  public isConfigured(): boolean {
+    return this.client !== null;
   }
 
   public async analyzeScreenshot(
@@ -27,6 +34,9 @@ export class OpenAIProvider implements VisionProvider, LLMProvider {
     name?: string
   ): Promise<ModelCallResult<UIIRDocument>> {
     if (!this.client) {
+      if (process.env.STRICT_LIVE_VLM === "true") {
+        throw new Error(`[LIVE_PROVIDER_ERROR] OpenAI client not initialized (OPENAI_API_KEY missing)`);
+      }
       return this.fallback.analyzeScreenshot(imageBuffer, mimeType, viewport, stage, name);
     }
 
