@@ -28,7 +28,14 @@ export interface MultiPassAnalyzerOptions {
 }
 
 export function normalizeNodeType(rawType: any, rawContent?: any): { type: UINodeType; content: any } {
-  const content = rawContent ? { ...rawContent } : {};
+  const content: any = {};
+  if (rawContent && typeof rawContent === "object") {
+    for (const [k, v] of Object.entries(rawContent)) {
+      if (v !== null && v !== undefined) {
+        content[k] = v;
+      }
+    }
+  }
   const strType = typeof rawType === "string" ? rawType.toLowerCase().trim() : "text";
 
   const validTypes = new Set([

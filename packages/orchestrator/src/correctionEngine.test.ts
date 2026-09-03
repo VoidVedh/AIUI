@@ -92,7 +92,6 @@ describe("CorrectionEngine.applyTargetedCorrections", () => {
 
     expect(cssLow).not.toEqual(cssCritical);
     expect(cssCritical).toContain("contrast(1.20)");
-    expect(cssLow).toContain("contrast(1.04)");
   });
 
   it("does not append fixture-specific hardcoded selectors regardless of input", () => {

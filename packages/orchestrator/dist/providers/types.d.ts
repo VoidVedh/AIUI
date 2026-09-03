@@ -6,6 +6,9 @@ export interface ModelCallResult<T> {
 }
 export interface VisionProvider {
     readonly name: string;
+    readonly displayName?: string;
+    readonly modelId?: string;
+    isConfigured?(): boolean;
     analyzeScreenshot(imageBuffer: Buffer, mimeType: string, viewport: {
         width: number;
         height: number;
@@ -13,6 +16,9 @@ export interface VisionProvider {
 }
 export interface LLMProvider {
     readonly name: string;
+    readonly displayName?: string;
+    readonly modelId?: string;
+    isConfigured?(): boolean;
     generateStructuredCorrection(prompt: string, stage?: PipelineStage): Promise<ModelCallResult<string>>;
 }
 //# sourceMappingURL=types.d.ts.map

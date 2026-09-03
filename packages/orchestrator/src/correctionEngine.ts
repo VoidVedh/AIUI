@@ -15,18 +15,13 @@ function clamp(value: number, min: number, max: number): number {
 
 export class CorrectionEngine {
   /**
-   * Applies quantitative corrections derived from the detected VisualIssue[] list.
+   * Applies surgical, quantitative corrections derived from detected VisualIssue[] list.
    *
-   * Never relies on hardcoded fixture-specific IDs or static per-iteration
-   * selectors — every rule is keyed off real measured issue data:
-   *   - "position": translates the element by the exact measured delta.
-   *   - "missing_element": restores visibility and forces the element's
-   *     expected explicit size, when known.
-   *   - "color": applies the measured target color (hex) to container surface,
-   *     text, or button styles.
-   *   - "spacing": applies the measured regional pixel offset to container
-   *     margins/padding.
-   *   - "dimension"/"overflow": applies exact bounding size constraints.
+   * Rules:
+   * 1. Every rule is keyed off real measured issue data and scoped to the responsible element.
+   * 2. Never assigns unlocalized/unmatched diffs to body/page_root.
+   * 3. Clusters multiple measurements for the same element into one coherent, non-contradictory rule.
+   * 4. Operates at the smallest valid property scope (position, color, dimensions, spacing, typography).
    */
   public static applyTargetedCorrections(
     project: GeneratedProject,
@@ -46,8 +41,7 @@ export class CorrectionEngine {
       };
     }
 
-    // Process highest-severity issues first so, if a cap is ever introduced,
-    // the biggest problems are addressed before minor polish.
+    // Sort by severity (critical -> low)
     const severityRank: Record<Severity, number> = { critical: 0, high: 1, medium: 2, low: 3 };
     const sortedIssues = [...issues].sort(
       (a, b) => severityRank[a.severity] - severityRank[b.severity]
@@ -55,10 +49,21 @@ export class CorrectionEngine {
 
     const newCssRules: string[] = [];
 
-    // Cluster issues by elementId + type to avoid conflicting multiple rules
+    // Cluster issues by elementId + type to eliminate conflicting contradictory rules
     const clusteredIssues = new Map<string, VisualIssue[]>();
     for (const issue of sortedIssues) {
-      const key = `${issue.elementId || "global"}_${issue.type}`;
+      // If elementId is missing or low confidence, do not cluster under global unless it's an explicit whole-page issue
+      if (!issue.elementId && issue.type !== "missing_element") {
+        if (issue.id?.startsWith("issue_contrast")) {
+          const key = `global_contrast`;
+          if (!clusteredIssues.has(key)) clusteredIssues.set(key, []);
+          clusteredIssues.get(key)!.push(issue);
+        }
+        // Unresolved local diffs without a known element owner are skipped to avoid corrupting root styles
+        continue;
+      }
+
+      const key = `${issue.elementId}_${issue.type}`;
       if (!clusteredIssues.has(key)) {
         clusteredIssues.set(key, []);
       }
@@ -68,7 +73,14 @@ export class CorrectionEngine {
     for (const [clusterKey, clusterList] of clusteredIssues.entries()) {
       const primaryIssue = clusterList[0];
       const targetElementId = primaryIssue.elementId;
-      const selector = targetElementId ? `[id="${targetElementId}"], [data-aiui-id="${targetElementId}"]` : "body, .aiui-page";
+
+      if (!targetElementId && !primaryIssue.id?.startsWith("issue_contrast")) {
+        continue;
+      }
+
+      const selector = targetElementId
+        ? `[data-aiui-id="${targetElementId}"], [id="${targetElementId}"]`
+        : "body, .aiui-page";
 
       switch (primaryIssue.type) {
         case "position": {
@@ -76,9 +88,10 @@ export class CorrectionEngine {
           const dx = clamp(Number(primaryIssue.target.x) - Number(primaryIssue.actual.x), -200, 200);
           const dy = clamp(Number(primaryIssue.target.y) - Number(primaryIssue.actual.y), -200, 200);
           if (Number.isNaN(dx) || Number.isNaN(dy)) break;
+          if (Math.abs(dx) < 2 && Math.abs(dy) < 2) break;
 
           newCssRules.push(`
-/* Position correction: '${targetElementId}' measured ${primaryIssue.description} */
+/* Position correction: '${targetElementId}' measured offset (${dx.toFixed(1)}px, ${dy.toFixed(1)}px) */
 ${selector} {
   transform: translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) !important;
   box-sizing: border-box !important;
@@ -135,76 +148,99 @@ ${selector} {
         }
 
         case "color": {
-          // Find dominant target color among cluster
-          const targetColors = clusterList.map((i) => i.target?.color || i.target?.hex).filter(Boolean);
-          const targetColor = targetColors[0] || primaryIssue.target?.color || primaryIssue.target?.hex;
-          const actualColor = primaryIssue.actual?.color || primaryIssue.actual?.hex;
-
-          if (targetColor) {
-            if (targetElementId) {
-              const isContainer = /(panel|section|container|card|box|page|root|wrapper|sidebar|header|footer|modal|grid|flex|form|auth)/i.test(targetElementId);
-              const isButton = /(btn|button|cta)/i.test(targetElementId);
-              const isTextElement = !isContainer && /(text|title|heading|lbl|label|desc|subtitle|paragraph|span|badge)/i.test(targetElementId);
-
-              if (isTextElement) {
-                newCssRules.push(`
-/* Color correction: '${targetElementId}' text color */
-${selector} {
-  color: ${targetColor} !important;
-}
-`);
-              } else if (isButton) {
-                newCssRules.push(`
-/* Color correction: '${targetElementId}' button surface */
-${selector} {
-  background-color: ${targetColor} !important;
-}
-`);
-              } else {
-                newCssRules.push(`
-/* Color correction: '${targetElementId}' surface background */
-${selector} {
-  background-color: ${targetColor} !important;
-}
-`);
-              }
-
-              appliedModifications.push(
-                `Calibrated color for '${targetElementId}' to ${targetColor} (measured actual: ${actualColor ?? "unknown"})`
-              );
-            } else {
-              newCssRules.push(`
-/* Global color correction */
-body, .aiui-page {
-  background-color: ${targetColor} !important;
-}
-`);
-              appliedModifications.push(
-                `Calibrated page background to ${targetColor}`
-              );
-            }
-          } else {
+          if (primaryIssue.id?.startsWith("issue_contrast")) {
             const contrastDelta = primaryIssue.severity === "critical" ? "1.20" : primaryIssue.severity === "high" ? "1.12" : primaryIssue.severity === "medium" ? "1.08" : "1.04";
             newCssRules.push(`
-/* Contrast correction: severity '${primaryIssue.severity}' */
+/* Ambient contrast correction */
 body, .aiui-page {
   filter: contrast(${contrastDelta}) !important;
 }
 `);
-            appliedModifications.push(
-              `Applied contrast filter (${contrastDelta}) for ${primaryIssue.severity} color issue`
-            );
+            appliedModifications.push(`Applied ambient contrast adjustment (${contrastDelta})`);
+            break;
+          }
+
+          if (!targetElementId) break;
+
+          // Compute dominant target color across the cluster by weight/frequency
+          const colorVotes = new Map<string, number>();
+          for (const item of clusterList) {
+            const hex = item.target?.color || item.target?.hex;
+            if (hex) {
+              const weight = item.severity === "critical" ? 4 : item.severity === "high" ? 3 : item.severity === "medium" ? 2 : 1;
+              colorVotes.set(hex, (colorVotes.get(hex) || 0) + weight);
+            }
+          }
+
+          let dominantColor: string | null = null;
+          let maxVote = -1;
+          for (const [hex, vote] of colorVotes.entries()) {
+            if (vote > maxVote) {
+              maxVote = vote;
+              dominantColor = hex;
+            }
+          }
+
+          if (dominantColor) {
+            const isTextElement = /(text|title|heading|lbl|label|desc|subtitle|paragraph|span|badge|link|nav_item|caption)/i.test(targetElementId);
+            const isButton = /(btn|button|cta)/i.test(targetElementId);
+            const isInput = /(input|field|select|textarea)/i.test(targetElementId);
+
+            if (isTextElement) {
+              newCssRules.push(`
+/* Color correction: '${targetElementId}' text color */
+${selector} {
+  color: ${dominantColor} !important;
+}
+`);
+              appliedModifications.push(
+                `Calibrated text color for '${targetElementId}' to ${dominantColor}`
+              );
+            } else if (isButton) {
+              newCssRules.push(`
+/* Color correction: '${targetElementId}' button surface */
+${selector} {
+  background-color: ${dominantColor} !important;
+}
+`);
+              appliedModifications.push(
+                `Calibrated button surface for '${targetElementId}' to ${dominantColor}`
+              );
+            } else if (isInput) {
+              newCssRules.push(`
+/* Color correction: '${targetElementId}' input surface/border */
+${selector} {
+  background-color: ${dominantColor} !important;
+  border-color: ${dominantColor} !important;
+}
+`);
+              appliedModifications.push(
+                `Calibrated input styling for '${targetElementId}' to ${dominantColor}`
+              );
+            } else {
+              newCssRules.push(`
+/* Color correction: '${targetElementId}' surface background */
+${selector} {
+  background-color: ${dominantColor} !important;
+}
+`);
+              appliedModifications.push(
+                `Calibrated surface background for '${targetElementId}' to ${dominantColor}`
+              );
+            }
           }
           break;
         }
 
         case "spacing": {
+          if (!targetElementId) break;
           const targetOffset = primaryIssue.target?.offset;
-          if (targetOffset && targetElementId && (Math.abs(targetOffset.dx) > 0 || Math.abs(targetOffset.dy) > 0)) {
-            const dx = clamp(Number(targetOffset.dx), -100, 100);
-            const dy = clamp(Number(targetOffset.dy), -100, 100);
+          if (targetOffset && (Math.abs(targetOffset.dx) > 0 || Math.abs(targetOffset.dy) > 0)) {
+            const dx = clamp(Number(targetOffset.dx), -80, 80);
+            const dy = clamp(Number(targetOffset.dy), -80, 80);
 
-            newCssRules.push(`
+            if (Math.abs(dx) >= 2 || Math.abs(dy) >= 2) {
+              newCssRules.push(`
 /* Spacing offset correction: '${targetElementId}' */
 ${selector} {
   margin-left: ${dx}px !important;
@@ -212,17 +248,10 @@ ${selector} {
   box-sizing: border-box !important;
 }
 `);
-            appliedModifications.push(
-              `Adjusted spacing for '${targetElementId}' with offset (${dx}px, ${dy}px)`
-            );
-          } else if (targetElementId) {
-            newCssRules.push(`
-/* Spacing box-sizing: '${targetElementId}' */
-${selector} {
-  box-sizing: border-box !important;
-}
-`);
-            appliedModifications.push(`Calibrated box-sizing for '${targetElementId}'`);
+              appliedModifications.push(
+                `Adjusted spacing for '${targetElementId}' with offset (${dx}px, ${dy}px)`
+              );
+            }
           }
           break;
         }
@@ -247,7 +276,7 @@ ${selector} {
       appliedModifications:
         appliedModifications.length > 0
           ? appliedModifications
-          : [`No actionable corrections could be derived for iteration ${iteration}'s issues (missing element IDs or target data)`],
+          : [`No surgical corrections needed for iteration ${iteration}'s issues`],
     };
   }
 }

@@ -3,10 +3,13 @@ import { VisionProvider, LLMProvider, ModelCallResult } from "./types.js";
 import { PipelineStage } from "../types.js";
 export declare class OpenAIProvider implements VisionProvider, LLMProvider {
     readonly name = "openai";
+    readonly displayName = "OpenAI GPT-4o";
+    readonly modelId: string;
     private client;
     private fallback;
     private model;
     constructor(apiKey?: string, model?: string);
+    isConfigured(): boolean;
     analyzeScreenshot(imageBuffer: Buffer, mimeType: string, viewport: {
         width: number;
         height: number;

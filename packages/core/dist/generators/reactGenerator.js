@@ -264,7 +264,7 @@ ${jsxContent}
         if (node.type === "icon" && node.content?.iconName) {
             const iconComp = this.resolveLucideIcon(node.content.iconName);
             iconImports.add(iconComp);
-            return `${pad}<${iconComp} size={${node.dimensions.height === "auto" ? 20 : node.dimensions.height}}${styleAttr} id="${node.id}" />`;
+            return `${pad}<${iconComp} size={${node.dimensions.height === "auto" ? 20 : node.dimensions.height}}${styleAttr}${idAttr} />`;
         }
         if (node.type === "image" || node.type === "avatar") {
             let src = node.content?.src;

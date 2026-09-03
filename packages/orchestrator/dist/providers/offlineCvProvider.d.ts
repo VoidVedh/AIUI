@@ -3,7 +3,10 @@ import { VisionProvider, LLMProvider, ModelCallResult } from "./types.js";
 import { PipelineStage } from "../types.js";
 export declare class OfflineCvProvider implements VisionProvider, LLMProvider {
     readonly name = "offline-cv";
+    readonly displayName = "Offline CV Engine";
+    readonly modelId = "deterministic-cv-engine";
     private adapter;
+    isConfigured(): boolean;
     analyzeScreenshot(imageBuffer: Buffer, mimeType: string, viewport: {
         width: number;
         height: number;

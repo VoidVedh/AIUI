@@ -28,14 +28,34 @@ export interface IterationCheckpoint {
     timestamp: string;
 }
 export type TargetFramework = "react";
+export type SupportedProviderName = "gemma" | "gemini" | "openai" | "anthropic" | "openrouter" | "puter" | "offline";
+export interface ModelCandidate {
+    id: string;
+    provider: SupportedProviderName;
+    model: string;
+    initialScore: number;
+    ssimScore: number;
+    pixelMatchScore: number;
+    layoutIouScore: number;
+    previewArtifactPath?: string;
+    selected: boolean;
+    ir?: UIIRDocument;
+    tokens?: DesignTokens;
+    plan?: ComponentPlan;
+    project?: GeneratedProject;
+}
 export interface PipelineRunState {
     runId: string;
     target: TargetFramework;
     currentStage: PipelineStage;
-    status: "in_progress" | "success" | "max_iterations_reached" | "failed";
+    status: "in_progress" | "success" | "max_iterations_reached" | "converged" | "plateau_reached" | "failed";
     similarityScore: number;
     bestIteration: number;
     totalIterations: number;
+    provider?: string;
+    multiModelMode?: "single" | "race";
+    candidates?: ModelCandidate[];
+    selectedCandidateId?: string;
     ir?: UIIRDocument;
     tokens?: DesignTokens;
     plan?: ComponentPlan;
@@ -63,7 +83,9 @@ export interface OrchestratorOptions {
         width: number;
         height: number;
     };
-    providerName?: "gemini" | "openai" | "anthropic" | "offline";
+    providerName?: SupportedProviderName;
+    candidateProviders?: SupportedProviderName[];
+    multiModelMode?: "single" | "race";
     bestOfN?: number;
     onProgress?: (state: PipelineRunState, logMessage: string) => void;
 }

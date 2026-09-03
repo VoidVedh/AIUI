@@ -1,5 +1,6 @@
-import React, { useRef, useState } from "react";
-import { UploadCloud, Image as ImageIcon, Zap, Coins, Clock, Sparkles, CheckCircle2, RotateCw } from "lucide-react";
+import React, { useRef, useState, useEffect } from "react";
+import { UploadCloud, Image as ImageIcon, Zap, Coins, Clock, Sparkles, CheckCircle2, RotateCw, Trophy } from "lucide-react";
+import type { ProviderCatalogEntry } from "@aiui/orchestrator";
 
 export interface FixturePreset {
   id: string;
@@ -24,6 +25,12 @@ interface LeftStudioPanelProps {
   totalTokens: number;
   totalCost: number;
   onStartSynthesis: () => void;
+  selectedProvider?: string;
+  onSelectProvider?: (provider: string) => void;
+  multiModelMode?: "single" | "race";
+  onToggleMultiModelMode?: (mode: "single" | "race") => void;
+  candidateProviders?: string[];
+  onSelectCandidateProviders?: (candidates: string[]) => void;
 }
 
 export const LeftStudioPanel: React.FC<LeftStudioPanelProps> = ({
@@ -40,9 +47,62 @@ export const LeftStudioPanel: React.FC<LeftStudioPanelProps> = ({
   totalTokens,
   totalCost,
   onStartSynthesis,
+  selectedProvider = "gemma",
+  onSelectProvider,
+  multiModelMode = "single",
+  onToggleMultiModelMode,
+  candidateProviders = ["gemma", "gemini", "openai"],
+  onSelectCandidateProviders,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
+  const [providers, setProviders] = useState<ProviderCatalogEntry[]>([
+    { id: "gemma", name: "Gemma 3 27B", displayName: "Gemma 3", defaultModel: "google/gemma-3-27b-it:free", isFree: true, requiresKey: true, isConfigured: true },
+    { id: "puter", name: "Puter (Gemini)", displayName: "Puter Gemini", defaultModel: "gemini-2.5-flash", isFree: true, requiresKey: false, isConfigured: true },
+    { id: "gemini", name: "Gemini 2.5 Flash", displayName: "Gemini", defaultModel: "gemini-2.5-flash", isFree: false, requiresKey: true, isConfigured: false },
+    { id: "openai", name: "GPT-4o Vision", displayName: "OpenAI", defaultModel: "gpt-4o", isFree: false, requiresKey: true, isConfigured: false },
+    { id: "anthropic", name: "Claude 3.5 Sonnet", displayName: "Anthropic", defaultModel: "claude-3-5-sonnet-20241022", isFree: false, requiresKey: true, isConfigured: false },
+  ]);
+
+  useEffect(() => {
+    fetch("/api/providers")
+      .then((res) => res.json())
+      .then((data: ProviderCatalogEntry[]) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setProviders(data);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const toggleRace = () => {
+    const nextMode = multiModelMode === "race" ? "single" : "race";
+    onToggleMultiModelMode?.(nextMode);
+  };
+
+  const handleModelClick = (providerId: string) => {
+    if (multiModelMode === "race") {
+      let updated: string[];
+      if (candidateProviders.includes(providerId)) {
+        if (candidateProviders.length > 1) {
+          updated = candidateProviders.filter((p) => p !== providerId);
+        } else {
+          updated = candidateProviders;
+        }
+      } else {
+        if (candidateProviders.length < 3) {
+          updated = [...candidateProviders, providerId];
+        } else {
+          updated = [...candidateProviders.slice(1), providerId];
+        }
+      }
+      onSelectCandidateProviders?.(updated);
+    } else {
+      onSelectProvider?.(providerId);
+    }
+  };
+
+  const displayProviders = providers.filter((p) => p.id !== "offline");
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -182,6 +242,100 @@ export const LeftStudioPanel: React.FC<LeftStudioPanelProps> = ({
                   <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                     {f.name}
                   </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Model Selection & Multi-Model Race Card */}
+      <div className="studio-card">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+          <span style={{ fontSize: "12px", fontWeight: 600, color: "var(--text-secondary)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+            Model {multiModelMode === "race" && <span style={{ color: "#FBBF24" }}>({candidateProviders.length}/3)</span>}
+          </span>
+          <button
+            type="button"
+            onClick={toggleRace}
+            style={{
+              background: multiModelMode === "race" ? "rgba(251, 191, 36, 0.2)" : "rgba(255, 255, 255, 0.05)",
+              border: multiModelMode === "race" ? "1px solid #FBBF24" : "1px solid var(--border-subtle)",
+              color: multiModelMode === "race" ? "#FBBF24" : "var(--text-muted)",
+              borderRadius: "12px",
+              padding: "2px 8px",
+              fontSize: "10px",
+              fontWeight: 700,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+            }}
+          >
+            <Trophy size={10} />
+            Race: {multiModelMode === "race" ? "ON" : "OFF"}
+          </button>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
+          {displayProviders.map((p) => {
+            const isSelected = multiModelMode === "race" ? candidateProviders.includes(p.id) : selectedProvider === p.id;
+            const isGemma = p.id === "gemma";
+
+            return (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => handleModelClick(p.id)}
+                style={{
+                  padding: "7px 8px",
+                  background: isSelected
+                    ? multiModelMode === "race"
+                      ? "rgba(251, 191, 36, 0.15)"
+                      : "rgba(59, 130, 246, 0.15)"
+                    : "var(--bg-surface)",
+                  border: isSelected
+                    ? multiModelMode === "race"
+                      ? "1px solid #FBBF24"
+                      : "1px solid var(--color-primary)"
+                    : "1px solid var(--border-subtle)",
+                  borderRadius: "var(--radius-sm)",
+                  color: isSelected ? "#FFFFFF" : "var(--text-secondary)",
+                  textAlign: "left",
+                  cursor: "pointer",
+                  fontSize: "11px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "3px",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                  <strong style={{ fontSize: "11px", textTransform: "capitalize" }}>
+                    {p.id === "gemma" ? "Gemma" : p.id === "puter" ? "Puter" : p.id === "gemini" ? "Gemini" : p.id === "openai" ? "OpenAI" : p.id === "anthropic" ? "Anthropic" : p.displayName}
+                  </strong>
+                  {(p.isFree || isGemma || p.id === "puter") && (
+                    <span
+                      style={{
+                        fontSize: "9px",
+                        fontWeight: 700,
+                        padding: "1px 4px",
+                        borderRadius: "4px",
+                        background: "rgba(16, 185, 129, 0.2)",
+                        color: "#34D399",
+                      }}
+                    >
+                      Free
+                    </span>
+                  )}
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+                  <span style={{ fontSize: "9px", color: p.isConfigured ? "#34D399" : "#94A3B8" }}>
+                    {p.isConfigured ? "Ready" : "Key Needed"}
+                  </span>
+                  {multiModelMode === "race" && isSelected && (
+                    <span style={{ fontSize: "9px", fontWeight: 800, color: "#FBBF24" }}>✓</span>
+                  )}
                 </div>
               </button>
             );

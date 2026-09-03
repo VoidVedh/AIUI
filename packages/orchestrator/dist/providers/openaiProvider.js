@@ -3,18 +3,27 @@ import { OfflineCvProvider } from "./offlineCvProvider.js";
 import { MultiPassVisionAnalyzer } from "../analysis/multiPassAnalyzer.js";
 export class OpenAIProvider {
     name = "openai";
+    displayName = "OpenAI GPT-4o";
+    modelId;
     client = null;
     fallback = new OfflineCvProvider();
     model;
-    constructor(apiKey, model = "gpt-4o") {
+    constructor(apiKey, model) {
         const key = apiKey || process.env.OPENAI_API_KEY;
-        this.model = model;
+        this.model = model || process.env.OPENAI_MODEL || "gpt-4o";
+        this.modelId = this.model;
         if (key) {
             this.client = new OpenAI({ apiKey: key });
         }
     }
+    isConfigured() {
+        return this.client !== null;
+    }
     async analyzeScreenshot(imageBuffer, mimeType, viewport, stage = "analyzing", name) {
         if (!this.client) {
+            if (process.env.STRICT_LIVE_VLM === "true") {
+                throw new Error(`[LIVE_PROVIDER_ERROR] OpenAI client not initialized (OPENAI_API_KEY missing)`);
+            }
             return this.fallback.analyzeScreenshot(imageBuffer, mimeType, viewport, stage, name);
         }
         try {

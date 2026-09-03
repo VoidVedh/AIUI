@@ -3,18 +3,27 @@ import { OfflineCvProvider } from "./offlineCvProvider.js";
 import { MultiPassVisionAnalyzer } from "../analysis/multiPassAnalyzer.js";
 export class GeminiProvider {
     name = "gemini";
+    displayName = "Google Gemini";
+    modelId;
     client = null;
     fallback = new OfflineCvProvider();
     model;
-    constructor(apiKey, model = "gemini-1.5-flash") {
+    constructor(apiKey, model) {
         const key = apiKey || process.env.GEMINI_API_KEY;
-        this.model = model;
+        this.model = model || process.env.GEMINI_MODEL || "gemini-1.5-flash";
+        this.modelId = this.model;
         if (key) {
             this.client = new GoogleGenerativeAI(key);
         }
     }
+    isConfigured() {
+        return this.client !== null;
+    }
     async analyzeScreenshot(imageBuffer, mimeType, viewport, stage = "analyzing", name) {
         if (!this.client) {
+            if (process.env.STRICT_LIVE_VLM === "true") {
+                throw new Error(`[LIVE_PROVIDER_ERROR] Gemini client not initialized (GEMINI_API_KEY missing)`);
+            }
             return this.fallback.analyzeScreenshot(imageBuffer, mimeType, viewport, stage, name);
         }
         try {

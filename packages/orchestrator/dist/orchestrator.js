@@ -25,6 +25,11 @@ export class PipelineOrchestrator {
         const maxIterations = options.maxIterations || 5;
         const similarityThreshold = options.similarityThreshold || 0.92;
         const viewport = options.viewport || { width: 1280, height: 800 };
+        const isJsonPayload = mimeType === "application/json" ||
+            imageBuffer.toString("utf-8").trim().startsWith("{");
+        const isRaceMode = !isJsonPayload &&
+            (options.multiModelMode === "race" ||
+                (options.candidateProviders !== undefined && options.candidateProviders.length > 1));
         if (options.providerName) {
             this.provider = createProvider(options.providerName);
         }
@@ -36,6 +41,9 @@ export class PipelineOrchestrator {
             similarityScore: 0,
             bestIteration: 0,
             totalIterations: 0,
+            provider: options.providerName || (isRaceMode ? "race" : "gemma"),
+            multiModelMode: isRaceMode ? "race" : "single",
+            candidates: [],
             history: [],
             costLogs: [],
             totalCostUsd: 0,
@@ -54,12 +62,9 @@ export class PipelineOrchestrator {
             }
         };
         try {
-            // 1. Stage: Visual / UI Analysis
-            logProgress("analyzing", "Analyzing UI design and generating structured UI IR...");
             const docName = options.fixtureName || options.name || runId;
-            const isJsonPayload = mimeType === "application/json" ||
-                imageBuffer.toString("utf-8").trim().startsWith("{");
             if (isJsonPayload) {
+                logProgress("analyzing", "Parsing Figma design tree...");
                 const figmaAdapter = new FigmaInputAdapter();
                 state.ir = await figmaAdapter.parse({
                     type: "figma",
@@ -67,8 +72,119 @@ export class PipelineOrchestrator {
                     name: docName,
                     viewportHint: viewport,
                 });
+                logProgress("extracting_tokens", "Extracting design tokens (colors, typography, spacing, radius)...");
+                state.tokens = DesignTokenEngine.extractTokens(state.ir);
+                logProgress("planning_components", "Decomposing layout into reusable component tree...");
+                state.plan = ComponentPlanner.planComponents(state.ir);
+                logProgress("generating_code", `Generating production ${target} code...`);
+                const generator = new ReactGenerator();
+                const project = await generator.generate(state.ir, state.tokens, state.plan);
+                state.currentProject = project;
+                state.bestProject = project;
+                logProgress("validating_code", "Validating React syntax and module imports...");
+                this.validateProject(state.currentProject);
+            }
+            else if (isRaceMode) {
+                // Multi-Model Race Mode: Parallel candidate generation & scoring via Promise.allSettled
+                const rawCandidates = options.candidateProviders && options.candidateProviders.length > 0
+                    ? options.candidateProviders
+                    : ["gemma", "gemini", "openai"];
+                // Strict cap at 3 candidate providers
+                const raceProviders = Array.from(new Set(rawCandidates)).slice(0, 3);
+                logProgress("analyzing", `Starting Multi-Model Race across ${raceProviders.length} providers (${raceProviders.join(", ")})...`);
+                const generator = new ReactGenerator();
+                const raceTasks = raceProviders.map(async (provName) => {
+                    const provInstance = createProvider(provName);
+                    const analysisResult = await provInstance.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", `${docName}_${provName}`);
+                    this.recordCostLog(state, analysisResult.costLog);
+                    const candIr = analysisResult.data;
+                    const candTokens = DesignTokenEngine.extractTokens(candIr);
+                    const candPlan = ComponentPlanner.planComponents(candIr);
+                    const candProject = await generator.generate(candIr, candTokens, candPlan);
+                    this.validateProject(candProject);
+                    let initialScore = 0.5;
+                    let ssimScore = 0.5;
+                    let pixelMatchScore = 0.5;
+                    let layoutIouScore = 0.5;
+                    let previewArtifactPath = "";
+                    try {
+                        const candRender = await PlaywrightRenderer.render(candProject, {
+                            runId: `${runId}_cand_${provName}`,
+                            iteration: 0,
+                            viewport,
+                            timeoutMs: 25000,
+                        });
+                        if (candRender && candRender.screenshotBuffer) {
+                            previewArtifactPath = this.stateManager.saveArtifact(runId, `candidate_${provName}.png`, candRender.screenshotBuffer);
+                            const candEval = await VisualEvaluator.evaluate(imageBuffer, candRender.screenshotBuffer, [], candRender.boundingBoxes, viewport);
+                            initialScore = candEval.overallSimilarity;
+                            ssimScore = candEval.ssimScore;
+                            pixelMatchScore = candEval.pixelMatchScore;
+                            layoutIouScore = candEval.layoutIouScore;
+                        }
+                    }
+                    catch {
+                        // Render failure in sandbox preview is tolerated
+                    }
+                    return {
+                        id: `cand_${provName}`,
+                        provider: provName,
+                        model: provInstance.modelId || provName,
+                        initialScore,
+                        ssimScore,
+                        pixelMatchScore,
+                        layoutIouScore,
+                        previewArtifactPath,
+                        selected: false,
+                        ir: candIr,
+                        tokens: candTokens,
+                        plan: candPlan,
+                        project: candProject,
+                    };
+                });
+                const settled = await Promise.allSettled(raceTasks);
+                const validCandidates = [];
+                settled.forEach((res, idx) => {
+                    const provName = raceProviders[idx];
+                    if (res.status === "fulfilled") {
+                        validCandidates.push(res.value);
+                        logProgress("generating_code", `[RACE_CANDIDATE_READY] Provider '${provName}' initial fidelity: ${(res.value.initialScore * 100).toFixed(1)}%.`);
+                    }
+                    else {
+                        const errMsg = res.reason?.message || String(res.reason);
+                        logProgress("generating_code", `[RACE_CANDIDATE_FAILED] Provider '${provName}' failed: ${errMsg}. Excluded from scoring.`);
+                    }
+                });
+                if (validCandidates.length > 0) {
+                    // Auto-select candidate with highest initial fidelity score
+                    validCandidates.sort((a, b) => b.initialScore - a.initialScore);
+                    const winner = validCandidates[0];
+                    winner.selected = true;
+                    state.candidates = validCandidates;
+                    state.selectedCandidateId = winner.id;
+                    state.provider = winner.provider;
+                    state.ir = winner.ir;
+                    state.tokens = winner.tokens;
+                    state.plan = winner.plan;
+                    state.currentProject = winner.project;
+                    state.bestProject = winner.project;
+                    logProgress("generating_code", `[MULTI_MODEL_RACE] Winner auto-selected: '${winner.provider}' (${winner.model}) with highest initial fidelity ${(winner.initialScore * 100).toFixed(1)}% (SSIM: ${(winner.ssimScore * 100).toFixed(1)}%, PixelMatch: ${(winner.pixelMatchScore * 100).toFixed(1)}%, IoU: ${(winner.layoutIouScore * 100).toFixed(1)}%)`);
+                }
+                else {
+                    logProgress("generating_code", "[MULTI_MODEL_RACE] All race candidates failed. Falling back to default deterministic pipeline.");
+                    const analysisResult = await this.provider.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", docName);
+                    state.ir = analysisResult.data;
+                    this.recordCostLog(state, analysisResult.costLog);
+                    state.tokens = DesignTokenEngine.extractTokens(state.ir);
+                    state.plan = ComponentPlanner.planComponents(state.ir);
+                    state.currentProject = await generator.generate(state.ir, state.tokens, state.plan);
+                    state.bestProject = state.currentProject;
+                    this.validateProject(state.currentProject);
+                }
             }
             else {
+                // Single Model Mode
+                logProgress("analyzing", "Analyzing UI design and generating structured UI IR...");
                 const analysisResult = await this.provider.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", docName);
                 state.ir = analysisResult.data;
                 this.recordCostLog(state, analysisResult.costLog);
@@ -78,76 +194,75 @@ export class PipelineOrchestrator {
                 else if (state.ir.metadata?.isApproximate) {
                     logProgress("analyzing", `Perception notice: Offline CV layout approximation active (confidence: ${((state.ir.metadata?.confidence || 0.6) * 100).toFixed(0)}%).`);
                 }
+                if (!state.ir) {
+                    throw new Error("Perception failed to synthesize canonical UI IR document.");
+                }
+                // Token extraction & Component planning & Code generation
+                logProgress("extracting_tokens", "Extracting design tokens (colors, typography, spacing, radius)...");
+                state.tokens = DesignTokenEngine.extractTokens(state.ir);
+                logProgress("planning_components", "Decomposing layout into reusable component tree...");
+                state.plan = ComponentPlanner.planComponents(state.ir);
+                logProgress("generating_code", `Generating production ${target} code...`);
+                const generator = new ReactGenerator();
+                const project = await generator.generate(state.ir, state.tokens, state.plan);
+                state.currentProject = project;
+                state.bestProject = project;
+                logProgress("validating_code", "Validating React syntax and module imports...");
+                this.validateProject(state.currentProject);
+                // Optional single-model bestOfN pass (capped at 3)
+                if (options.bestOfN && options.bestOfN > 1) {
+                    const candidateCount = Math.min(Math.max(options.bestOfN, 1), 3);
+                    logProgress("generating_code", `Running Best-of-${candidateCount} candidate selection...`);
+                    let bestCandidateScore = -1;
+                    let selectedCandidateProject = project;
+                    let selectedIr = state.ir;
+                    let selectedTokens = state.tokens;
+                    let selectedPlan = state.plan;
+                    for (let c = 0; c < candidateCount; c++) {
+                        try {
+                            let candProject = project;
+                            let candIr = state.ir;
+                            let candTokens = state.tokens;
+                            let candPlan = state.plan;
+                            if (c > 0) {
+                                const candAnalysis = await this.provider.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", `${docName}_cand_${c + 1}`);
+                                candIr = candAnalysis.data;
+                                this.recordCostLog(state, candAnalysis.costLog);
+                                candTokens = DesignTokenEngine.extractTokens(candIr);
+                                candPlan = ComponentPlanner.planComponents(candIr);
+                                candProject = await generator.generate(candIr, candTokens, candPlan);
+                                this.validateProject(candProject);
+                            }
+                            const candRender = await PlaywrightRenderer.render(candProject, {
+                                runId: `${runId}_cand_${c + 1}`,
+                                iteration: 0,
+                                viewport,
+                                timeoutMs: 25000,
+                            });
+                            if (candRender && candRender.screenshotBuffer) {
+                                const candEval = await VisualEvaluator.evaluate(imageBuffer, candRender.screenshotBuffer, [], candRender.boundingBoxes, viewport);
+                                if (candEval.overallSimilarity > bestCandidateScore) {
+                                    bestCandidateScore = candEval.overallSimilarity;
+                                    selectedCandidateProject = candProject;
+                                    selectedIr = candIr;
+                                    selectedTokens = candTokens;
+                                    selectedPlan = candPlan;
+                                }
+                            }
+                        }
+                        catch {
+                            // Keep default candidate on error
+                        }
+                    }
+                    state.currentProject = selectedCandidateProject;
+                    state.bestProject = selectedCandidateProject;
+                    state.ir = selectedIr;
+                    state.tokens = selectedTokens;
+                    state.plan = selectedPlan;
+                }
             }
             if (!state.ir) {
                 throw new Error("Perception failed to synthesize canonical UI IR document.");
-            }
-            // 2. Stage: Design Token Extraction
-            logProgress("extracting_tokens", "Extracting design tokens (colors, typography, spacing, radius)...");
-            state.tokens = DesignTokenEngine.extractTokens(state.ir);
-            // 3. Stage: Component Planning
-            logProgress("planning_components", "Decomposing layout into reusable component tree...");
-            state.plan = ComponentPlanner.planComponents(state.ir);
-            // 4. Stage: Target Code Generation
-            logProgress("generating_code", `Generating production ${target} code...`);
-            const generator = new ReactGenerator();
-            const project = await generator.generate(state.ir, state.tokens, state.plan);
-            state.currentProject = project;
-            state.bestProject = project;
-            // 5. Stage: Code Validation (Precedence gate before visual correction)
-            logProgress("validating_code", "Validating React syntax and module imports...");
-            this.validateProject(state.currentProject);
-            // Optional: Best-of-N Candidate Generation Pass
-            if (options.bestOfN && options.bestOfN > 1 && !isJsonPayload) {
-                logProgress("generating_code", `Running Best-of-${options.bestOfN} candidate selection...`);
-                const candidateCount = options.bestOfN;
-                let bestCandidateScore = -1;
-                let selectedCandidateProject = project;
-                let selectedIr = state.ir;
-                let selectedTokens = state.tokens;
-                let selectedPlan = state.plan;
-                for (let c = 0; c < candidateCount; c++) {
-                    try {
-                        let candProject = project;
-                        let candIr = state.ir;
-                        let candTokens = state.tokens;
-                        let candPlan = state.plan;
-                        if (c > 0) {
-                            const candAnalysis = await this.provider.analyzeScreenshot(imageBuffer, mimeType, viewport, "analyzing", `${docName}_cand_${c + 1}`);
-                            candIr = candAnalysis.data;
-                            this.recordCostLog(state, candAnalysis.costLog);
-                            candTokens = DesignTokenEngine.extractTokens(candIr);
-                            candPlan = ComponentPlanner.planComponents(candIr);
-                            candProject = await generator.generate(candIr, candTokens, candPlan);
-                            this.validateProject(candProject);
-                        }
-                        const candRender = await PlaywrightRenderer.render(candProject, {
-                            runId: `${runId}_cand_${c + 1}`,
-                            iteration: 0,
-                            viewport,
-                            timeoutMs: 25000,
-                        });
-                        if (candRender && candRender.screenshotBuffer) {
-                            const candEval = await VisualEvaluator.evaluate(imageBuffer, candRender.screenshotBuffer, [], candRender.boundingBoxes, viewport);
-                            if (candEval.overallSimilarity > bestCandidateScore) {
-                                bestCandidateScore = candEval.overallSimilarity;
-                                selectedCandidateProject = candProject;
-                                selectedIr = candIr;
-                                selectedTokens = candTokens;
-                                selectedPlan = candPlan;
-                            }
-                        }
-                    }
-                    catch {
-                        // Keep default candidate on error
-                    }
-                }
-                state.currentProject = selectedCandidateProject;
-                state.bestProject = selectedCandidateProject;
-                state.ir = selectedIr;
-                state.tokens = selectedTokens;
-                state.plan = selectedPlan;
-                logProgress("generating_code", `Selected best candidate from ${candidateCount} samples.`);
             }
             // Extract expected bounding boxes from IR
             const expectedBoxes = Object.values(state.ir.nodes).map((n) => ({
@@ -207,7 +322,6 @@ export class PipelineOrchestrator {
                 };
                 state.history.push(checkpoint);
                 // Check if score improved or regressed
-                // Check if score improved, regressed, or plateaued
                 if (evalResult.overallSimilarity > bestScore) {
                     bestScore = evalResult.overallSimilarity;
                     state.bestIteration = iteration;
@@ -218,23 +332,31 @@ export class PipelineOrchestrator {
                     logProgress("correcting", `Regression detected (score ${(evalResult.overallSimilarity * 100).toFixed(1)}% < previous best ${(bestScore * 100).toFixed(1)}%). Rolling back to best checkpoint.`);
                     state.currentProject = state.bestProject;
                 }
-                logProgress("evaluating", `Iteration ${iteration} Score: ${(evalResult.overallSimilarity * 100).toFixed(1)}% (SSIM: ${(evalResult.ssimScore * 100).toFixed(1)}%, PixelMatch: ${(evalResult.pixelMatchScore * 100).toFixed(1)}%)`);
-                // Plateau Detection: If score hasn't improved for 2 consecutive iterations after corrections
-                if (iteration >= 3 && evalResult.overallSimilarity <= bestScore) {
-                    const prevScores = state.history.slice(-3).map((h) => h.similarityScore);
-                    if (prevScores.length >= 3 && prevScores.every((s) => Math.abs(s - prevScores[0]) < 0.001)) {
-                        logProgress("completed", `[CORRECTION_PLATEAU_DETECTED] Visual metrics converged/plateaued across consecutive iterations at ${(bestScore * 100).toFixed(1)}%. Preserving best project.`);
-                        state.status = bestScore >= similarityThreshold ? "success" : "max_iterations_reached";
-                        break;
-                    }
-                }
-                // Stopping condition: threshold met
+                logProgress("evaluating", `Iteration ${iteration} Score: ${(evalResult.overallSimilarity * 100).toFixed(1)}% (SSIM: ${(evalResult.ssimScore * 100).toFixed(1)}%, PixelMatch: ${(evalResult.pixelMatchScore * 100).toFixed(1)}%, LayoutIoU: ${(evalResult.layoutIouScore * 100).toFixed(1)}%)`);
+                // Stopping condition 1: Similarity threshold met
                 if (evalResult.overallSimilarity >= similarityThreshold) {
                     state.status = "success";
                     logProgress("completed", `Similarity threshold ${(similarityThreshold * 100).toFixed(0)}% reached! Final score: ${(evalResult.overallSimilarity * 100).toFixed(1)}%`);
                     break;
                 }
-                // Stopping condition: max iterations reached
+                // Stopping condition 2: No actionable issues remain
+                const actionableIssues = evalResult.issues.filter((i) => i.elementId || i.id === "issue_contrast");
+                if (evalResult.issues.length === 0 || actionableIssues.length === 0) {
+                    logProgress("completed", `No further actionable visual differences detected. Converged at ${(bestScore * 100).toFixed(1)}%.`);
+                    state.status = bestScore >= similarityThreshold ? "success" : "converged";
+                    break;
+                }
+                // Stopping condition 3: Plateau Detection (If score hasn't improved for 2 consecutive iterations)
+                if (iteration >= 2 && evalResult.overallSimilarity <= bestScore) {
+                    const recentHistory = state.history.slice(-2);
+                    const scoreDelta = Math.abs(recentHistory[recentHistory.length - 1].similarityScore - recentHistory[0].similarityScore);
+                    if (scoreDelta < 0.001) {
+                        logProgress("completed", `[CORRECTION_PLATEAU] Visual metrics plateaued at ${(bestScore * 100).toFixed(1)}% across consecutive iterations. Early stopping to preserve best project.`);
+                        state.status = bestScore >= similarityThreshold ? "success" : "plateau_reached";
+                        break;
+                    }
+                }
+                // Stopping condition 4: Max iterations reached
                 if (iteration === maxIterations) {
                     state.status = "max_iterations_reached";
                     state.similarityScore = bestScore;
@@ -245,7 +367,7 @@ export class PipelineOrchestrator {
                     break;
                 }
                 // Apply Targeted Self-Correction for next iteration
-                logProgress("correcting", `Applying targeted surgical corrections for ${evalResult.issues.length} detected issues...`);
+                logProgress("correcting", `Applying targeted surgical corrections for ${actionableIssues.length} actionable issues...`);
                 const correctionResult = CorrectionEngine.applyTargetedCorrections(state.currentProject, evalResult.issues, iteration);
                 state.currentProject = correctionResult.patchedProject;
                 logProgress("correcting", `Applied: ${correctionResult.appliedModifications.join("; ")}`);

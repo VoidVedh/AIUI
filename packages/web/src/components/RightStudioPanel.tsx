@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Eye, Code2, Columns2, Copy, Download, Check, ExternalLink, Layers, Sparkles } from "lucide-react";
+import { Eye, Code2, Columns2, Copy, Download, Check, ExternalLink, Layers, Sparkles, Trophy } from "lucide-react";
+import type { ModelCandidate } from "@aiui/orchestrator";
+import { CandidateCompare } from "./CandidateCompare.js";
 
 export interface GeneratedCodeFile {
   path: string;
@@ -18,6 +20,10 @@ interface RightStudioPanelProps {
   diffImageUrl: string | null;
   files: GeneratedCodeFile[];
   liveSandboxUrl?: string | null;
+  candidates?: ModelCandidate[];
+  selectedCandidateId?: string | null;
+  multiModelMode?: "single" | "race";
+  isAnalyzing?: boolean;
 }
 
 export const RightStudioPanel: React.FC<RightStudioPanelProps> = ({
@@ -31,8 +37,13 @@ export const RightStudioPanel: React.FC<RightStudioPanelProps> = ({
   diffImageUrl,
   files,
   liveSandboxUrl,
+  candidates,
+  selectedCandidateId,
+  multiModelMode = "single",
+  isAnalyzing = false,
 }) => {
-  const [activeTab, setActiveTab] = useState<"preview" | "code" | "diff">("preview");
+  const hasCandidates = candidates && candidates.length > 0;
+  const [activeTab, setActiveTab] = useState<"preview" | "compare" | "code" | "diff">("preview");
   const [selectedFilePath, setSelectedFilePath] = useState<string>("src/App.jsx");
   const [copied, setCopied] = useState(false);
   const [diffMode, setDiffMode] = useState<"split" | "side" | "heatmap">("split");
@@ -70,6 +81,28 @@ export const RightStudioPanel: React.FC<RightStudioPanelProps> = ({
       >
         {/* Tab Controls */}
         <div className="studio-tabs">
+          {(multiModelMode === "race" || hasCandidates) && (
+            <button
+              className={`studio-tab-btn ${activeTab === "compare" ? "active" : ""}`}
+              onClick={() => setActiveTab("compare")}
+            >
+              <Trophy size={14} color="#FBBF24" />
+              Race Compare
+              {hasCandidates && (
+                <span
+                  style={{
+                    fontSize: "10px",
+                    padding: "1px 5px",
+                    borderRadius: "10px",
+                    background: "rgba(251, 191, 36, 0.2)",
+                    color: "#FBBF24",
+                  }}
+                >
+                  {candidates.length}
+                </span>
+              )}
+            </button>
+          )}
           <button
             className={`studio-tab-btn ${activeTab === "preview" ? "active" : ""}`}
             onClick={() => setActiveTab("preview")}
@@ -125,6 +158,16 @@ export const RightStudioPanel: React.FC<RightStudioPanelProps> = ({
 
       {/* Main Workspace Area */}
       <div style={{ flex: 1, overflow: "hidden", position: "relative", display: "flex", flexDirection: "column" }}>
+        {/* TAB 0: CANDIDATE RACE COMPARE */}
+        {activeTab === "compare" && (
+          <CandidateCompare
+            candidates={candidates || []}
+            selectedCandidateId={selectedCandidateId}
+            runId={runId}
+            isAnalyzing={isAnalyzing}
+          />
+        )}
+
         {/* TAB 1: LIVE PREVIEW */}
         {activeTab === "preview" && (
           <div style={{ flex: 1, padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", overflow: "auto" }}>
@@ -180,6 +223,13 @@ export const RightStudioPanel: React.FC<RightStudioPanelProps> = ({
                   style={{ maxWidth: "100%", maxHeight: "calc(100vh - 220px)", objectFit: "contain", display: "block" }}
                 />
               </div>
+            ) : hasCandidates ? (
+              <CandidateCompare
+                candidates={candidates}
+                selectedCandidateId={selectedCandidateId}
+                runId={runId}
+                isAnalyzing={isAnalyzing}
+              />
             ) : (
               <div style={{ textAlign: "center", color: "var(--text-muted)" }}>
                 <Layers size={48} style={{ opacity: 0.3, marginBottom: "12px" }} />

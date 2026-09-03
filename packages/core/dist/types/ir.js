@@ -95,13 +95,13 @@ export const UIStylesSchema = z.object({
     tokenRefs: z.record(z.string()).optional(),
 });
 export const NodeContentSchema = z.object({
-    text: z.string().optional(),
-    iconName: z.string().optional(),
-    src: z.string().optional(),
-    alt: z.string().optional(),
-    placeholder: z.string().optional(),
-    inputType: z.enum(["text", "email", "password", "number", "search", "textarea"]).optional(),
-    badgeVariant: z.string().optional(),
+    text: z.string().nullish(),
+    iconName: z.string().nullish(),
+    src: z.string().nullish(),
+    alt: z.string().nullish(),
+    placeholder: z.string().nullish(),
+    inputType: z.enum(["text", "email", "password", "number", "search", "textarea"]).nullish(),
+    badgeVariant: z.string().nullish(),
 });
 export const UINodeSchema = z.object({
     id: z.string(),

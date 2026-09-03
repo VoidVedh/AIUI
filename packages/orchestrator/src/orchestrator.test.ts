@@ -120,4 +120,64 @@ describe("PipelineOrchestrator & Best-of-N Candidate Generation Suite", () => {
     expect(state.currentProject).toBeDefined();
     expect(state.currentProject?.files.length).toBeGreaterThan(0);
   });
+
+  it("caps candidateProviders at 3 and populates state.candidates in race mode", async () => {
+    const orchestrator = new PipelineOrchestrator();
+    const dummyPng = Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      "base64"
+    );
+
+    const logs: string[] = [];
+    // Pass 4 candidate providers - should be capped at 3
+    const state = await orchestrator.run(dummyPng, "image/png", {
+      runId: "test_race_cap",
+      candidateProviders: ["offline", "offline", "offline", "offline"],
+      multiModelMode: "race",
+      maxIterations: 1,
+      onProgress: (_s, msg) => logs.push(msg),
+    });
+
+    expect(state.multiModelMode).toBe("race");
+    expect(state.candidates).toBeDefined();
+    // Unique capped providers length should not exceed 3
+    expect(state.candidates!.length).toBeLessThanOrEqual(3);
+    if (state.candidates!.length > 0) {
+      expect(state.selectedCandidateId).toBeDefined();
+      expect(state.candidates!.some((c) => c.selected)).toBe(true);
+    }
+  });
+
+  it("survives a failing provider in race mode via Promise.allSettled and logs exclusion", async () => {
+    const orchestrator = new PipelineOrchestrator();
+    const dummyPng = Buffer.from(
+      "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
+      "base64"
+    );
+
+    const logs: string[] = [];
+    // OpenRouter with invalid key will fail, but offline will succeed
+    process.env.STRICT_LIVE_VLM = "true";
+    delete process.env.OPENROUTER_API_KEY;
+
+    const state = await orchestrator.run(dummyPng, "image/png", {
+      runId: "test_race_settled",
+      candidateProviders: ["openrouter", "offline"],
+      multiModelMode: "race",
+      maxIterations: 1,
+      onProgress: (_s, msg) => logs.push(msg),
+    });
+
+    delete process.env.STRICT_LIVE_VLM;
+
+    expect(state).toBeDefined();
+    // Verify run succeeded despite one candidate failing
+    expect(state.status).not.toBe("failed");
+    // Verify logs note the failed candidate
+    const hasFailNotice = logs.some((l) => l.includes("[RACE_CANDIDATE_FAILED]"));
+    expect(hasFailNotice).toBe(true);
+    // Winner should be offline
+    expect(state.provider).toBe("offline");
+  });
 });
+

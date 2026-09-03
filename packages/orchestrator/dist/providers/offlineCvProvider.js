@@ -1,7 +1,12 @@
 import { ScreenshotInputAdapter } from "@aiui/core";
 export class OfflineCvProvider {
     name = "offline-cv";
+    displayName = "Offline CV Engine";
+    modelId = "deterministic-cv-engine";
     adapter = new ScreenshotInputAdapter();
+    isConfigured() {
+        return true;
+    }
     async analyzeScreenshot(imageBuffer, mimeType, viewport, stage = "analyzing", name) {
         const startTime = Date.now();
         const doc = await this.adapter.parse({

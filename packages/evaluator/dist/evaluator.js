@@ -73,35 +73,63 @@ export class VisualEvaluator {
                 });
             }
         }
-        // Helper to find the best matching DOM element for a diff region
-        const findMatchedElement = (bounds) => {
+        // Helper to find the best matching DOM element for a diff region using IoU, containment, and specificity
+        const findMatchedElement = (bounds, issueType) => {
             let bestMatch = null;
+            const diffArea = Math.max(1, bounds.width * bounds.height);
             for (const box of actualBoxes) {
-                if (box.id === "root")
+                // Exclude root/canvas wrapper elements from local diff matches
+                if (box.id === "root" || box.id === "html" || box.id === "body")
                     continue;
                 const ix0 = Math.max(box.x, bounds.x);
                 const iy0 = Math.max(box.y, bounds.y);
                 const ix1 = Math.min(box.x + box.width, bounds.x + bounds.width);
                 const iy1 = Math.min(box.y + box.height, bounds.y + bounds.height);
-                const overlap = Math.max(0, ix1 - ix0) * Math.max(0, iy1 - iy0);
-                const boxArea = box.width * box.height;
-                if (overlap > 0) {
-                    if (!bestMatch ||
-                        overlap > bestMatch.overlapArea ||
-                        (overlap === bestMatch.overlapArea && boxArea < bestMatch.area)) {
-                        bestMatch = { id: box.id, area: boxArea, overlapArea: overlap };
+                const overlapW = Math.max(0, ix1 - ix0);
+                const overlapH = Math.max(0, iy1 - iy0);
+                const overlapArea = overlapW * overlapH;
+                const boxArea = Math.max(1, box.width * box.height);
+                if (overlapArea === 0)
+                    continue;
+                const containment = overlapArea / diffArea; // 0..1 (how much of diff region is in this box)
+                const iou = overlapArea / (diffArea + boxArea - overlapArea); // 0..1
+                const relativeAreaRatio = Math.min(diffArea, boxArea) / Math.max(diffArea, boxArea); // penalizes massive outer containers
+                const depth = box.depth || 1;
+                const depthWeight = Math.min(0.20, depth * 0.05);
+                // Semantic role affinity bonus
+                let roleBonus = 0;
+                const isContainerWrapper = /(page|root|body|canvas|app|wrapper|layout|view)/i.test(box.id);
+                if (isContainerWrapper) {
+                    roleBonus -= 0.15; // penalize generic wrapper containers
+                }
+                if (issueType === "color") {
+                    const isButtonOrLeaf = /(btn|button|cta|input|badge|avatar|title|text|lbl|label|heading|span|link)/i.test(box.id);
+                    if (isButtonOrLeaf) {
+                        roleBonus += 0.10;
+                    }
+                }
+                // Composite scoring giving high weight to specificity and element depth
+                const score = (containment * 0.25) + (iou * 0.30) + (relativeAreaRatio * 0.35) + depthWeight + roleBonus;
+                if (containment >= 0.15 || iou >= 0.10) {
+                    if (!bestMatch || score > bestMatch.score) {
+                        bestMatch = { id: box.id, score };
                     }
                 }
             }
-            return bestMatch?.id || "page_root";
+            // Minimum confidence threshold to avoid assigning to unrelated elements
+            if (bestMatch && bestMatch.score >= 0.20) {
+                return { elementId: bestMatch.id, confidence: Number(bestMatch.score.toFixed(3)) };
+            }
+            return { elementId: undefined, confidence: 0 };
         };
         // 2. Process Regional Pixel Differences (Color and Spacing)
         let generatedRegionalIssues = 0;
         if (pixel.topDiffRegions && pixel.topDiffRegions.length > 0) {
             for (const region of pixel.topDiffRegions) {
-                const matchedElementId = findMatchedElement(region.bounds);
                 const colorDistance = Math.hypot(region.targetColor.r - region.actualColor.r, region.targetColor.g - region.actualColor.g, region.targetColor.b - region.actualColor.b);
                 if (colorDistance >= 25) {
+                    const matched = findMatchedElement(region.bounds, "color");
+                    const matchedElementId = matched.elementId;
                     // Quantitative Color Issue
                     const severity = colorDistance > 90 || region.diffRatio > 0.4
                         ? "critical"
@@ -113,7 +141,7 @@ export class VisualEvaluator {
                         elementId: matchedElementId,
                         type: "color",
                         severity,
-                        description: `Color mismatch in region (${region.bounds.x}, ${region.bounds.y}) [${region.bounds.width}×${region.bounds.height}px]: target ${region.targetColor.hex} vs actual ${region.actualColor.hex} (ΔE: ${Math.round(colorDistance)})`,
+                        description: `Color mismatch in region (${region.bounds.x}, ${region.bounds.y}) [${region.bounds.width}×${region.bounds.height}px]${matchedElementId ? ` on '${matchedElementId}'` : ""}: target ${region.targetColor.hex} vs actual ${region.actualColor.hex} (ΔE: ${Math.round(colorDistance)})`,
                         target: {
                             color: region.targetColor.hex,
                             r: region.targetColor.r,
@@ -121,6 +149,7 @@ export class VisualEvaluator {
                             b: region.targetColor.b,
                             a: region.targetColor.a,
                             region: region.bounds,
+                            confidence: matched.confidence,
                         },
                         actual: {
                             color: region.actualColor.hex,
@@ -130,11 +159,15 @@ export class VisualEvaluator {
                             a: region.actualColor.a,
                             region: region.bounds,
                         },
-                        suggestedFix: `Calibrate surface background or text color for '${matchedElementId || "container"}' to ${region.targetColor.hex}.`,
+                        suggestedFix: matchedElementId
+                            ? `Calibrate surface background or text color for '${matchedElementId}' to ${region.targetColor.hex}.`
+                            : `Calibrate surface color in region (${region.bounds.x}, ${region.bounds.y}) to ${region.targetColor.hex}.`,
                     });
                     generatedRegionalIssues++;
                 }
                 else if (Math.hypot(region.offset.dx, region.offset.dy) >= 2 || region.diffRatio >= 0.05) {
+                    const matched = findMatchedElement(region.bounds, "spacing");
+                    const matchedElementId = matched.elementId;
                     // Quantitative Spacing / Offset Issue
                     const offsetDist = Math.hypot(region.offset.dx, region.offset.dy);
                     const severity = offsetDist > 24 || region.diffRatio > 0.4
@@ -147,18 +180,21 @@ export class VisualEvaluator {
                         elementId: matchedElementId,
                         type: "spacing",
                         severity,
-                        description: `Spacing/offset discrepancy in region (${region.bounds.x}, ${region.bounds.y}) [${region.bounds.width}×${region.bounds.height}px]: offset (${region.offset.dx}px, ${region.offset.dy}px), ${region.diffPixelCount} diff pixels.`,
+                        description: `Spacing/offset discrepancy in region (${region.bounds.x}, ${region.bounds.y}) [${region.bounds.width}×${region.bounds.height}px]${matchedElementId ? ` on '${matchedElementId}'` : ""}: offset (${region.offset.dx}px, ${region.offset.dy}px), ${region.diffPixelCount} diff pixels.`,
                         target: {
                             region: region.bounds,
                             offset: region.offset,
                             diffPixels: region.diffPixelCount,
+                            confidence: matched.confidence,
                         },
                         actual: {
                             region: region.bounds,
                             offset: { dx: 0, dy: 0 },
                             diffPixels: region.diffPixelCount,
                         },
-                        suggestedFix: `Adjust padding, margin, or gap in region (${region.bounds.x}, ${region.bounds.y}) by (${region.offset.dx}px, ${region.offset.dy}px).`,
+                        suggestedFix: matchedElementId
+                            ? `Adjust padding, margin, or gap for '${matchedElementId}' by (${region.offset.dx}px, ${region.offset.dy}px).`
+                            : `Adjust spacing in region (${region.bounds.x}, ${region.bounds.y}) by (${region.offset.dx}px, ${region.offset.dy}px).`,
                     });
                     generatedRegionalIssues++;
                 }
