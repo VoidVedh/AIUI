@@ -113,7 +113,8 @@ app.get("/api/fixtures", (_req, res) => {
  */
 app.get("/api/fixtures/:name/image", (req, res) => {
   const { name } = req.params;
-  const fixturePath = path.resolve(getRepoRoot(), `fixtures/${name}/target.png`);
+  const benchmarkPath = path.resolve(getRepoRoot(), `benchmarks/internal/${name}/target.png`);
+  const fixturePath = fs.existsSync(benchmarkPath) ? benchmarkPath : path.resolve(getRepoRoot(), `fixtures/${name}/target.png`);
   if (!fs.existsSync(fixturePath)) {
     return res.status(404).json({ error: `Fixture '${name}' not found` });
   }
@@ -178,7 +179,8 @@ app.post("/api/runs", upload.single("image"), async (req: Request, res: Response
       imageBuffer = req.file.buffer;
       mimeType = req.file.mimetype || "image/png";
     } else if (req.body.fixtureId) {
-      const fixturePath = path.resolve(getRepoRoot(), `fixtures/${req.body.fixtureId}/target.png`);
+      const benchmarkPath = path.resolve(getRepoRoot(), `benchmarks/internal/${req.body.fixtureId}/target.png`);
+      const fixturePath = fs.existsSync(benchmarkPath) ? benchmarkPath : path.resolve(getRepoRoot(), `fixtures/${req.body.fixtureId}/target.png`);
       if (!fs.existsSync(fixturePath)) {
         return res.status(404).json({ error: `Fixture '${req.body.fixtureId}' not found.` });
       }
