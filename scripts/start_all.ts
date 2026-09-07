@@ -1,32 +1,39 @@
-import { spawn } from "node:child_process";
+import { spawn, execSync } from "node:child_process";
 import http from "node:http";
 
 console.log("==================================================");
 console.log("   🚀 Launching AIUI Autonomous UI Engine...     ");
 console.log("==================================================");
 
-// 1. Start Server
+// 1. Start Server in detached process group
 console.log("▶ Starting AIUI Backend Server (Port 3001)...");
 const serverProcess = spawn("npm", ["run", "dev", "--workspace=@aiui/server"], {
   stdio: "inherit",
   shell: true,
+  detached: true,
 });
 
-// 2. Start Web Dashboard
+// 2. Start Web Dashboard in detached process group
 console.log("▶ Starting AIUI Web Dashboard (Port 5173)...");
 const webProcess = spawn("npm", ["run", "dev", "--workspace=@aiui/web"], {
   stdio: "inherit",
   shell: true,
+  detached: true,
 });
 
 // Function to poll port
 function checkPort(port: number, callback: () => void) {
+  let attempts = 0;
+  const maxAttempts = 60;
   const check = () => {
-    const req = http.get(`http://127.0.0.1:${port}`, (res) => {
+    attempts++;
+    const req = http.get(`http://127.0.0.1:${port}`, (_res) => {
       callback();
     });
     req.on("error", () => {
-      setTimeout(check, 500);
+      if (attempts < maxAttempts) {
+        setTimeout(check, 500);
+      }
     });
   };
   check();
@@ -44,15 +51,40 @@ checkPort(5173, () => {
   spawn(openCmd, ["http://localhost:5173"], { shell: true, stdio: "ignore" });
 });
 
-// Handle termination
-process.on("SIGINT", () => {
-  serverProcess.kill("SIGINT");
-  webProcess.kill("SIGINT");
-  process.exit(0);
-});
+function cleanupAndExit(code = 0) {
+  console.log("\n[start_all] Shutting down all processes...");
 
-process.on("SIGTERM", () => {
-  serverProcess.kill("SIGTERM");
-  webProcess.kill("SIGTERM");
-  process.exit(0);
+  // Kill entire process groups
+  if (serverProcess.pid) {
+    try {
+      process.kill(-serverProcess.pid, "SIGKILL");
+    } catch {}
+  }
+  if (webProcess.pid) {
+    try {
+      process.kill(-webProcess.pid, "SIGKILL");
+    } catch {}
+  }
+
+  // Double check and free ports 3001 and 5173
+  try {
+    const lsof = execSync("lsof -t -i :3001 -i :5173 2>/dev/null", { encoding: "utf-8" }).trim();
+    if (lsof) {
+      const pids = lsof.split(/\s+/).filter(Boolean);
+      for (const pid of pids) {
+        try {
+          process.kill(Number(pid), "SIGKILL");
+        } catch {}
+      }
+    }
+  } catch {}
+
+  process.exit(code);
+}
+
+process.on("SIGINT", () => cleanupAndExit(0));
+process.on("SIGTERM", () => cleanupAndExit(0));
+process.on("uncaughtException", (err) => {
+  console.error("[start_all uncaughtException]", err);
+  cleanupAndExit(1);
 });

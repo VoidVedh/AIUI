@@ -74,13 +74,11 @@ export class CorrectionEngine {
       const primaryIssue = clusterList[0];
       const targetElementId = primaryIssue.elementId;
 
-      if (!targetElementId && !primaryIssue.id?.startsWith("issue_contrast")) {
+      if (!targetElementId) {
         continue;
       }
 
-      const selector = targetElementId
-        ? `[data-aiui-id="${targetElementId}"], [id="${targetElementId}"]`
-        : "body, .aiui-page";
+      const selector = `[data-aiui-id="${targetElementId}"], [id="${targetElementId}"]`;
 
       switch (primaryIssue.type) {
         case "position": {
@@ -148,86 +146,45 @@ ${selector} {
         }
 
         case "color": {
-          if (primaryIssue.id?.startsWith("issue_contrast")) {
-            const contrastDelta = primaryIssue.severity === "critical" ? "1.20" : primaryIssue.severity === "high" ? "1.12" : primaryIssue.severity === "medium" ? "1.08" : "1.04";
-            newCssRules.push(`
-/* Ambient contrast correction */
-body, .aiui-page {
-  filter: contrast(${contrastDelta}) !important;
-}
-`);
-            appliedModifications.push(`Applied ambient contrast adjustment (${contrastDelta})`);
-            break;
-          }
-
           if (!targetElementId) break;
 
-          // Compute dominant target color across the cluster by weight/frequency
-          const colorVotes = new Map<string, number>();
-          for (const item of clusterList) {
-            const hex = item.target?.color || item.target?.hex;
-            if (hex) {
-              const weight = item.severity === "critical" ? 4 : item.severity === "high" ? 3 : item.severity === "medium" ? 2 : 1;
-              colorVotes.set(hex, (colorVotes.get(hex) || 0) + weight);
-            }
-          }
+          const measuredColor = primaryIssue.target?.color || primaryIssue.target?.hex;
+          if (!measuredColor) break;
 
-          let dominantColor: string | null = null;
-          let maxVote = -1;
-          for (const [hex, vote] of colorVotes.entries()) {
-            if (vote > maxVote) {
-              maxVote = vote;
-              dominantColor = hex;
-            }
-          }
+          const isTextElement = /(text|title|heading|lbl|label|desc|subtitle|paragraph|span|caption|link|nav_item)/i.test(targetElementId);
+          const isBorder = /(border|outline|divider|stroke)/i.test(targetElementId);
 
-          if (dominantColor) {
-            const isTextElement = /(text|title|heading|lbl|label|desc|subtitle|paragraph|span|badge|link|nav_item|caption)/i.test(targetElementId);
-            const isButton = /(btn|button|cta)/i.test(targetElementId);
-            const isInput = /(input|field|select|textarea)/i.test(targetElementId);
-
-            if (isTextElement) {
-              newCssRules.push(`
+          if (isTextElement) {
+            newCssRules.push(`
 /* Color correction: '${targetElementId}' text color */
 ${selector} {
-  color: ${dominantColor} !important;
+  color: ${measuredColor} !important;
 }
 `);
-              appliedModifications.push(
-                `Calibrated text color for '${targetElementId}' to ${dominantColor}`
-              );
-            } else if (isButton) {
-              newCssRules.push(`
-/* Color correction: '${targetElementId}' button surface */
+            appliedModifications.push(
+              `Calibrated text color for '${targetElementId}' to ${measuredColor}`
+            );
+          } else if (isBorder) {
+            newCssRules.push(`
+/* Color correction: '${targetElementId}' border color */
 ${selector} {
-  background-color: ${dominantColor} !important;
+  border-color: ${measuredColor} !important;
 }
 `);
-              appliedModifications.push(
-                `Calibrated button surface for '${targetElementId}' to ${dominantColor}`
-              );
-            } else if (isInput) {
-              newCssRules.push(`
-/* Color correction: '${targetElementId}' input surface/border */
-${selector} {
-  background-color: ${dominantColor} !important;
-  border-color: ${dominantColor} !important;
-}
-`);
-              appliedModifications.push(
-                `Calibrated input styling for '${targetElementId}' to ${dominantColor}`
-              );
-            } else {
-              newCssRules.push(`
+            appliedModifications.push(
+              `Calibrated border color for '${targetElementId}' to ${measuredColor}`
+            );
+          } else {
+            // Container, button, background, surface elements
+            newCssRules.push(`
 /* Color correction: '${targetElementId}' surface background */
 ${selector} {
-  background-color: ${dominantColor} !important;
+  background-color: ${measuredColor} !important;
 }
 `);
-              appliedModifications.push(
-                `Calibrated surface background for '${targetElementId}' to ${dominantColor}`
-              );
-            }
+            appliedModifications.push(
+              `Calibrated surface background for '${targetElementId}' to ${measuredColor}`
+            );
           }
           break;
         }
@@ -235,11 +192,13 @@ ${selector} {
         case "spacing": {
           if (!targetElementId) break;
           const targetOffset = primaryIssue.target?.offset;
-          if (targetOffset && (Math.abs(targetOffset.dx) > 0 || Math.abs(targetOffset.dy) > 0)) {
-            const dx = clamp(Number(targetOffset.dx), -80, 80);
-            const dy = clamp(Number(targetOffset.dy), -80, 80);
+          if (targetOffset && (typeof targetOffset.dx === "number" || typeof targetOffset.dy === "number")) {
+            const rawDx = Number(targetOffset.dx ?? 0);
+            const rawDy = Number(targetOffset.dy ?? 0);
+            const dx = clamp(rawDx, -200, 200);
+            const dy = clamp(rawDy, -200, 200);
 
-            if (Math.abs(dx) >= 2 || Math.abs(dy) >= 2) {
+            if (dx !== 0 || dy !== 0) {
               newCssRules.push(`
 /* Spacing offset correction: '${targetElementId}' */
 ${selector} {

@@ -60,13 +60,116 @@ export interface RenderOptions {
 
 export class PlaywrightRenderer {
   private static browserInstance: Browser | null = null;
+  private static activeServers = new Set<ViteDevServer>();
+  private static cleanupRegistered = false;
+
+  private static registerProcessHandlers(): void {
+    if (this.cleanupRegistered) return;
+    this.cleanupRegistered = true;
+
+    process.on("exit", () => this.cleanupSync());
+    process.on("SIGINT", () => {
+      this.cleanup().finally(() => process.exit(0));
+    });
+    process.on("SIGTERM", () => {
+      this.cleanup().finally(() => process.exit(0));
+    });
+    process.on("uncaughtException", (e) => {
+      console.error("[PlaywrightRenderer uncaughtException]", e);
+      this.cleanup().finally(() => process.exit(1));
+    });
+  }
 
   /**
-   * Lazily initializes and reuses a Chromium browser instance for fast rendering.
+   * Synchronous cleanup for process 'exit' hook.
+   */
+  public static cleanupSync(): void {
+    for (const server of this.activeServers) {
+      try {
+        server.close?.().catch?.(() => {});
+      } catch {}
+    }
+    this.activeServers.clear();
+
+    if (this.browserInstance) {
+      try {
+        (this.browserInstance as any).process?.()?.kill?.("SIGKILL");
+      } catch {}
+      this.browserInstance = null;
+    }
+  }
+
+  /**
+   * Asynchronous graceful cleanup with hard fallback.
+   */
+  public static async cleanup(): Promise<void> {
+    for (const server of this.activeServers) {
+      try {
+        await server.close?.().catch(() => {});
+        try {
+          await (server as any).ssrClose?.().catch(() => {});
+        } catch {}
+      } catch {}
+    }
+    this.activeServers.clear();
+
+    if (this.browserInstance) {
+      const browser = this.browserInstance;
+      this.browserInstance = null;
+      try {
+        await Promise.race([
+          browser.close(),
+          new Promise<never>((_, reject) =>
+            setTimeout(() => reject(new Error("Browser close timeout")), 5000)
+          ),
+        ]);
+      } catch {
+        try {
+          (browser as any).process?.()?.kill?.("SIGKILL");
+        } catch {}
+      }
+    }
+  }
+
+  /**
+   * Preflight launch verification to fail fast if Chromium is not installed.
+   */
+  public static async verifyPlaywrightLaunch(timeoutMs = 10000): Promise<{ ok: boolean; error?: string }> {
+    try {
+      const launchPromise = chromium.launch({
+        headless: true,
+        args: ["--no-sandbox", "--disable-gpu", "--no-zygote"],
+      });
+
+      const browser = await Promise.race([
+        launchPromise,
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error("Chromium launch timed out")), timeoutMs)
+        ),
+      ]);
+
+      const page = await browser.newPage();
+      await page.goto("about:blank", { timeout: 5000 });
+      await page.close().catch(() => {});
+      await browser.close().catch(() => {});
+      return { ok: true };
+    } catch (err: any) {
+      const msg = err?.message || String(err);
+      return {
+        ok: false,
+        error: `Chromium not found or failed to launch headlessly (${msg}). Please run: npx playwright install chromium`,
+      };
+    }
+  }
+
+  /**
+   * Lazily initializes and reuses a Chromium browser instance with a 15-second fail-fast timeout.
    */
   public static async getBrowser(): Promise<Browser> {
+    this.registerProcessHandlers();
+
     if (!this.browserInstance || !this.browserInstance.isConnected()) {
-      this.browserInstance = await chromium.launch({
+      const launchPromise = chromium.launch({
         headless: true,
         args: [
           "--no-sandbox",
@@ -78,6 +181,30 @@ export class PlaywrightRenderer {
           "--disable-gpu",
         ],
       });
+
+      try {
+        this.browserInstance = await Promise.race([
+          launchPromise,
+          new Promise<never>((_, reject) =>
+            setTimeout(
+              () =>
+                reject(
+                  new Error("Chromium not found — run npx playwright install chromium")
+                ),
+              15000
+            )
+          ),
+        ]);
+      } catch (err: any) {
+        if (
+          err.message?.includes("Chromium not found") ||
+          err.message?.includes("Executable doesn't exist") ||
+          err.message?.includes("timed out")
+        ) {
+          throw new Error("Chromium not found — run npx playwright install chromium");
+        }
+        throw err;
+      }
     }
     return this.browserInstance;
   }
@@ -86,10 +213,7 @@ export class PlaywrightRenderer {
    * Closes the global browser instance if open.
    */
   public static async closeBrowser(): Promise<void> {
-    if (this.browserInstance) {
-      await this.browserInstance.close();
-      this.browserInstance = null;
-    }
+    await this.cleanup();
   }
 
   /**
@@ -99,6 +223,7 @@ export class PlaywrightRenderer {
     project: GeneratedProject,
     options: RenderOptions
   ): Promise<RenderResult> {
+    this.registerProcessHandlers();
     const viewport = options.viewport || { width: 1280, height: 800 };
     const timeoutMs = options.timeoutMs || 45000;
 
@@ -117,33 +242,49 @@ export class PlaywrightRenderer {
       const reactDomPkg = path.resolve(monoRoot, "node_modules/react-dom");
       const lucidePkg = path.resolve(monoRoot, "node_modules/lucide-react");
 
-      viteServer = await createServer({
-        root: sandboxDir,
-        configFile: false,
-        plugins: [react() as any],
-        resolve: {
-          alias: [
-            { find: "react/jsx-dev-runtime", replacement: path.resolve(reactPkg, "jsx-dev-runtime.js") },
-            { find: "react/jsx-runtime", replacement: path.resolve(reactPkg, "jsx-runtime.js") },
-            { find: "react-dom/client", replacement: path.resolve(reactDomPkg, "client.js") },
-            { find: "react-dom", replacement: reactDomPkg },
-            { find: "react", replacement: reactPkg },
-            { find: "lucide-react", replacement: lucidePkg },
-          ],
-        },
-        server: {
-          port: 0, // Auto-select available port
-          host: "127.0.0.1",
-          strictPort: false,
-          fs: {
-            strict: false,
-            allow: [monoRoot, process.cwd(), sandboxDir],
+      const vitePromise = (async () => {
+        const server = await createServer({
+          root: sandboxDir,
+          configFile: false,
+          plugins: [react() as any],
+          resolve: {
+            alias: [
+              { find: "react/jsx-dev-runtime", replacement: path.resolve(reactPkg, "jsx-dev-runtime.js") },
+              { find: "react/jsx-runtime", replacement: path.resolve(reactPkg, "jsx-runtime.js") },
+              { find: "react-dom/client", replacement: path.resolve(reactDomPkg, "client.js") },
+              { find: "react-dom", replacement: reactDomPkg },
+              { find: "react", replacement: reactPkg },
+              { find: "lucide-react", replacement: lucidePkg },
+            ],
           },
-        },
-        logLevel: "error",
-      });
+          server: {
+            port: 0, // Auto-select available port
+            host: "127.0.0.1",
+            strictPort: false,
+            fs: {
+              strict: false,
+              allow: [monoRoot, process.cwd(), sandboxDir],
+            },
+          },
+          logLevel: "error",
+        });
 
-      await viteServer.listen();
+        await server.listen();
+        return server;
+      })();
+
+      viteServer = await Promise.race([
+        vitePromise,
+        new Promise<never>((_, reject) =>
+          setTimeout(
+            () => reject(new Error("Vite dev server launch timed out after 15s")),
+            15000
+          )
+        ),
+      ]);
+
+      this.activeServers.add(viteServer);
+
       const serverPort = viteServer.httpServer?.address();
       const portNumber = typeof serverPort === "object" && serverPort ? serverPort.port : 3000;
       const serverUrl = `http://127.0.0.1:${portNumber}`;
@@ -260,7 +401,11 @@ export class PlaywrightRenderer {
         await page.close().catch(() => {});
       }
       if (viteServer) {
+        this.activeServers.delete(viteServer);
         await viteServer.close().catch(() => {});
+        try {
+          await (viteServer as any).ssrClose?.().catch(() => {});
+        } catch {}
       }
     }
   }

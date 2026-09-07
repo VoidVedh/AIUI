@@ -11,6 +11,8 @@ export interface VisualIssue {
   target?: Record<string, any>;
   actual?: Record<string, any>;
   suggestedFix?: string;
+  deltaE?: number;
+  diffPixelCount?: number;
 }
 
 export interface VisualEvaluationResult {
@@ -219,6 +221,7 @@ export class VisualEvaluator {
                 ? "high"
                 : "medium";
 
+          const deltaE = Number(colorDistance.toFixed(1));
           issues.push({
             id: `issue_color_${matchedElementId || `${region.bounds.x}_${region.bounds.y}`}`,
             elementId: matchedElementId,
@@ -233,6 +236,7 @@ export class VisualEvaluator {
               a: region.targetColor.a,
               region: region.bounds,
               confidence: matched.confidence,
+              deltaE,
             },
             actual: {
               color: region.actualColor.hex,
@@ -241,7 +245,9 @@ export class VisualEvaluator {
               b: region.actualColor.b,
               a: region.actualColor.a,
               region: region.bounds,
+              deltaE,
             },
+            deltaE,
             suggestedFix: matchedElementId
               ? `Calibrate surface background or text color for '${matchedElementId}' to ${region.targetColor.hex}.`
               : `Calibrate surface color in region (${region.bounds.x}, ${region.bounds.y}) to ${region.targetColor.hex}.`,
@@ -268,15 +274,18 @@ export class VisualEvaluator {
             description: `Spacing/offset discrepancy in region (${region.bounds.x}, ${region.bounds.y}) [${region.bounds.width}×${region.bounds.height}px]${matchedElementId ? ` on '${matchedElementId}'` : ""}: offset (${region.offset.dx}px, ${region.offset.dy}px), ${region.diffPixelCount} diff pixels.`,
             target: {
               region: region.bounds,
-              offset: region.offset,
+              offset: { dx: region.offset.dx, dy: region.offset.dy },
+              diffPixelCount: region.diffPixelCount,
               diffPixels: region.diffPixelCount,
               confidence: matched.confidence,
             },
             actual: {
               region: region.bounds,
               offset: { dx: 0, dy: 0 },
+              diffPixelCount: region.diffPixelCount,
               diffPixels: region.diffPixelCount,
             },
+            diffPixelCount: region.diffPixelCount,
             suggestedFix: matchedElementId
               ? `Adjust padding, margin, or gap for '${matchedElementId}' by (${region.offset.dx}px, ${region.offset.dy}px).`
               : `Adjust spacing in region (${region.bounds.x}, ${region.bounds.y}) by (${region.offset.dx}px, ${region.offset.dy}px).`,

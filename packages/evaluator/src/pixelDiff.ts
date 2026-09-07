@@ -130,8 +130,19 @@ export class PixelDiffCalculator {
 
           let targetXSum = 0;
           let targetYSum = 0;
+          let targetWeightSum = 0;
           let actualXSum = 0;
           let actualYSum = 0;
+          let actualWeightSum = 0;
+
+          // Estimate background for the local grid cell from its 4 corners
+          const c1 = (y0 * targetWidth + x0) * 4;
+          const c2 = (y0 * targetWidth + Math.min(targetWidth - 1, x0 + w - 1)) * 4;
+          const c3 = (Math.min(targetHeight - 1, y0 + h - 1) * targetWidth + x0) * 4;
+          const c4 = (Math.min(targetHeight - 1, y0 + h - 1) * targetWidth + Math.min(targetWidth - 1, x0 + w - 1)) * 4;
+          const bgR = (raw1[c1] + raw1[c2] + raw1[c3] + raw1[c4] + raw2[c1] + raw2[c2] + raw2[c3] + raw2[c4]) / 8;
+          const bgG = (raw1[c1+1] + raw1[c2+1] + raw1[c3+1] + raw1[c4+1] + raw2[c1+1] + raw2[c2+1] + raw2[c3+1] + raw2[c4+1]) / 8;
+          const bgB = (raw1[c1+2] + raw1[c2+2] + raw1[c3+2] + raw1[c4+2] + raw2[c1+2] + raw2[c2+2] + raw2[c3+2] + raw2[c4+2]) / 8;
 
           for (let y = y0; y < y0 + h; y++) {
             for (let x = x0; x < x0 + w; x++) {
@@ -154,10 +165,19 @@ export class PixelDiffCalculator {
                 actualBSum += raw2[idx + 2];
                 actualASum += raw2[idx + 3];
 
-                targetXSum += x;
-                targetYSum += y;
-                actualXSum += x;
-                actualYSum += y;
+                const targetDistBg = Math.abs(raw1[idx] - bgR) + Math.abs(raw1[idx + 1] - bgG) + Math.abs(raw1[idx + 2] - bgB);
+                const actualDistBg = Math.abs(raw2[idx] - bgR) + Math.abs(raw2[idx + 1] - bgG) + Math.abs(raw2[idx + 2] - bgB);
+
+                if (targetDistBg >= actualDistBg && targetDistBg > 20) {
+                  targetXSum += x;
+                  targetYSum += y;
+                  targetWeightSum++;
+                }
+                if (actualDistBg >= targetDistBg && actualDistBg > 20) {
+                  actualXSum += x;
+                  actualYSum += y;
+                  actualWeightSum++;
+                }
               }
             }
           }
@@ -173,8 +193,13 @@ export class PixelDiffCalculator {
             const aB = Math.round(actualBSum / cellDiffCount);
             const aA = Number((actualASum / cellDiffCount / 255).toFixed(2));
 
-            const dx = Math.round((targetXSum - actualXSum) / cellDiffCount);
-            const dy = Math.round((targetYSum - actualYSum) / cellDiffCount);
+            const targetXMean = targetWeightSum > 0 ? targetXSum / targetWeightSum : (x0 + w / 2);
+            const targetYMean = targetWeightSum > 0 ? targetYSum / targetWeightSum : (y0 + h / 2);
+            const actualXMean = actualWeightSum > 0 ? actualXSum / actualWeightSum : (x0 + w / 2);
+            const actualYMean = actualWeightSum > 0 ? actualYSum / actualWeightSum : (y0 + h / 2);
+
+            const dx = Math.round(actualXMean - targetXMean);
+            const dy = Math.round(actualYMean - targetYMean);
 
             topDiffRegions.push({
               bounds: { x: x0, y: y0, width: w, height: h },

@@ -68,30 +68,68 @@ describe("CorrectionEngine.applyTargetedCorrections", () => {
     expect(result.appliedModifications.join(" ")).toContain("google_sso_button");
   });
 
-  it("scales color/spacing corrections by severity since no per-element target is available", () => {
+  it("produces data-driven color corrections matching exact measured target hex", () => {
     const project = makeProject();
 
-    const lowIssue: VisualIssue = {
-      id: "issue_contrast_low",
+    const colorIssueA: VisualIssue = {
+      id: "issue_color_a",
+      elementId: "card_container",
       type: "color",
-      severity: "low",
-      description: "minor contrast mismatch",
-    };
-    const criticalIssue: VisualIssue = {
-      id: "issue_contrast_critical",
-      type: "color",
-      severity: "critical",
-      description: "severe contrast mismatch",
+      severity: "high",
+      description: "Color mismatch: target #1E40AF",
+      target: { color: "#1E40AF" },
     };
 
-    const resultLow = CorrectionEngine.applyTargetedCorrections(project, [lowIssue], 1);
-    const resultCritical = CorrectionEngine.applyTargetedCorrections(project, [criticalIssue], 1);
+    const colorIssueB: VisualIssue = {
+      id: "issue_color_b",
+      elementId: "card_container",
+      type: "color",
+      severity: "high",
+      description: "Color mismatch: target #DC2626",
+      target: { color: "#DC2626" },
+    };
 
-    const cssLow = resultLow.patchedProject.files.find((f) => f.path.endsWith(".css"))!.content;
-    const cssCritical = resultCritical.patchedProject.files.find((f) => f.path.endsWith(".css"))!.content;
+    const resultA = CorrectionEngine.applyTargetedCorrections(project, [colorIssueA], 1);
+    const resultB = CorrectionEngine.applyTargetedCorrections(project, [colorIssueB], 1);
 
-    expect(cssLow).not.toEqual(cssCritical);
-    expect(cssCritical).toContain("contrast(1.20)");
+    const cssA = resultA.patchedProject.files.find((f) => f.path.endsWith(".css"))!.content;
+    const cssB = resultB.patchedProject.files.find((f) => f.path.endsWith(".css"))!.content;
+
+    expect(cssA).toContain("background-color: #1E40AF !important;");
+    expect(cssB).toContain("background-color: #DC2626 !important;");
+  });
+
+  it("produces data-driven spacing corrections matching exact measured offsets", () => {
+    const project = makeProject();
+
+    const spacingIssueA: VisualIssue = {
+      id: "issue_spacing_a",
+      elementId: "auth_card",
+      type: "spacing",
+      severity: "high",
+      description: "Spacing offset (18px, 6px)",
+      target: { offset: { dx: 18, dy: 6 } },
+    };
+
+    const spacingIssueB: VisualIssue = {
+      id: "issue_spacing_b",
+      elementId: "auth_card",
+      type: "spacing",
+      severity: "high",
+      description: "Spacing offset (-12px, 24px)",
+      target: { offset: { dx: -12, dy: 24 } },
+    };
+
+    const resultA = CorrectionEngine.applyTargetedCorrections(project, [spacingIssueA], 1);
+    const resultB = CorrectionEngine.applyTargetedCorrections(project, [spacingIssueB], 1);
+
+    const cssA = resultA.patchedProject.files.find((f) => f.path.endsWith(".css"))!.content;
+    const cssB = resultB.patchedProject.files.find((f) => f.path.endsWith(".css"))!.content;
+
+    expect(cssA).toContain("margin-left: 18px");
+    expect(cssA).toContain("margin-top: 6px");
+    expect(cssB).toContain("margin-left: -12px");
+    expect(cssB).toContain("margin-top: 24px");
   });
 
   it("does not append fixture-specific hardcoded selectors regardless of input", () => {

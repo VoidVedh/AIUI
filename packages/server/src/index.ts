@@ -13,6 +13,7 @@ import {
 } from "@aiui/orchestrator";
 import { EventStreamManager } from "./eventStream.js";
 import { ZipService } from "./zipService.js";
+import { PlaywrightRenderer } from "@aiui/runner";
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -366,7 +367,7 @@ app.get("/api/runs/:runId/download", async (req, res) => {
   ZipService.streamProjectZip(state.currentProject, `aiui_${runId}`, res);
 });
 
-export function startServer(customPort = port) {
+export async function startServer(customPort = port) {
   try {
     const retention = StateManager.enforceRetentionPolicy();
     if (retention.deletedRuns.length > 0) {
@@ -376,13 +377,28 @@ export function startServer(customPort = port) {
     console.warn("[AIUI Server] Retention policy warning on startup:", err);
   }
 
+  // Preflight check: verify Playwright / Chromium can launch
+  const preflight = await PlaywrightRenderer.verifyPlaywrightLaunch(10000);
+  if (!preflight.ok) {
+    console.error("\n===============================================================================");
+    console.error("[AIUI FATAL] Chromium is not installed or failed to launch headlessly.");
+    console.error(`Reason: ${preflight.error}`);
+    console.error("To fix this, install Playwright Chromium binaries by running:");
+    console.error("  npx playwright install chromium");
+    console.error("===============================================================================\n");
+    process.exit(1);
+  }
+
   return app.listen(customPort, () => {
     console.log(`[AIUI Server] Listening on http://localhost:${customPort}`);
   });
 }
 
 if (process.env.NODE_ENV !== "test") {
-  startServer();
+  startServer().catch((err) => {
+    console.error("[AIUI Server] Failed to start:", err);
+    process.exit(1);
+  });
 }
 
 export { app };
