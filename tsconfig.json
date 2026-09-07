@@ -14,5 +14,5 @@
     "resolveJsonModule": true,
     "isolatedModules": true
   },
-  "exclude": ["node_modules", "dist", "runs", "**/*.test.ts"]
+  "exclude": ["node_modules", "dist", "runs", "scratch", "**/*.test.ts", "packages/web", "scripts"]
 }

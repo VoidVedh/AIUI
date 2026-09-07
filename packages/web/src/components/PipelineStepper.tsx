@@ -9,8 +9,6 @@ import {
   Scale,
   Wrench,
   CheckCircle2,
-  AlertCircle,
-  Clock,
 } from "lucide-react";
 
 export type PipelineStage =

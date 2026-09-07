@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Code2, Download, Copy, Check, FileCode, FolderTree } from "lucide-react";
+import { useState } from "react";
+import { Code2, Download, Copy, Check, FileCode } from "lucide-react";
 
 export interface GeneratedCodeFile {
   path: string;
@@ -78,7 +78,7 @@ export const CodeExplorer: React.FC<CodeExplorerProps> = ({ files, runId, target
             >
               <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                 <FileCode size={13} style={{ color: isActive ? "var(--color-primary)" : "var(--text-muted)" }} />
-                <span>{file.path}</span>
+                <span>{fileName}</span>
               </span>
             </button>
           );

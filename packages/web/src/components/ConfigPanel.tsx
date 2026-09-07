@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Upload, Play, CheckCircle2, Sliders, Smartphone, Monitor, Trophy } from "lucide-react";
+import { Upload, Play, Smartphone, Monitor, Trophy } from "lucide-react";
 import type { ProviderCatalogEntry } from "@aiui/orchestrator";
 
 export interface FixturePreset {
@@ -43,8 +43,8 @@ export const ConfigPanel: React.FC<ConfigPanelProps> = ({
   onChangeTarget,
   similarityThreshold,
   onChangeThreshold,
-  maxIterations,
-  onChangeMaxIterations,
+  maxIterations: _maxIterations,
+  onChangeMaxIterations: _onChangeMaxIterations,
   onStartRun,
   isRunning,
   selectedProvider = "gemma",

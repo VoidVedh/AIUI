@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Eye, Code2, Columns2, Copy, Download, Check, ExternalLink, Layers, Sparkles, Trophy } from "lucide-react";
+import { Eye, Code2, Columns2, Copy, Download, Check, Layers, Sparkles, Trophy } from "lucide-react";
 import type { ModelCandidate } from "@aiui/orchestrator";
 import { CandidateCompare } from "./CandidateCompare.js";
 
@@ -36,7 +36,7 @@ export const RightStudioPanel: React.FC<RightStudioPanelProps> = ({
   renderedImageUrl,
   diffImageUrl,
   files,
-  liveSandboxUrl,
+  liveSandboxUrl: _liveSandboxUrl,
   candidates,
   selectedCandidateId,
   multiModelMode = "single",

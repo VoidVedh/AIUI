@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Terminal, ChevronUp, ChevronDown, Activity, Cpu, Sparkles } from "lucide-react";
+import { Terminal, ChevronUp, ChevronDown } from "lucide-react";
 
 interface DebugDrawerProps {
   logs: string[];

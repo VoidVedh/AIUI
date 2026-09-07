@@ -1,5 +1,5 @@
 import React from "react";
-import { Sparkles, Cpu, Activity, ShieldCheck } from "lucide-react";
+import { Sparkles, Cpu, ShieldCheck } from "lucide-react";
 
 interface HeaderProps {
   serverStatus: "connected" | "disconnected" | "running";

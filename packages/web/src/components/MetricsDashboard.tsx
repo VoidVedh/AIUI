@@ -1,5 +1,5 @@
 import React from "react";
-import { Scale, CheckCircle, TrendingUp, Layers, BoxSelect } from "lucide-react";
+import { Scale, TrendingUp, Layers, BoxSelect } from "lucide-react";
 
 export interface IterationCheckpointData {
   iteration: number;

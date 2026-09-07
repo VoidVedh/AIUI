@@ -2,11 +2,32 @@ import fs from "node:fs";
 import path from "node:path";
 import { PipelineRunState, IterationCheckpoint, CostLogEntry } from "./types.js";
 
+function findMonorepoRoot(startDir = process.cwd()): string {
+  let curr = startDir;
+  while (curr && curr !== path.dirname(curr)) {
+    if (fs.existsSync(path.join(curr, "packages")) && fs.existsSync(path.join(curr, "node_modules"))) {
+      return curr;
+    }
+    curr = path.dirname(curr);
+  }
+  return process.cwd();
+}
+
 export class StateManager {
   private baseDir: string;
 
   constructor(baseDir?: string) {
-    this.baseDir = baseDir || path.resolve(process.cwd(), "runs");
+    if (baseDir) {
+      this.baseDir = baseDir;
+    } else if (process.env.AIUI_RUNS_DIR) {
+      this.baseDir = path.resolve(process.env.AIUI_RUNS_DIR);
+    } else {
+      this.baseDir = path.resolve(findMonorepoRoot(), "runs");
+    }
+  }
+
+  public getBaseDir(): string {
+    return this.baseDir;
   }
 
   public getRunDir(runId: string): string {
@@ -90,5 +111,91 @@ export class StateManager {
     const fullPath = path.join(artifactsDir, filename);
     fs.writeFileSync(fullPath, buffer);
     return path.relative(process.cwd(), fullPath);
+  }
+
+  /**
+   * Cleans ephemeral sandbox files after a run completes or when no longer needed.
+   * Keeps the exported ZIP, target/rendered artifacts, and state.json.
+   */
+  public cleanSandboxFiles(runId: string): void {
+    const runDir = this.getRunDir(runId);
+    if (!fs.existsSync(runDir)) return;
+
+    try {
+      const entries = fs.readdirSync(runDir, { withFileTypes: true });
+      for (const entry of entries) {
+        if (entry.isDirectory() && entry.name.startsWith("sandbox_")) {
+          fs.rmSync(path.join(runDir, entry.name), { recursive: true, force: true });
+        }
+      }
+    } catch (e) {
+      console.warn(`[StateManager] Failed to clean sandbox directories for run ${runId}:`, e);
+    }
+  }
+
+  /**
+   * Enforces retention policy for run directories.
+   * - Finds all run directories under standardized runs root
+   * - Sorts by mtime (newest first)
+   * - Deletes excess runs beyond maxRunsToKeep (default: 10, overridable via env var AIUI_MAX_RUNS)
+   * - Deletes runs older than maxAgeHours (default: 24, overridable via env var AIUI_MAX_RUN_AGE_HOURS)
+   */
+  public enforceRetentionPolicy(options?: { maxRunsToKeep?: number; maxAgeHours?: number }): {
+    deletedRuns: string[];
+    keptRuns: string[];
+  } {
+    const maxRunsToKeep = options?.maxRunsToKeep ?? 
+      (process.env.AIUI_MAX_RUNS ? parseInt(process.env.AIUI_MAX_RUNS, 10) : 10);
+    const maxAgeHours = options?.maxAgeHours ?? 
+      (process.env.AIUI_MAX_RUN_AGE_HOURS ? parseFloat(process.env.AIUI_MAX_RUN_AGE_HOURS) : 24);
+
+    if (!fs.existsSync(this.baseDir)) {
+      return { deletedRuns: [], keptRuns: [] };
+    }
+
+    const entries = fs.readdirSync(this.baseDir, { withFileTypes: true });
+    const runDirs: { name: string; fullPath: string; mtimeMs: number }[] = [];
+
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        const fullPath = path.join(this.baseDir, entry.name);
+        try {
+          const stat = fs.statSync(fullPath);
+          runDirs.push({ name: entry.name, fullPath, mtimeMs: stat.mtimeMs });
+        } catch {
+          // ignore stat errors
+        }
+      }
+    }
+
+    // Sort newest first
+    runDirs.sort((a, b) => b.mtimeMs - a.mtimeMs);
+
+    const now = Date.now();
+    const maxAgeMs = maxAgeHours * 60 * 60 * 1000;
+    const deletedRuns: string[] = [];
+    const keptRuns: string[] = [];
+
+    runDirs.forEach((dir, index) => {
+      const isExcess = index >= maxRunsToKeep;
+      const isExpired = maxAgeMs > 0 && (now - dir.mtimeMs) > maxAgeMs;
+
+      if (isExcess || isExpired) {
+        try {
+          fs.rmSync(dir.fullPath, { recursive: true, force: true });
+          deletedRuns.push(dir.name);
+        } catch (e) {
+          console.warn(`[StateManager] Failed to delete run directory ${dir.fullPath}:`, e);
+        }
+      } else {
+        keptRuns.push(dir.name);
+      }
+    });
+
+    return { deletedRuns, keptRuns };
+  }
+
+  public static enforceRetentionPolicy(options?: { maxRunsToKeep?: number; maxAgeHours?: number }, baseDir?: string) {
+    return new StateManager(baseDir).enforceRetentionPolicy(options);
   }
 }

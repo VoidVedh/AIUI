@@ -87,6 +87,7 @@ export class PipelineOrchestrator {
       startedAt: new Date().toISOString(),
     };
 
+    this.stateManager.enforceRetentionPolicy();
     state = this.stateManager.initState(state);
 
     // Save target screenshot artifact
@@ -558,6 +559,7 @@ export class PipelineOrchestrator {
       }
       state.completedAt = new Date().toISOString();
       this.stateManager.saveState(state);
+      this.stateManager.cleanSandboxFiles(state.runId);
       return state;
     } catch (err: any) {
       state.status = "failed";

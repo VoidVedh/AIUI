@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { UploadCloud, Image as ImageIcon, Zap, Coins, Clock, Sparkles, CheckCircle2, RotateCw, Trophy } from "lucide-react";
+import { UploadCloud, Image as ImageIcon, Zap, Coins, Clock, Sparkles, RotateCw, Trophy } from "lucide-react";
 import type { ProviderCatalogEntry } from "@aiui/orchestrator";
 
 export interface FixturePreset {

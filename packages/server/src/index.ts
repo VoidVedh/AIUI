@@ -365,6 +365,15 @@ app.get("/api/runs/:runId/download", async (req, res) => {
 });
 
 export function startServer(customPort = port) {
+  try {
+    const retention = StateManager.enforceRetentionPolicy();
+    if (retention.deletedRuns.length > 0) {
+      console.log(`[AIUI Server] Retention policy purged ${retention.deletedRuns.length} stale run(s).`);
+    }
+  } catch (err) {
+    console.warn("[AIUI Server] Retention policy warning on startup:", err);
+  }
+
   return app.listen(customPort, () => {
     console.log(`[AIUI Server] Listening on http://localhost:${customPort}`);
   });
