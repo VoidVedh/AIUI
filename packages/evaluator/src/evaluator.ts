@@ -167,21 +167,21 @@ export class VisualEvaluator {
         const depth = (box as any).depth || 1;
         const depthWeight = Math.min(0.20, depth * 0.05);
 
-        // Semantic role affinity bonus
+        // Semantic role affinity bonus: heavily penalize containers for localized color issues
         let roleBonus = 0;
-        const isContainerWrapper = /(page|root|body|canvas|app|wrapper|layout|view)/i.test(box.id);
+        const isContainerWrapper = /(page|root|body|canvas|app|wrapper|layout|view|panel|section|container|column|row|main|content|inner|outer)/i.test(box.id);
         if (isContainerWrapper) {
-          roleBonus -= 0.15; // penalize generic wrapper containers
+          roleBonus -= 0.45; // strongly penalize generic wrapper containers to avoid misattributing child diffs
         }
 
         if (issueType === "color") {
-          const isButtonOrLeaf = /(btn|button|cta|input|badge|avatar|title|text|lbl|label|heading|span|link)/i.test(box.id);
+          const isButtonOrLeaf = /(btn|button|cta|input|badge|avatar|title|text|lbl|label|heading|span|link|icon|img|image|illustration|card)/i.test(box.id);
           if (isButtonOrLeaf) {
-            roleBonus += 0.10;
+            roleBonus += 0.30;
           }
         }
 
-        // Composite scoring giving high weight to specificity and element depth
+        // Composite scoring giving high weight to specificity, leaf depth, and element containment
         const score = (containment * 0.25) + (iou * 0.30) + (relativeAreaRatio * 0.35) + depthWeight + roleBonus;
 
         if (containment >= 0.15 || iou >= 0.10) {

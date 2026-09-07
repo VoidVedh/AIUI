@@ -25,13 +25,18 @@ export class OpenRouterProvider implements VisionProvider, LLMProvider {
     this.displayName = displayName;
     const key = apiKey || process.env.OPENROUTER_API_KEY;
 
-    // Fully env-driven: for Gemma, require explicit model or GEMMA_MODEL env var (no hardcoded slug baked in).
+    // Fully env-driven: for Gemma, require explicit model or GEMMA_MODEL env var.
     // For generic OpenRouter provider, use model arg, OPENROUTER_MODEL, or openrouter/auto.
-    const resolvedModel =
+    let resolvedModel =
       model ||
       (providerName === "gemma"
         ? process.env.GEMMA_MODEL || ""
         : process.env.OPENROUTER_MODEL || "openrouter/auto");
+
+    // Defensively sanitize legacy :free suffix if passed by stale client caches
+    if (resolvedModel.includes("gemma-3-27b-it:free")) {
+      resolvedModel = resolvedModel.replace(":free", "");
+    }
 
     this.model = resolvedModel;
     this.modelId = resolvedModel;

@@ -31,7 +31,7 @@ export function getAvailableProviders(): ProviderCatalogEntry[] {
     {
       id: "gemma",
       name: "gemma",
-      displayName: "Gemma (Free)",
+      displayName: "Gemma 3 (OpenRouter)",
       defaultModel: process.env.GEMMA_MODEL || "",
       isFree: true,
       requiresKey: true,

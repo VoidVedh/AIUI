@@ -176,6 +176,15 @@ ${selector} {
             );
           } else {
             // Container, button, background, surface elements
+            const isContainer = /(page_root|page|root|body|canvas|app|wrapper|layout|view|panel|container)/i.test(targetElementId);
+            const region = primaryIssue.target?.region;
+            const regionArea = region ? (region.width || 0) * (region.height || 0) : 0;
+
+            // Protect containers from localized false-positive color shifts (which cause immediate regression)
+            if (isContainer && regionArea > 0 && regionArea < 100000 && !primaryIssue.id?.startsWith("issue_contrast")) {
+              break; // Skip painting whole container for a localized interior diff
+            }
+
             newCssRules.push(`
 /* Color correction: '${targetElementId}' surface background */
 ${selector} {

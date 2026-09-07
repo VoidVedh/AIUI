@@ -57,7 +57,7 @@ export const LeftStudioPanel: React.FC<LeftStudioPanelProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isDragOver, setIsDragOver] = useState(false);
   const [providers, setProviders] = useState<ProviderCatalogEntry[]>([
-    { id: "gemma", name: "Gemma 3 27B", displayName: "Gemma 3", defaultModel: "google/gemma-3-27b-it:free", isFree: true, requiresKey: true, isConfigured: true },
+    { id: "gemma", name: "Gemma 3 27B", displayName: "Gemma 3", defaultModel: "google/gemma-3-27b-it", isFree: true, requiresKey: true, isConfigured: true },
     { id: "puter", name: "Puter (Gemini)", displayName: "Puter Gemini", defaultModel: "gemini-2.5-flash", isFree: true, requiresKey: false, isConfigured: true },
     { id: "gemini", name: "Gemini 2.5 Flash", displayName: "Gemini", defaultModel: "gemini-2.5-flash", isFree: false, requiresKey: true, isConfigured: false },
     { id: "openai", name: "GPT-4o Vision", displayName: "OpenAI", defaultModel: "gpt-4o", isFree: false, requiresKey: true, isConfigured: false },
