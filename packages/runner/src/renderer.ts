@@ -116,16 +116,22 @@ export class PlaywrightRenderer {
     if (this.browserInstance) {
       const browser = this.browserInstance;
       this.browserInstance = null;
+      const pid = (browser as any).process?.()?.pid;
       try {
         await Promise.race([
           browser.close(),
           new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("Browser close timeout")), 5000)
+            setTimeout(() => reject(new Error("Browser close timeout")), 3000)
           ),
         ]);
       } catch {
         try {
           (browser as any).process?.()?.kill?.("SIGKILL");
+        } catch {}
+      }
+      if (pid) {
+        try {
+          process.kill(pid, "SIGKILL");
         } catch {}
       }
     }

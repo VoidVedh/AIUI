@@ -52,6 +52,10 @@ async function testUgeek() {
       console.log(cssFile.content.slice(0, 600));
     }
   }
+
+  const { PlaywrightRenderer } = await import("@aiui/runner");
+  await PlaywrightRenderer.closeBrowser();
+  process.exit(0);
 }
 
 testUgeek().catch((err) => {
