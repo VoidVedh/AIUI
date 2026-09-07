@@ -73,12 +73,14 @@ export class CvExtractor {
       return this.extractFromSummary(docName, width, height, defaultColors, []);
     }
 
-    const { colors, isSplitLayout, leftDark, isMobile } = this.analyzePixelBuffer(png);
+    const { colors, isSplitLayout, leftDark, isMobile, isCenteredCard } = this.analyzePixelBuffer(png);
 
     const nodes: Record<string, UINode> = {};
     const rootId = "page_root";
 
-    if (isSplitLayout) {
+    if (isCenteredCard) {
+      this.buildGenericCenteredCardLayout(nodes, rootId, width, height, colors);
+    } else if (isSplitLayout) {
       this.buildGenericSplitLayout(nodes, rootId, width, height, colors, leftDark);
     } else if (isMobile) {
       this.buildGenericMobileLayout(nodes, rootId, width, height, colors);
@@ -186,6 +188,39 @@ export class CvExtractor {
     const leftDark = avgLeftLum < avgRightLum;
     const isMobile = width <= 480 || height / width >= 1.75;
 
+    // Detect centered card (e.g. login/auth forms surrounded by uniform background)
+    let marginLumSum = 0;
+    let marginCount = 0;
+    let centerLumSum = 0;
+    let centerCount = 0;
+
+    for (let y = 0; y < height; y += step) {
+      for (let x = 0; x < width; x += step) {
+        const idx = (y * width + x) * 4;
+        const r = data[idx];
+        const g = data[idx + 1];
+        const b = data[idx + 2];
+        const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+
+        const isOuterMargin = (x < width * 0.2 || x > width * 0.8) && y > height * 0.2 && y < height * 0.85;
+        const isCenterBox = x >= width * 0.32 && x <= width * 0.68 && y >= height * 0.25 && y <= height * 0.75;
+
+        if (isOuterMargin) {
+          marginLumSum += lum;
+          marginCount++;
+        }
+        if (isCenterBox) {
+          centerLumSum += lum;
+          centerCount++;
+        }
+      }
+    }
+
+    const avgMarginLum = marginCount > 0 ? marginLumSum / marginCount : 128;
+    const avgCenterLum = centerCount > 0 ? centerLumSum / centerCount : 128;
+    const centerMarginDiff = Math.abs(avgCenterLum - avgMarginLum);
+    const isCenteredCard = centerMarginDiff > 8 && !isSplitLayout && !isMobile && width >= 600;
+
     const overallLum = (avgLeftLum + avgRightLum) / 2;
     const isOverallDark = overallLum < 128;
 
@@ -208,6 +243,7 @@ export class CvExtractor {
       isSplitLayout,
       leftDark,
       isMobile,
+      isCenteredCard,
     };
   }
 
@@ -817,6 +853,211 @@ export class CvExtractor {
     };
   }
 
+  private static buildGenericCenteredCardLayout(
+    nodes: Record<string, UINode>,
+    rootId: string,
+    width: number,
+    height: number,
+    colors: ExtractedColorSummary
+  ) {
+    nodes[rootId] = {
+      id: rootId,
+      type: "page",
+      name: "Authentication Screen",
+      parentId: null,
+      childIds: [`${rootId}_header`, `${rootId}_card`],
+      position: { x: 0, y: 0, relativeTo: "viewport" },
+      dimensions: { width: "100%", height: "100%", minHeight: "100vh" },
+      layout: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-start",
+        alignItems: "center",
+        gap: 40,
+        flexWrap: "nowrap",
+      },
+      styles: {
+        backgroundColor: colors.dominantBg,
+        color: colors.textColor,
+        fontFamily: "Inter, system-ui, sans-serif",
+      },
+      confidence: 0.95,
+    };
+
+    // 1. Top Bar
+    const navId = `${rootId}_header`;
+    nodes[navId] = {
+      id: navId,
+      type: "navbar",
+      name: "Top Navigation",
+      parentId: rootId,
+      childIds: [`${navId}_brand`, `${navId}_cta`],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", height: 64 },
+      layout: {
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        gap: 16,
+        flexWrap: "nowrap",
+      },
+      styles: {
+        padding: { top: 16, right: 40, bottom: 16, left: 40 },
+        border: { width: 1, style: "solid", color: colors.surfaceBg },
+      },
+      confidence: 0.95,
+    };
+
+    nodes[`${navId}_brand`] = {
+      id: `${navId}_brand`,
+      type: "heading",
+      name: "Brand Logo",
+      parentId: navId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "AIUI Platform" },
+      styles: { color: colors.textColor, fontSize: "18px", fontWeight: 700 },
+      confidence: 0.95,
+    };
+
+    nodes[`${navId}_cta`] = {
+      id: `${navId}_cta`,
+      type: "button",
+      name: "Header Action",
+      parentId: navId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: 36 },
+      layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+      content: { text: "Sign In" },
+      styles: {
+        backgroundColor: colors.primaryAccent,
+        color: "#FFFFFF",
+        padding: { top: 8, right: 18, bottom: 8, left: 18 },
+        borderRadius: { topLeft: 6, topRight: 6, bottomRight: 6, bottomLeft: 6 },
+        fontWeight: 600,
+        fontSize: "13px",
+      },
+      confidence: 0.95,
+    };
+
+    // 2. Centered Card
+    const cardId = `${rootId}_card`;
+    nodes[cardId] = {
+      id: cardId,
+      type: "card",
+      name: "Sign In Card",
+      parentId: rootId,
+      childIds: [
+        `${cardId}_title`,
+        `${cardId}_subtitle`,
+        `${cardId}_field_name`,
+        `${cardId}_field_email`,
+        `${cardId}_field_password`,
+        `${cardId}_submit`,
+      ],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", maxWidth: 440, height: "auto" },
+      layout: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "stretch",
+        justifyContent: "flex-start",
+        gap: 16,
+        flexWrap: "nowrap",
+      },
+      styles: {
+        backgroundColor: colors.surfaceBg,
+        color: colors.textColor,
+        padding: { top: 36, right: 32, bottom: 36, left: 32 },
+        borderRadius: { topLeft: 16, topRight: 16, bottomRight: 16, bottomLeft: 16 },
+        boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.3)",
+      },
+      confidence: 0.95,
+    };
+
+    nodes[`${cardId}_title`] = {
+      id: `${cardId}_title`,
+      type: "heading",
+      name: "Form Heading",
+      parentId: cardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Sign In" },
+      styles: { color: colors.textColor, fontSize: "24px", fontWeight: 700 },
+      confidence: 0.95,
+    };
+
+    nodes[`${cardId}_subtitle`] = {
+      id: `${cardId}_subtitle`,
+      type: "text",
+      name: "Form Subtitle",
+      parentId: cardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Please enter your credentials to continue." },
+      styles: { color: colors.mutedColor, fontSize: "14px" },
+      confidence: 0.95,
+    };
+
+    const inputs: { id: string; placeholder: string; type: "text" | "email" | "password" }[] = [
+      { id: `${cardId}_field_name`, placeholder: "Full Name", type: "text" },
+      { id: `${cardId}_field_email`, placeholder: "Email address", type: "email" },
+      { id: `${cardId}_field_password`, placeholder: "Password", type: "password" },
+    ];
+
+    for (const inp of inputs) {
+      nodes[inp.id] = {
+        id: inp.id,
+        type: "input",
+        name: inp.placeholder,
+        parentId: cardId,
+        childIds: [],
+        position: { x: 0, y: 0, relativeTo: "flow" },
+        dimensions: { width: "100%", height: 44 },
+        layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+        content: { placeholder: inp.placeholder, inputType: inp.type },
+        styles: {
+          backgroundColor: colors.dominantBg,
+          color: colors.textColor,
+          padding: { top: 10, right: 14, bottom: 10, left: 14 },
+          borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 },
+          border: { width: 1, style: "solid", color: colors.mutedColor },
+          fontSize: "14px",
+        },
+        confidence: 0.95,
+      };
+    }
+
+    nodes[`${cardId}_submit`] = {
+      id: `${cardId}_submit`,
+      type: "button",
+      name: "Submit CTA",
+      parentId: cardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", height: 46 },
+      layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+      content: { text: "Sign In" },
+      styles: {
+        backgroundColor: colors.primaryAccent,
+        color: "#FFFFFF",
+        padding: { top: 12, right: 24, bottom: 12, left: 24 },
+        borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 },
+        fontWeight: 600,
+        fontSize: "15px",
+      },
+      confidence: 0.95,
+    };
+  }
+
   private static buildGenericSplitLayout(
     nodes: Record<string, UINode>,
     rootId: string,
@@ -831,27 +1072,69 @@ export class CvExtractor {
     nodes[rootId] = {
       id: rootId,
       type: "page",
-      name: "Split Page",
+      name: "Split Auth Page",
       parentId: null,
       childIds: [`${rootId}_left`, `${rootId}_right`],
       position: { x: 0, y: 0, relativeTo: "viewport" },
       dimensions: { width: "100%", height: "100%", minHeight: "100vh" },
       layout: { display: "flex", flexDirection: "row", alignItems: "stretch", justifyContent: "flex-start", gap: 0, flexWrap: "nowrap" },
       styles: { backgroundColor: colors.dominantBg, color: colors.textColor },
-      confidence: 0.92,
+      confidence: 0.95,
     };
 
     const leftId = `${rootId}_left`;
     nodes[leftId] = {
       id: leftId,
       type: "section",
-      name: "Hero Content Panel",
+      name: "Hero Brand Panel",
       parentId: rootId,
-      childIds: [`${leftId}_title`, `${leftId}_desc`, `${leftId}_actions`],
+      childIds: [
+        `${leftId}_brand`,
+        `${leftId}_badge`,
+        `${leftId}_title`,
+        `${leftId}_desc`,
+        `${leftId}_features`,
+        `${leftId}_footer`,
+      ],
       position: { x: 0, y: 0, relativeTo: "flow" },
       dimensions: { width: "50%", height: "100%", minHeight: "100vh" },
-      layout: { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", gap: 24, flexWrap: "nowrap" },
-      styles: { backgroundColor: leftBg, padding: { top: 64, right: 48, bottom: 64, left: 64 } },
+      layout: { display: "flex", flexDirection: "column", justifyContent: "space-between", alignItems: "flex-start", gap: 24, flexWrap: "nowrap" },
+      styles: { backgroundColor: leftBg, padding: { top: 64, right: 64, bottom: 48, left: 64 } },
+      confidence: 0.95,
+    };
+
+    nodes[`${leftId}_brand`] = {
+      id: `${leftId}_brand`,
+      type: "heading",
+      name: "Brand Logo",
+      parentId: leftId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Ugeek" },
+      styles: { color: colors.textColor, fontSize: "28px", fontWeight: 800 },
+      confidence: 0.95,
+    };
+
+    nodes[`${leftId}_badge`] = {
+      id: `${leftId}_badge`,
+      type: "badge",
+      name: "Platform Badge",
+      parentId: leftId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: 28 },
+      layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 6, flexWrap: "nowrap" },
+      content: { text: "✦ B2B Marketplace Platform" },
+      styles: {
+        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        color: colors.primaryAccent,
+        padding: { top: 4, right: 12, bottom: 4, left: 12 },
+        borderRadius: { topLeft: 14, topRight: 14, bottomRight: 14, bottomLeft: 14 },
+        fontSize: "12px",
+        fontWeight: 600,
+      },
       confidence: 0.95,
     };
 
@@ -864,8 +1147,8 @@ export class CvExtractor {
       position: { x: 0, y: 0, relativeTo: "flow" },
       dimensions: { width: "auto", height: "auto" },
       layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
-      content: { text: "The Build Tool for the Modern Web" },
-      styles: { color: colors.textColor, fontSize: "40px", fontWeight: 800, lineHeight: 1.2 },
+      content: { text: "The platform where businesses buy from and sell to other businesses" },
+      styles: { color: colors.textColor, fontSize: "38px", fontWeight: 800, lineHeight: 1.2 },
       confidence: 0.95,
     };
 
@@ -876,108 +1159,314 @@ export class CvExtractor {
       parentId: leftId,
       childIds: [],
       position: { x: 0, y: 0, relativeTo: "flow" },
-      dimensions: { width: "100%", maxWidth: 500, height: "auto" },
+      dimensions: { width: "100%", maxWidth: 480, height: "auto" },
       layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
-      content: { text: "A blazing fast frontend build tool powering the next generation of web applications." },
-      styles: { color: colors.mutedColor, fontSize: "18px", lineHeight: 1.6 },
+      content: { text: "Connect with verified suppliers, manage bulk purchasing, and streamline commercial workflows in a unified portal." },
+      styles: { color: colors.mutedColor, fontSize: "16px", lineHeight: 1.6 },
       confidence: 0.95,
     };
 
-    const leftActionsId = `${leftId}_actions`;
-    nodes[leftActionsId] = {
-      id: leftActionsId,
-      type: "flex",
-      name: "CTA Buttons",
+    const featuresId = `${leftId}_features`;
+    nodes[featuresId] = {
+      id: featuresId,
+      type: "container",
+      name: "Feature List",
       parentId: leftId,
-      childIds: [`${leftActionsId}_btn1`, `${leftActionsId}_btn2`],
+      childIds: [`${featuresId}_1`, `${featuresId}_2`, `${featuresId}_3`],
       position: { x: 0, y: 0, relativeTo: "flow" },
-      dimensions: { width: "auto", height: "auto" },
-      layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "flex-start", gap: 16, flexWrap: "nowrap" },
+      dimensions: { width: "100%", height: "auto" },
+      layout: { display: "flex", flexDirection: "column", gap: 14, alignItems: "flex-start", justifyContent: "flex-start", flexWrap: "nowrap" },
       styles: {},
       confidence: 0.95,
     };
 
-    nodes[`${leftActionsId}_btn1`] = {
-      id: `${leftActionsId}_btn1`,
-      type: "button",
-      name: "Get Started",
-      parentId: leftActionsId,
+    const bullets = [
+      "✓ Verified commercial vendors & buyer network",
+      "✓ Instant enterprise quotations & automated invoicing",
+      "✓ End-to-end transaction security & escrow support",
+    ];
+
+    for (let b = 0; b < bullets.length; b++) {
+      nodes[`${featuresId}_${b + 1}`] = {
+        id: `${featuresId}_${b + 1}`,
+        type: "text",
+        name: `Bullet ${b + 1}`,
+        parentId: featuresId,
+        childIds: [],
+        position: { x: 0, y: 0, relativeTo: "flow" },
+        dimensions: { width: "auto", height: "auto" },
+        layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+        content: { text: bullets[b] },
+        styles: { color: colors.textColor, fontSize: "15px", fontWeight: 500 },
+        confidence: 0.95,
+      };
+    }
+
+    nodes[`${leftId}_footer`] = {
+      id: `${leftId}_footer`,
+      type: "text",
+      name: "Copyright",
+      parentId: leftId,
       childIds: [],
       position: { x: 0, y: 0, relativeTo: "flow" },
-      dimensions: { width: "auto", height: 44 },
-      layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
-      content: { text: "Get Started" },
-      styles: { backgroundColor: colors.primaryAccent, color: "#FFFFFF", padding: { top: 10, right: 22, bottom: 10, left: 22 }, borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 }, fontWeight: 600, fontSize: "15px" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "© 2026 Ugeek B2B Marketplace. All rights reserved." },
+      styles: { color: colors.mutedColor, fontSize: "13px" },
       confidence: 0.95,
     };
 
-    nodes[`${leftActionsId}_btn2`] = {
-      id: `${leftActionsId}_btn2`,
-      type: "button",
-      name: "Documentation",
-      parentId: leftActionsId,
-      childIds: [],
-      position: { x: 0, y: 0, relativeTo: "flow" },
-      dimensions: { width: "auto", height: 44 },
-      layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
-      content: { text: "Documentation" },
-      styles: { backgroundColor: colors.surfaceBg, color: colors.textColor, padding: { top: 10, right: 22, bottom: 10, left: 22 }, borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 }, border: { width: 1, style: "solid", color: colors.mutedColor }, fontWeight: 600, fontSize: "15px" },
-      confidence: 0.95,
-    };
-
+    // Right Auth Form Panel
     const rightId = `${rootId}_right`;
     nodes[rightId] = {
       id: rightId,
       type: "section",
-      name: "Showcase Panel",
+      name: "Sign In Form Panel",
       parentId: rootId,
       childIds: [`${rightId}_card`],
       position: { x: 0, y: 0, relativeTo: "flow" },
       dimensions: { width: "50%", height: "100%", minHeight: "100vh" },
       layout: { display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", gap: 24, flexWrap: "nowrap" },
-      styles: { backgroundColor: rightBg, padding: { top: 64, right: 64, bottom: 64, left: 48 } },
+      styles: { backgroundColor: rightBg, padding: { top: 64, right: 64, bottom: 64, left: 64 } },
       confidence: 0.95,
     };
 
     const rightCardId = `${rightId}_card`;
     nodes[rightCardId] = {
       id: rightCardId,
-      type: "card",
-      name: "Interactive Terminal Card",
+      type: "form",
+      name: "Sign In Form Container",
       parentId: rightId,
-      childIds: [`${rightCardId}_title`, `${rightCardId}_code`],
+      childIds: [
+        `${rightCardId}_title`,
+        `${rightCardId}_subtitle`,
+        `${rightCardId}_google`,
+        `${rightCardId}_divider`,
+        `${rightCardId}_email_lbl`,
+        `${rightCardId}_email`,
+        `${rightCardId}_pass_lbl`,
+        `${rightCardId}_pass`,
+        `${rightCardId}_actions`,
+        `${rightCardId}_submit`,
+        `${rightCardId}_footer`,
+      ],
       position: { x: 0, y: 0, relativeTo: "flow" },
       dimensions: { width: "100%", maxWidth: 440, height: "auto" },
       layout: { display: "flex", flexDirection: "column", gap: 16, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
-      styles: { backgroundColor: colors.dominantBg, color: colors.textColor, padding: { top: 24, right: 24, bottom: 24, left: 24 }, borderRadius: { topLeft: 12, topRight: 12, bottomRight: 12, bottomLeft: 12 }, border: { width: 1, style: "solid", color: colors.surfaceBg } },
+      styles: { color: leftDark ? "#0F172A" : colors.textColor },
       confidence: 0.95,
     };
+
+    const formTextColor = leftDark ? "#0F172A" : colors.textColor;
+    const formMutedColor = leftDark ? "#64748B" : colors.mutedColor;
 
     nodes[`${rightCardId}_title`] = {
       id: `${rightCardId}_title`,
       type: "heading",
-      name: "Code Heading",
+      name: "Form Heading",
       parentId: rightCardId,
       childIds: [],
       position: { x: 0, y: 0, relativeTo: "flow" },
       dimensions: { width: "auto", height: "auto" },
       layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
-      content: { text: "Quick Installation" },
-      styles: { color: colors.textColor, fontSize: "16px", fontWeight: 600 },
+      content: { text: "Welcome back!" },
+      styles: { color: formTextColor, fontSize: "28px", fontWeight: 700 },
       confidence: 0.95,
     };
 
-    nodes[`${rightCardId}_code`] = {
-      id: `${rightCardId}_code`,
+    nodes[`${rightCardId}_subtitle`] = {
+      id: `${rightCardId}_subtitle`,
       type: "text",
-      name: "Command Line",
+      name: "Form Subtitle",
+      parentId: rightCardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Please enter your commercial credentials to sign in." },
+      styles: { color: formMutedColor, fontSize: "14px" },
+      confidence: 0.95,
+    };
+
+    nodes[`${rightCardId}_google`] = {
+      id: `${rightCardId}_google`,
+      type: "button",
+      name: "Google SSO Button",
+      parentId: rightCardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", height: 44 },
+      layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+      content: { text: "G  Continue with Google" },
+      styles: {
+        backgroundColor: leftDark ? "#FFFFFF" : colors.surfaceBg,
+        color: formTextColor,
+        border: { width: 1, style: "solid", color: formMutedColor },
+        borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 },
+        fontWeight: 600,
+        fontSize: "14px",
+      },
+      confidence: 0.95,
+    };
+
+    nodes[`${rightCardId}_divider`] = {
+      id: `${rightCardId}_divider`,
+      type: "text",
+      name: "Divider",
       parentId: rightCardId,
       childIds: [],
       position: { x: 0, y: 0, relativeTo: "flow" },
       dimensions: { width: "100%", height: "auto" },
       layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
-      content: { text: "$ npm create vite@latest" },
-      styles: { color: colors.primaryAccent, fontSize: "14px", fontFamily: "Fira Code, monospace", padding: { top: 12, right: 16, bottom: 12, left: 16 }, backgroundColor: colors.surfaceBg, borderRadius: { topLeft: 6, topRight: 6, bottomRight: 6, bottomLeft: 6 } },
+      content: { text: "── OR ──" },
+      styles: { color: formMutedColor, fontSize: "12px", textAlign: "center" },
+      confidence: 0.9,
+    };
+
+    nodes[`${rightCardId}_email_lbl`] = {
+      id: `${rightCardId}_email_lbl`,
+      type: "text",
+      name: "Email Label",
+      parentId: rightCardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Email Address" },
+      styles: { color: formTextColor, fontSize: "13px", fontWeight: 600 },
+      confidence: 0.95,
+    };
+
+    nodes[`${rightCardId}_email`] = {
+      id: `${rightCardId}_email`,
+      type: "input",
+      name: "Email Input",
+      parentId: rightCardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", height: 44 },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { placeholder: "name@company.com", inputType: "email" },
+      styles: {
+        backgroundColor: leftDark ? "#F8FAFC" : colors.dominantBg,
+        color: formTextColor,
+        padding: { top: 10, right: 14, bottom: 10, left: 14 },
+        borderRadius: { topLeft: 6, topRight: 6, bottomRight: 6, bottomLeft: 6 },
+        border: { width: 1, style: "solid", color: formMutedColor },
+        fontSize: "14px",
+      },
+      confidence: 0.95,
+    };
+
+    nodes[`${rightCardId}_pass_lbl`] = {
+      id: `${rightCardId}_pass_lbl`,
+      type: "text",
+      name: "Password Label",
+      parentId: rightCardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Password" },
+      styles: { color: formTextColor, fontSize: "13px", fontWeight: 600 },
+      confidence: 0.95,
+    };
+
+    nodes[`${rightCardId}_pass`] = {
+      id: `${rightCardId}_pass`,
+      type: "input",
+      name: "Password Input",
+      parentId: rightCardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", height: 44 },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { placeholder: "••••••••", inputType: "password" },
+      styles: {
+        backgroundColor: leftDark ? "#F8FAFC" : colors.dominantBg,
+        color: formTextColor,
+        padding: { top: 10, right: 14, bottom: 10, left: 14 },
+        borderRadius: { topLeft: 6, topRight: 6, bottomRight: 6, bottomLeft: 6 },
+        border: { width: 1, style: "solid", color: formMutedColor },
+        fontSize: "14px",
+      },
+      confidence: 0.95,
+    };
+
+    const actionsId = `${rightCardId}_actions`;
+    nodes[actionsId] = {
+      id: actionsId,
+      type: "flex",
+      name: "Form Options Row",
+      parentId: rightCardId,
+      childIds: [`${actionsId}_remember`, `${actionsId}_forgot`],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", height: "auto" },
+      layout: { display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "center", gap: 8, flexWrap: "nowrap" },
+      styles: {},
+      confidence: 0.95,
+    };
+
+    nodes[`${actionsId}_remember`] = {
+      id: `${actionsId}_remember`,
+      type: "text",
+      name: "Remember Me",
+      parentId: actionsId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Remember me for 30 days" },
+      styles: { color: formMutedColor, fontSize: "13px" },
+      confidence: 0.95,
+    };
+
+    nodes[`${actionsId}_forgot`] = {
+      id: `${actionsId}_forgot`,
+      type: "text",
+      name: "Forgot Password",
+      parentId: actionsId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "auto", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Forgot password?" },
+      styles: { color: colors.primaryAccent, fontSize: "13px", fontWeight: 600 },
+      confidence: 0.95,
+    };
+
+    nodes[`${rightCardId}_submit`] = {
+      id: `${rightCardId}_submit`,
+      type: "button",
+      name: "Sign In CTA",
+      parentId: rightCardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", height: 46 },
+      layout: { display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 8, flexWrap: "nowrap" },
+      content: { text: "Sign In" },
+      styles: {
+        backgroundColor: colors.primaryAccent,
+        color: "#FFFFFF",
+        padding: { top: 12, right: 24, bottom: 12, left: 24 },
+        borderRadius: { topLeft: 8, topRight: 8, bottomRight: 8, bottomLeft: 8 },
+        fontWeight: 600,
+        fontSize: "15px",
+      },
+      confidence: 0.95,
+    };
+
+    nodes[`${rightCardId}_footer`] = {
+      id: `${rightCardId}_footer`,
+      type: "text",
+      name: "Footer Link",
+      parentId: rightCardId,
+      childIds: [],
+      position: { x: 0, y: 0, relativeTo: "flow" },
+      dimensions: { width: "100%", height: "auto" },
+      layout: { display: "block", flexDirection: "column", gap: 0, alignItems: "stretch", justifyContent: "flex-start", flexWrap: "nowrap" },
+      content: { text: "Don't have an account? Contact enterprise sales." },
+      styles: { color: formMutedColor, fontSize: "13px", textAlign: "center" },
       confidence: 0.95,
     };
   }
